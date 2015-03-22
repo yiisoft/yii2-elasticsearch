@@ -1,19 +1,11 @@
-Elasticsearch Query and ActiveRecord for Yii 2
-==============================================
-
-This extension provides the [elasticsearch](http://www.elasticsearch.org/) integration for the Yii2 framework.
-It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
-records in elasticsearch.
-
-For license information check the [LICENSE](LICENSE.md)-file.
-
-Requirements
-------------
-
-elasticsearch version 1.0 or higher is required.
-
 Installation
-------------
+============
+
+## Requirements
+
+Elasticsearch version 1.0 or higher is required.
+
+## Getting Composer package
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -31,8 +23,7 @@ or add
 
 to the require section of your composer.json.
 
-Configuration
--------------
+## Configuring application
 
 To use this extension, you have to configure the Connection class in your application configuration:
 
