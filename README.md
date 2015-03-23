@@ -1,11 +1,15 @@
 Elasticsearch Query and ActiveRecord for Yii 2
 ==============================================
 
-This extension provides the [elasticsearch](http://www.elasticsearch.org/) integration for the Yii2 framework.
+This extension provides the [elasticsearch](http://www.elasticsearch.org/) integration for the [Yii framework 2.0](http://www.yiiframework.com).
 It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
 records in elasticsearch.
 
 For license information check the [LICENSE](LICENSE.md)-file.
+
+[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-elasticsearch/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-elasticsearch)
+[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-elasticsearch/downloads.png)](https://packagist.org/packages/yiisoft/yii2-elasticsearch)
+[![Build Status](https://travis-ci.org/yiisoft/yii2-elasticsearch.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-elasticsearch)
 
 Requirements
 ------------
