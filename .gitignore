@@ -1,3 +1,4 @@
 /vendor
 /composer.lock
 /tests/ActiveRecordTestTrait.php
+/tests/data/config.local.php
