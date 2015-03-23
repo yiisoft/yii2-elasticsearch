@@ -8,6 +8,9 @@ php:
   - hhvm
   - hhvm-nightly
 
+services:
+  - elasticsearch
+
 # run build against hhvm but allow them to fail
 # http://docs.travis-ci.com/user/build-configuration/#Rows-That-are-Allowed-To-Fail
 matrix:
