@@ -74,6 +74,9 @@ class QueryBuilder extends \yii\base\Object
         if ($query->offset > 0) {
             $parts['from'] = (int) $query->offset;
         }
+        if (isset($query->minScore)) {
+            $parts['min_score'] = (float) $query->minScore;
+        }
 
         if (empty($query->query)) {
             $parts['query'] = ["match_all" => (object) []];
