@@ -107,4 +107,4 @@ $query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
 $query->search(); // gives you all the records + stats about the visit_count field. e.g. mean, sum, min, max etc...
 ```
 
-And there is so much more in it. "it�s endless what you can build"[?](https://www.elastic.co/)
+And there is so much more in it. "it’s endless what you can build"[?](https://www.elastic.co/)
