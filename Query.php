@@ -82,11 +82,11 @@ class Query extends Component implements QueryInterface
      *
      * > Note: Field values are [always returned as arrays] even if they only have one value.
      *
-     * [always returned as arrays]: http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
-     * [script field]: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     * [always returned as arrays]: http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
+     * [script field]: http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
      *
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-fields.html#search-request-fields
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-fields.html#search-request-fields
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
      * @see fields()
      * @see source
      */
@@ -97,7 +97,7 @@ class Query extends Component implements QueryInterface
      * If not set, it means retrieving the full `_source` field unless [[fields]] are specified.
      * Setting this option to `false` will disable return of the `_source` field, this means that only the primaryKey
      * of a record will be available in the result.
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-source-filtering.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-source-filtering.html
      * @see source()
      * @see fields
      */
@@ -118,38 +118,38 @@ class Query extends Component implements QueryInterface
      * @var integer A search timeout, bounding the search request to be executed within the specified time value
      * and bail with the hits accumulated up to that point when expired. Defaults to no timeout.
      * @see timeout()
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_3
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5
      */
     public $timeout;
     /**
      * @var array|string The query part of this search query. This is an array or json string that follows the format of
-     * the elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html).
+     * the elasticsearch [Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
      */
     public $query;
     /**
      * @var array|string The filter part of this search query. This is an array or json string that follows the format of
-     * the elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html).
+     * the elasticsearch [Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
      */
     public $filter;
     /**
      * @var array The highlight part of this search query. This is an array that allows to highlight search results
      * on one or more fields.
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
      */
     public $highlight;
     /**
      * @var array List of aggregations to add to this query.
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
      */
     public $aggregations = [];
     /**
      * @var array the 'stats' part of the query. An array of groups to maintain a statistics aggregation for.
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search.html#stats-groups
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#stats-groups
      */
     public $stats = [];
     /**
      * @var array list of suggesters to add to this query.
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-suggesters.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      */
     public $suggest = [];
 
@@ -161,7 +161,7 @@ class Query extends Component implements QueryInterface
     {
         parent::init();
         // setting the default limit according to elasticsearch defaults
-        // http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_3
+        // http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5
         if ($this->limit === null) {
             $this->limit = 10;
         }
@@ -238,8 +238,8 @@ class Query extends Component implements QueryInterface
      * If this parameter is not given, the `elasticsearch` application component will be used.
      * @param array $options The options given with this query. Possible options are:
      *
-     *  - [routing](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search.html#search-routing)
-     *  - [search_type](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-search-type.html)
+     *  - [routing](http://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#search-routing)
+     *  - [search_type](http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-type.html)
      *
      * @return array the query results.
      */
@@ -261,7 +261,7 @@ class Query extends Component implements QueryInterface
         return $result;
     }
 
-    // TODO add scroll/scan http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-search-type.html#scan
+    // TODO add scroll/scan http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-type.html#scan
 
     /**
      * Executes the query and deletes all matching documents.
@@ -341,8 +341,8 @@ class Query extends Component implements QueryInterface
     {
         // TODO consider sending to _count api instead of _search for performance
         // only when no facety are registerted.
-        // http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-count.html
-        // http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.x/_search_requests.html
+        // http://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html
+        // http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_search_requests.html
 
         $options = [];
         $options['search_type'] = 'count';
@@ -365,7 +365,7 @@ class Query extends Component implements QueryInterface
      * Adds a 'stats' part to the query.
      * @param array $groups an array of groups to maintain a statistics aggregation for.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search.html#stats-groups
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#stats-groups
      */
     public function stats($groups)
     {
@@ -377,7 +377,7 @@ class Query extends Component implements QueryInterface
      * Sets a highlight parameters to retrieve from the documents.
      * @param array $highlight array of parameters to highlight results.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-highlighting.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
      */
     public function highlight($highlight)
     {
@@ -391,7 +391,7 @@ class Query extends Component implements QueryInterface
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
      */
     public function addAggregation($name, $type, $options)
     {
@@ -408,7 +408,7 @@ class Query extends Component implements QueryInterface
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
      */
     public function addAgg($name, $type, $options)
     {
@@ -420,7 +420,7 @@ class Query extends Component implements QueryInterface
      * @param string $name the name of the suggester
      * @param string|array $definition the configuration options for this suggester. Can be an array or a json string.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-suggesters.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      */
     public function addSuggester($name, $definition)
     {
@@ -428,9 +428,9 @@ class Query extends Component implements QueryInterface
         return $this;
     }
 
-    // TODO add validate query http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-validate.html
+    // TODO add validate query http://www.elastic.co/guide/en/elasticsearch/reference/current/search-validate.html
 
-    // TODO support multi query via static method http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-multi-search.html
+    // TODO support multi query via static method http://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html
 
     /**
      * Sets the querypart of this search query.
@@ -461,7 +461,7 @@ class Query extends Component implements QueryInterface
      * @param string|array $type The type to retrieve data from. This can be a string representing a single type
      * or a an array of multiple types. If this is `null` it means that all types are being queried.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-search.html#search-multi-index-type
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-multi-index-type
      */
     public function from($index, $type = null)
     {
@@ -474,7 +474,7 @@ class Query extends Component implements QueryInterface
      * Sets the fields to retrieve from the documents.
      * @param array $fields the fields to be selected.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-fields.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-fields.html
      */
     public function fields($fields)
     {
@@ -490,7 +490,7 @@ class Query extends Component implements QueryInterface
      * Sets the source filtering, specifying how the `_source` field of the document should be returned.
      * @param array $source the source patterns to be selected.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-source-filtering.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-source-filtering.html
      */
     public function source($source)
     {
@@ -507,7 +507,7 @@ class Query extends Component implements QueryInterface
      * @param integer $timeout A search timeout, bounding the search request to be executed within the specified time value
      * and bail with the hits accumulated up to that point when expired. Defaults to no timeout.
      * @return static the query object itself
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_3
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5
      */
     public function timeout($timeout)
     {
