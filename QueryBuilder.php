@@ -149,7 +149,7 @@ class QueryBuilder extends \yii\base\Object
                 $column = '_uid';
             }
 
-            // allow elasticsearch extended syntax as described in http://www.elasticsearch.org/guide/reference/api/search/sort/
+            // allow elasticsearch extended syntax as described in http://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
             if (is_array($direction)) {
                 $orders[] = [$column => $direction];
             } else {
