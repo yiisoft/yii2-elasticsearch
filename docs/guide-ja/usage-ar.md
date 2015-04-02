@@ -1,33 +1,33 @@
-ï¿½Aï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½gï¿½ï¿½
+ƒAƒNƒeƒBƒuƒŒƒR[ƒh‚ğg‚¤
 ========================
 
-Yii ï¿½ÌƒAï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½Ìgï¿½pï¿½ï¿½@ï¿½ÉŠÖ‚ï¿½ï¿½ï¿½ï¿½Ê“Iï¿½Èï¿½ï¿½É‚Â‚ï¿½ï¿½Ä‚ÍA[ï¿½Kï¿½Cï¿½h](https://github.com/yiisoft/yii2/blob/master/docs/guide/db-active-record.md) ï¿½ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+Yii ‚ÌƒAƒNƒeƒBƒuƒŒƒR[ƒh‚Ìg—p•û–@‚ÉŠÖ‚·‚éˆê”Ê“I‚Èî•ñ‚É‚Â‚¢‚Ä‚ÍA[ƒKƒCƒh](https://github.com/yiisoft/yii2/blob/master/docs/guide/db-active-record.md) ‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
 
-Elasticsearch ï¿½ÌƒAï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½é‚½ï¿½ß‚É‚ÍAï¿½ï¿½ï¿½È‚ï¿½ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ [[yii\elasticsearch\ActiveRecord]] ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ÄAï¿½Å’ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½Ì‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½é‚½ï¿½ß‚ï¿½ [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-Elasticsearch ï¿½Å‚Íƒvï¿½ï¿½ï¿½Cï¿½}ï¿½ï¿½ï¿½Lï¿½[ï¿½Ìˆï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êï¿½ÆˆÙ‚È‚ï¿½Ü‚ï¿½ï¿½B
-ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Ì‚ÍAï¿½vï¿½ï¿½ï¿½Cï¿½}ï¿½ï¿½ï¿½Lï¿½[ (elasticsearch ï¿½Ì—pï¿½ï¿½Å‚ï¿½ `_id` ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½h) ï¿½ï¿½ï¿½Aï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Å‚Í‘ï¿½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½É“ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½B
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½A`_id` ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ğ‘®ï¿½ï¿½ÉŠÜ‚ß‚é‚½ï¿½ß‚ï¿½ [ï¿½pï¿½Xï¿½}ï¿½bï¿½sï¿½ï¿½ï¿½O](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½é‚±ï¿½Æ‚Íoï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-ï¿½pï¿½Xï¿½}ï¿½bï¿½sï¿½ï¿½ï¿½Oï¿½Ì’ï¿½`ï¿½Ìdï¿½ï¿½É‚Â‚ï¿½ï¿½Ä‚ÍA[elasticsearch ï¿½Ìƒhï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½g](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) ï¿½ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
-document ï¿½Ü‚ï¿½ï¿½ï¿½ record ï¿½ï¿½ `_id` ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ÍA[[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] ï¿½ï¿½ï¿½ï¿½ï¿½ [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]] ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÄƒAï¿½Nï¿½Zï¿½Xï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½oï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-ï¿½pï¿½Xï¿½}ï¿½bï¿½sï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡ï¿½ÍA[[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ä‘ï¿½ï¿½ï¿½ï¿½Ì–ï¿½ï¿½Oï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½oï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
+Elasticsearch ‚ÌƒAƒNƒeƒBƒuƒŒƒR[ƒh‚ğ’è‹`‚·‚é‚½‚ß‚É‚ÍA‚ ‚È‚½‚ÌƒŒƒR[ƒhƒNƒ‰ƒX‚ğ [[yii\elasticsearch\ActiveRecord]] ‚©‚çŠg’£‚µ‚ÄAÅ’áŒÀAƒŒƒR[ƒh‚Ì‘®«‚ğ’è‹`‚·‚é‚½‚ß‚Ì [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] ƒƒ\ƒbƒh‚ğÀ‘•‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+Elasticsearch ‚Å‚Íƒvƒ‰ƒCƒ}ƒŠƒL[‚Ìˆµ‚¢‚ª’Êí‚ÆˆÙ‚È‚è‚Ü‚·B
+‚Æ‚¢‚¤‚Ì‚ÍAƒvƒ‰ƒCƒ}ƒŠƒL[ (elasticsearch ‚Ì—pŒê‚Å‚Í `_id` ƒtƒB[ƒ‹ƒh) ‚ªAƒfƒtƒHƒ‹ƒg‚Å‚Í‘®«‚Ì‚¤‚¿‚É“ü‚ç‚È‚¢‚©‚ç‚Å‚·B
+‚½‚¾‚µA`_id` ƒtƒB[ƒ‹ƒh‚ğ‘®«‚ÉŠÜ‚ß‚é‚½‚ß‚Ì [ƒpƒXƒ}ƒbƒsƒ“ƒO](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/mapping-id-field.html) ‚ğ’è‹`‚·‚é‚±‚Æ‚Ío—ˆ‚Ü‚·B
+ƒpƒXƒ}ƒbƒsƒ“ƒO‚Ì’è‹`‚Ìd•û‚É‚Â‚¢‚Ä‚ÍA[elasticsearch ‚ÌƒhƒLƒ…ƒƒ“ƒg](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/mapping-id-field.html) ‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+document ‚Ü‚½‚Í record ‚Ì `_id` ƒtƒB[ƒ‹ƒh‚ÍA[[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] ‚¨‚æ‚Ñ [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]] ‚ğg‚Á‚ÄƒAƒNƒZƒX‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
+ƒpƒXƒ}ƒbƒsƒ“ƒO‚ª’è‹`‚³‚ê‚Ä‚¢‚éê‡‚ÍA[[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] ƒƒ\ƒbƒh‚ğg‚Á‚Ä‘®«‚Ì–¼‘O‚ğ’è‹`‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
 
-ï¿½È‰ï¿½ï¿½ï¿½ `Customer` ï¿½ÆŒÄ‚Î‚ï¿½éƒ‚ï¿½fï¿½ï¿½ï¿½Ì—ï¿½Å‚ï¿½ï¿½B
+ˆÈ‰º‚Í `Customer` ‚ÆŒÄ‚Î‚ê‚éƒ‚ƒfƒ‹‚Ì—á‚Å‚·B
 
 ```php
 class Customer extends \yii\elasticsearch\ActiveRecord
 {
     /**
-     * @return array ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½Ì‘ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½g
+     * @return array ‚±‚ÌƒŒƒR[ƒh‚Ì‘®«‚ÌƒŠƒXƒg
      */
     public function attributes()
     {
-        // '_id' ï¿½É‘Î‚ï¿½ï¿½ï¿½pï¿½Xï¿½}ï¿½bï¿½sï¿½ï¿½ï¿½Ois setup to field 'id'
+        // '_id' ‚É‘Î‚·‚éƒpƒXƒ}ƒbƒsƒ“ƒOis setup to field 'id'
         return ['id', 'name', 'address', 'registration_date'];
     }
 
     /**
-     * @return ActiveQuery Order ï¿½ï¿½ï¿½Rï¿½[ï¿½h ï¿½Ö‚Ìƒï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`
-     * (Order ï¿½Í‘ï¿½ï¿½Ìƒfï¿½[ï¿½^ï¿½xï¿½[ï¿½Xï¿½Aï¿½á‚¦ï¿½ÎAredis ï¿½ï¿½Êï¿½ï¿½ SQLDB ï¿½É‚ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ç‚ï¿½)
+     * @return ActiveQuery Order ƒŒƒR[ƒh ‚Ö‚ÌƒŠƒŒ[ƒVƒ‡ƒ“‚ğ’è‹`
+     * (Order ‚Í‘¼‚Ìƒf[ƒ^ƒx[ƒXA—á‚¦‚ÎAredis ‚â’Êí‚Ì SQLDB ‚É‚ ‚Á‚Ä‚à—Ç‚¢)
      */
     public function getOrders()
     {
@@ -35,7 +35,7 @@ class Customer extends \yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * `$query` ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ÄƒAï¿½Nï¿½eï¿½Bï¿½u (status = 1) ï¿½ÈŒÚ‹qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½Xï¿½Rï¿½[ï¿½vï¿½ï¿½ï¿½`
+     * `$query` ‚ğC³‚µ‚ÄƒAƒNƒeƒBƒu (status = 1) ‚ÈŒÚ‹q‚¾‚¯‚ğ•Ô‚·ƒXƒR[ƒv‚ğ’è‹`
      */
     public static function active($query)
     {
@@ -44,61 +44,61 @@ class Customer extends \yii\elasticsearch\ActiveRecord
 }
 ```
 
-[[yii\elasticsearch\ActiveRecord::index()|index()]] ï¿½ï¿½ [[yii\elasticsearch\ActiveRecord::type()|type()]] ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½Cï¿½hï¿½ï¿½ï¿½ÄAï¿½ï¿½ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½Xï¿½Æƒ^ï¿½Cï¿½vï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½oï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
+[[yii\elasticsearch\ActiveRecord::index()|index()]] ‚Æ [[yii\elasticsearch\ActiveRecord::type()|type()]] ‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚ÄA‚±‚ÌƒŒƒR[ƒh‚ª•\‚·ƒCƒ“ƒfƒbƒNƒX‚Æƒ^ƒCƒv‚ğ’è‹`‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
 
-elasticsearch ï¿½ÌƒAï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½Ìˆï¿½Ê“Iï¿½Ègï¿½pï¿½ï¿½@ï¿½ÍA[ï¿½Kï¿½Cï¿½h](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md) ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½fï¿½[ï¿½^ï¿½xï¿½[ï¿½Xï¿½ÌƒAï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½Ìê‡ï¿½Æ”ï¿½ï¿½É‚æ‚­ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
-ï¿½È‰ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ÆŠgï¿½ï¿½ (*!*) ï¿½ï¿½ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎAï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½Cï¿½Xï¿½Æ‹@ï¿½\ï¿½ï¿½ï¿½Tï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
+elasticsearch ‚ÌƒAƒNƒeƒBƒuƒŒƒR[ƒh‚Ìˆê”Ê“I‚Èg—p•û–@‚ÍA[ƒKƒCƒh](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md) ‚Åà–¾‚³‚ê‚½ƒf[ƒ^ƒx[ƒX‚ÌƒAƒNƒeƒBƒuƒŒƒR[ƒh‚Ìê‡‚Æ”ñí‚É‚æ‚­—‚Ä‚¢‚Ü‚·B
+ˆÈ‰º‚Ì§ŒÀ‚ÆŠg’£ (*!*) ‚ª‚ ‚é‚±‚Æ‚ğœ‚¯‚ÎA“¯‚¶ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Æ‹@”\‚ğƒTƒ|[ƒg‚µ‚Ä‚¢‚Ü‚·B
 
-- elasticsearch ï¿½ï¿½ SQL ï¿½ï¿½ï¿½Tï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ßAï¿½Nï¿½Gï¿½ï¿½ï¿½ï¿½ API ï¿½ï¿½ `join()`ï¿½A`groupBy()`ï¿½A`having()` ï¿½ï¿½ï¿½ï¿½ï¿½ `union()` ï¿½ï¿½ï¿½Tï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B
-  ï¿½ï¿½ï¿½×‘Ö‚ï¿½ï¿½Aï¿½ï¿½ï¿½~ï¿½bï¿½gï¿½Aï¿½Iï¿½tï¿½Zï¿½bï¿½gï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ WHERE ï¿½ÍAï¿½ï¿½ï¿½×‚ÄƒTï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
-- [[yii\elasticsearch\ActiveQuery::from()|from()]] ï¿½Íƒeï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B
-  ï¿½ï¿½ï¿½ï¿½ï¿½Å‚Í‚È‚ï¿½ï¿½Aï¿½Nï¿½Gï¿½ï¿½ï¿½ÎÛ‚ï¿½ [ï¿½Cï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½X](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) ï¿½ï¿½ [ï¿½^ï¿½Cï¿½v](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-- `select()` ï¿½ï¿½ [[yii\elasticsearch\ActiveQuery::fields()|fields()]] ï¿½É’uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
-  ï¿½ï¿½{ï¿½Iï¿½É‚Í“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚Å‚ï¿½ï¿½ï¿½ï¿½A`fields` ï¿½Ì•ï¿½ elasticsearch ï¿½Ì—pï¿½ï¿½Æ‚ï¿½ï¿½Ä‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½å‚¤ï¿½B
-  ï¿½hï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-- Elasticsearch ï¿½É‚Íƒeï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Ì‚ÅAï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½Ê‚ï¿½ï¿½Ä‚ï¿½ [[yii\elasticsearch\ActiveQuery::via()|via]] ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Í’ï¿½`ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½oï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B
-- Elasticsearch ï¿½Íƒfï¿½[ï¿½^ï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½Wï¿½Å‚ï¿½ï¿½ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Ì‚ÅAï¿½ï¿½ï¿½Rï¿½È‚ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ÌŒï¿½ï¿½ï¿½ï¿½É‘Î‚ï¿½ï¿½ï¿½Tï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
-  Elasticsearch ï¿½ÌƒNï¿½Gï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚ï¿½ [[yii\elasticsearch\ActiveQuery::query()|query()]]ï¿½A[[yii\elasticsearch\ActiveQuery::filter()|filter()]] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-  ï¿½ï¿½ï¿½ï¿½ç‚ªï¿½Ç‚Ì‚æ‚¤ï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚Â‚ï¿½ï¿½ÄAï¿½ï¿½ï¿½Ìgï¿½pï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
-  ï¿½Ü‚ï¿½ï¿½A`query` ï¿½ï¿½ `filter` ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½É‚Â‚ï¿½ï¿½Ä‚ÍA[Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) ï¿½ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
-- Elasticsearch ï¿½ÌƒAï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½Êï¿½ÌƒAï¿½Nï¿½eï¿½Bï¿½uï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½Nï¿½ï¿½ï¿½Xï¿½Ö‚Ìƒï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½Â”\ï¿½Å‚ï¿½ï¿½Bï¿½Ü‚ï¿½ï¿½Aï¿½ï¿½ï¿½Ì‹tï¿½ï¿½ï¿½Â”\ï¿½Å‚ï¿½ï¿½B
+- elasticsearch ‚Í SQL ‚ğƒTƒ|[ƒg‚µ‚Ä‚¢‚È‚¢‚½‚ßAƒNƒGƒŠ‚Ì API ‚Í `join()`A`groupBy()`A`having()` ‚¨‚æ‚Ñ `union()` ‚ğƒTƒ|[ƒg‚µ‚Ü‚¹‚ñB
+  •À‚×‘Ö‚¦AƒŠƒ~ƒbƒgAƒIƒtƒZƒbƒgAğŒ•t‚« WHERE ‚ÍA‚·‚×‚ÄƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚Ü‚·B
+- [[yii\elasticsearch\ActiveQuery::from()|from()]] ‚Íƒe[ƒuƒ‹‚ğ‘I‘ğ‚µ‚Ü‚¹‚ñB
+  ‚»‚¤‚Å‚Í‚È‚­AƒNƒGƒŠ‘ÎÛ‚Ì [ƒCƒ“ƒfƒbƒNƒX](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) ‚Æ [ƒ^ƒCƒv](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) ‚ğ‘I‘ğ‚µ‚Ü‚·B
+- `select()` ‚Í [[yii\elasticsearch\ActiveQuery::fields()|fields()]] ‚É’u‚«Š·‚¦‚ç‚ê‚Ä‚¢‚Ü‚·B
+  Šî–{“I‚É‚Í“¯‚¶‚±‚Æ‚ğ‚·‚é‚à‚Ì‚Å‚·‚ªA`fields` ‚Ì•û‚ª elasticsearch ‚Ì—pŒê‚Æ‚µ‚Ä‘Š‰‚µ‚¢‚Å‚µ‚å‚¤B
+  ƒhƒLƒ…ƒƒ“ƒg‚©‚çæ“¾‚·‚éƒtƒB[ƒ‹ƒh‚ğ’è‹`‚µ‚Ü‚·B
+- Elasticsearch ‚É‚Íƒe[ƒuƒ‹‚ª‚ ‚è‚Ü‚¹‚ñ‚Ì‚ÅAƒe[ƒuƒ‹‚ğ’Ê‚¶‚Ä‚Ì [[yii\elasticsearch\ActiveQuery::via()|via]] ƒŠƒŒ[ƒVƒ‡ƒ“‚Í’è‹`‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚¹‚ñB
+- Elasticsearch ‚Íƒf[ƒ^ƒXƒgƒŒ[ƒW‚Å‚ ‚é‚Æ“¯‚ÉŒŸõƒGƒ“ƒWƒ“‚Å‚à‚ ‚è‚Ü‚·‚Ì‚ÅA“–‘R‚È‚ª‚çAƒŒƒR[ƒh‚ÌŒŸõ‚É‘Î‚·‚éƒTƒ|[ƒg‚ª’Ç‰Á‚³‚ê‚Ä‚¢‚Ü‚·B
+  Elasticsearch ‚ÌƒNƒGƒŠ‚ğ\¬‚·‚é‚½‚ß‚Ì [[yii\elasticsearch\ActiveQuery::query()|query()]]A[[yii\elasticsearch\ActiveQuery::filter()|filter()]] ‚»‚µ‚Ä [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] ‚Æ‚¢‚¤ƒƒ\ƒbƒh‚ª‚ ‚è‚Ü‚·B
+  ‚±‚ê‚ç‚ª‚Ç‚Ì‚æ‚¤‚É“­‚­‚©‚É‚Â‚¢‚ÄA‰º‚Ìg—p—á‚ğŒ©‚Ä‚­‚¾‚³‚¢B
+  ‚Ü‚½A`query` ‚Æ `filter` ‚Ì•”•ª‚ğ\¬‚·‚é•û–@‚É‚Â‚¢‚Ä‚ÍA[Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html) ‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+- Elasticsearch ‚ÌƒAƒNƒeƒBƒuƒŒƒR[ƒh‚©‚ç’Êí‚ÌƒAƒNƒeƒBƒuƒŒƒR[ƒhƒNƒ‰ƒX‚Ö‚ÌƒŠƒŒ[ƒVƒ‡ƒ“‚ğ’è‹`‚·‚é‚±‚Æ‚à‰Â”\‚Å‚·B‚Ü‚½A‚»‚Ì‹t‚à‰Â”\‚Å‚·B
 
-> Note|**ï¿½ï¿½ï¿½ï¿½**: ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Å‚ÍAelasticsearch ï¿½ÍAï¿½Ç‚ï¿½ÈƒNï¿½Gï¿½ï¿½ï¿½Å‚ï¿½ï¿½Aï¿½Ô‚ï¿½ï¿½ï¿½éƒŒï¿½Rï¿½[ï¿½hï¿½Ìï¿½ï¿½ï¿½ 10 ï¿½ÉŒï¿½ï¿½è‚µï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
-> ï¿½ï¿½ï¿½ï¿½ï¿½Æ‘ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½ï¿½Ò‚ï¿½ï¿½ï¿½ê‡ï¿½ÍAï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ì’ï¿½`ï¿½Åï¿½ï¿½ï¿½ğ–¾ï¿½ï¿½Iï¿½Éwï¿½è‚µï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½Ü‚ï¿½ï¿½ï¿½B
-> ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½Æ‚ÍAvia() ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½É‚Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½dï¿½vï¿½Å‚ï¿½ï¿½B
-> ï¿½È‚ï¿½ï¿½È‚ï¿½Avia ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ 10 ï¿½Ü‚Å‚Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡ï¿½ÍAï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ 10 ï¿½ğ’´‚ï¿½ï¿½é‚±ï¿½Æ‚Íoï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½B
+> Note|**’ˆÓ**: ƒfƒtƒHƒ‹ƒg‚Å‚ÍAelasticsearch ‚ÍA‚Ç‚ñ‚ÈƒNƒGƒŠ‚Å‚àA•Ô‚³‚ê‚éƒŒƒR[ƒh‚Ì”‚ğ 10 ‚ÉŒÀ’è‚µ‚Ä‚¢‚Ü‚·B
+> ‚à‚Á‚Æ‘½‚­‚ÌƒŒƒR[ƒh‚ğæ“¾‚·‚é‚±‚Æ‚ğŠú‘Ò‚·‚éê‡‚ÍAƒŠƒŒ[ƒVƒ‡ƒ“‚Ì’è‹`‚ÅãŒÀ‚ğ–¾¦“I‚Éw’è‚µ‚È‚¯‚ê‚Î‚È‚è‚Ü‚¹‚ñB
+> ‚±‚Ì‚±‚Æ‚ÍAvia() ‚ğg‚¤ƒŠƒŒ[ƒVƒ‡ƒ“‚É‚Æ‚Á‚Ä‚àd—v‚Å‚·B
+> ‚È‚º‚È‚çAvia ‚ÌƒŒƒR[ƒh‚ª 10 ‚Ü‚Å‚É§ŒÀ‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒŠƒŒ[ƒVƒ‡ƒ“‚ÌƒŒƒR[ƒh‚à 10 ‚ğ’´‚¦‚é‚±‚Æ‚Ío—ˆ‚È‚¢‚©‚ç‚Å‚·B
 
 
-ï¿½gï¿½pï¿½ï¿½:
+g—p—á:
 
 ```php
 $customer = new Customer();
-$customer->primaryKey = 1; // ï¿½ï¿½ï¿½Ìê‡ï¿½ÍA$customer->id = 1 ï¿½Æ“ï¿½ï¿½ï¿½
+$customer->primaryKey = 1; // ‚±‚Ìê‡‚ÍA$customer->id = 1 ‚Æ“™‰¿
 $customer->attributes = ['name' => 'test'];
 $customer->save();
 
-$customer = Customer::get(1); // PK ï¿½É‚ï¿½ï¿½ï¿½Äƒï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾
-$customers = Customer::mget([1,2,3]); // PK ï¿½É‚ï¿½ï¿½ï¿½Ä•ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾
-$customer = Customer::find()->where(['name' => 'test'])->one(); // ï¿½Nï¿½Gï¿½ï¿½ï¿½É‚ï¿½ï¿½æ“¾ï¿½Bï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ğ³‚ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½é‚½ï¿½ß‚É‚Í‚ï¿½ï¿½Ìƒtï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½Éƒ}ï¿½bï¿½sï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½é‚±ï¿½Æ‚É’ï¿½ï¿½ÓB
-$customers = Customer::find()->active()->all(); // ï¿½Nï¿½Gï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½Ä‘Sï¿½Ä‚ï¿½ï¿½æ“¾ (`active` ï¿½Xï¿½Rï¿½[ï¿½vï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½)
+$customer = Customer::get(1); // PK ‚É‚æ‚Á‚ÄƒŒƒR[ƒh‚ğæ“¾
+$customers = Customer::mget([1,2,3]); // PK ‚É‚æ‚Á‚Ä•¡”‚ÌƒŒƒR[ƒh‚ğæ“¾
+$customer = Customer::find()->where(['name' => 'test'])->one(); // ƒNƒGƒŠ‚É‚æ‚éæ“¾BƒŒƒR[ƒh‚ğ³‚µ‚­æ“¾‚·‚é‚½‚ß‚É‚Í‚±‚ÌƒtƒB[ƒ‹ƒh‚Éƒ}ƒbƒsƒ“ƒO‚ğ\¬‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚É’ˆÓB
+$customers = Customer::find()->active()->all(); // ƒNƒGƒŠ‚É‚æ‚Á‚Ä‘S‚Ä‚ğæ“¾ (`active` ƒXƒR[ƒv‚ğg‚Á‚Ä)
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
+// http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
 $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // articles whose title contains "yii"
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
+// http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
 $query = Article::find()->query([
     "fuzzy_like_this" => [
         "fields" => ["title", "description"],
-        "like_text" => "ï¿½ï¿½ï¿½ÌƒNï¿½Gï¿½ï¿½ï¿½ÍAï¿½ï¿½ï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½Éï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½Ü‚ï¿½ :-)",
+        "like_text" => "‚±‚ÌƒNƒGƒŠ‚ÍA‚±‚ÌƒeƒLƒXƒg‚É—‚½‹L–‚ğ•Ô‚µ‚Ü‚· :-)",
         "max_query_terms" => 12
     ]
 ]);
 
-$query->all(); // ï¿½Sï¿½Ä‚Ìƒhï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½æ“¾
-// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ facets ï¿½ï¿½Ç‰ï¿½ï¿½Å‚ï¿½ï¿½ï¿½
+$query->all(); // ‘S‚Ä‚ÌƒhƒLƒ…ƒƒ“ƒg‚ğæ“¾
+// ŒŸõ‚É facets ‚ğ’Ç‰Á‚Å‚«‚é
 $query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
-$query->search(); // ï¿½Sï¿½Ä‚Ìƒï¿½ï¿½Rï¿½[ï¿½hï¿½Aï¿½ï¿½ï¿½ï¿½ÑAvisit_count ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ÉŠÖ‚ï¿½ï¿½é“ï¿½v (ï¿½á‚¦ï¿½ÎAï¿½ï¿½ï¿½ÏAï¿½ï¿½ï¿½vï¿½Aï¿½Åï¿½ï¿½Aï¿½Å‘ï¿½È‚ï¿½) ï¿½ï¿½ï¿½æ“¾
+$query->search(); // ‘S‚Ä‚ÌƒŒƒR[ƒhA‚¨‚æ‚ÑAvisit_count ƒtƒB[ƒ‹ƒh‚ÉŠÖ‚·‚é“Œv (—á‚¦‚ÎA•½‹ÏA‡ŒvAÅ¬AÅ‘å‚È‚Ç) ‚ğæ“¾
 ```
 
-ï¿½ï¿½ï¿½ï¿½ï¿½ÄAï¿½Ü‚ï¿½ï¿½Aï¿½ï¿½ï¿½ë‚¢ï¿½ï¿½Æ‘ï¿½Rï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
-"it's endless what you can build"[?](https://www.elastic.co/)
+‚»‚µ‚ÄA‚Ü‚¾A‚¢‚ë‚¢‚ë‚Æ‘òR‚ ‚è‚Ü‚·B
+"it's endless what you can build"[?](http://www.elasticsearch.org/)
