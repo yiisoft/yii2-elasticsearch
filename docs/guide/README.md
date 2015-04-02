@@ -1,5 +1,5 @@
-MongoDb Extension for Yii 2
-===========================
+Elasticsearch Extension for Yii 2
+=================================
 
 This extension provides the [elasticsearch](http://www.elasticsearch.org/) integration for the Yii2 framework.
 It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
