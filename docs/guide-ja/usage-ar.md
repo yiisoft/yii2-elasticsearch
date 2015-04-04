@@ -1,7 +1,7 @@
 アクティブレコードを使う
 ========================
 
-Yii のアクティブレコードの使用方法に関する一般的な情報については、[ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide/db-active-record.md) を参照してください。
+Yii のアクティブレコードの使用方法に関する一般的な情報については、[ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide-ja/db-active-record.md) を参照してください。
 
 Elasticsearch のアクティブレコードを定義するためには、あなたのレコードクラスを [[yii\elasticsearch\ActiveRecord]] から拡張して、最低限、レコードの属性を定義するための [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] メソッドを実装する必要があります。
 Elasticsearch ではプライマリキーの扱いが通常と異なります。
