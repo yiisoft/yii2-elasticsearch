@@ -23,7 +23,7 @@ use yii\helpers\StringHelper;
  * ActiveRecord is the base class for classes representing relational data in terms of objects.
  *
  * This class implements the ActiveRecord pattern for the fulltext search and data storage
- * [elasticsearch](https://www.elastic.co/).
+ * [elasticsearch](https://www.elastic.co/products/elasticsearch).
  *
  * For defining a record a subclass should at least implement the [[attributes()]] method to define
  * attributes.

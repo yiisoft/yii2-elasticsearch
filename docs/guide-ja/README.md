@@ -1,7 +1,7 @@
 Yii 2.0 elasticsearch エクステンション
 ======================================
 
-このエクステンションは、Yii 2 フレームワークに対する [elasticsearch](https://www.elastic.co/) の統合を提供します。
+このエクステンションは、Yii 2 フレームワークに対する [elasticsearch](https://www.elastic.co/products/elasticsearch) の統合を提供します。
 基本的なクエリや検索をサポートするとともに、`ActiveRecord` パターンを実装して、アクティブレコードを elasticsearch に保存することを可能にしています。
 
 始めよう
