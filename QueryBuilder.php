@@ -104,6 +104,9 @@ class QueryBuilder extends \yii\base\Object
         if (!empty($query->aggregations)) {
             $parts['aggregations'] = $query->aggregations;
         }
+        if (!empty($query->buckets)) {
+            $parts['aggregations'] = $this->addSub($query->aggregations, $query->buckets);
+        }
         if (!empty($query->stats)) {
             $parts['stats'] = $query->stats;
         }
@@ -158,6 +161,21 @@ class QueryBuilder extends \yii\base\Object
         }
 
         return $orders;
+    }
+
+    /**
+     * adds buckets to aggregations in the query
+     */
+    private function addSub($aggs, $subs)
+    {
+        foreach ($subs as $parent_name => $value) {
+            foreach ($aggs as $name => $options) {
+                if ($parent_name === $name) {
+                    $aggs[$name]['aggregations'] = $this->addSub($value, $subs);
+                }
+            }
+        }
+        return $aggs;
     }
 
     /**
