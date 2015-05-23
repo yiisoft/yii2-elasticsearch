@@ -61,6 +61,10 @@ class Connection extends Component
      */
     public $dataTimeout = null;
 
+    /**
+     * @var resource the curl instance returned by [curl_init()](http://php.net/manual/en/function.curl-init.php).
+     */
+    private $_curl;
 
     public function init()
     {
@@ -128,6 +132,7 @@ class Connection extends Component
     protected function selectActiveNode()
     {
         $keys = array_keys($this->nodes);
+        $this->_curl = curl_init();
         $this->activeNode = $keys[rand(0, count($keys) - 1)];
     }
 
@@ -143,6 +148,10 @@ class Connection extends Component
         Yii::trace('Closing connection to elasticsearch. Active node was: '
             . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->activeNode = null;
+        if ($this->_curl) {
+            curl_close($this->_curl);
+            $this->_curl = null;
+        }
     }
 
     /**
@@ -370,10 +379,10 @@ class Connection extends Component
             Yii::beginProfile($profile, __METHOD__);
         }
 
-        $curl = curl_init($url);
-        curl_setopt_array($curl, $options);
-        if (curl_exec($curl) === false) {
-            throw new Exception('Elasticsearch request failed: ' . curl_errno($curl) . ' - ' . curl_error($curl), [
+        curl_setopt($this->_curl, CURLOPT_URL, $url);
+        curl_setopt_array($this->_curl, $options);
+        if (curl_exec($this->_curl) === false) {
+            throw new Exception('Elasticsearch request failed: ' . curl_errno($this->_curl) . ' - ' . curl_error($this->_curl), [
                 'requestMethod' => $method,
                 'requestUrl' => $url,
                 'requestBody' => $requestBody,
@@ -382,8 +391,7 @@ class Connection extends Component
             ]);
         }
 
-        $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+        $responseCode = curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
 
         if ($profile !== false) {
             Yii::endProfile($profile, __METHOD__);
