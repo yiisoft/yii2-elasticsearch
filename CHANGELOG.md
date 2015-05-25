@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.4 under development
 -----------------------
 
-- no changes in this release.
+- Bug #8: Fixed issue with running out of sockets when running a large number of requests by reusing curl handles (cebe)
 
 
 2.0.3 March 01, 2015
