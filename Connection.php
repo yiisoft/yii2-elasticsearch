@@ -61,6 +61,10 @@ class Connection extends Component
      */
     public $dataTimeout = null;
 
+    /**
+     * @var resource the curl instance returned by [curl_init()](http://php.net/manual/en/function.curl-init.php).
+     */
+    private $_curl;
 
     public function init()
     {
@@ -104,6 +108,7 @@ class Connection extends Component
         if (empty($this->nodes)) {
             throw new InvalidConfigException('elasticsearch needs at least one node to operate.');
         }
+        $this->_curl = curl_init();
         if ($this->autodetectCluster) {
             $node = reset($this->nodes);
             $host = $node['http_address'];
@@ -113,6 +118,7 @@ class Connection extends Component
             $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
             $this->nodes = $response['nodes'];
             if (empty($this->nodes)) {
+                curl_close($this->_curl);
                 throw new Exception('cluster autodetection did not find any active node.');
             }
         }
@@ -143,6 +149,10 @@ class Connection extends Component
         Yii::trace('Closing connection to elasticsearch. Active node was: '
             . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->activeNode = null;
+        if ($this->_curl) {
+            curl_close($this->_curl);
+            $this->_curl = null;
+        }
     }
 
     /**
@@ -314,6 +324,7 @@ class Connection extends Component
 
         // response body and headers
         $headers = [];
+        $headersFinished = false;
         $body = '';
 
         $options = [
@@ -327,15 +338,19 @@ class Connection extends Component
                 $body .= $data;
                 return mb_strlen($data, '8bit');
             },
-            CURLOPT_HEADERFUNCTION => function ($curl, $data) use (&$headers) {
-                foreach (explode("\r\n", $data) as $row) {
-                    if (($pos = strpos($row, ':')) !== false) {
-                        $headers[strtolower(substr($row, 0, $pos))] = trim(substr($row, $pos + 1));
-                    }
+            CURLOPT_HEADERFUNCTION => function ($curl, $data) use (&$headers, &$headersFinished) {
+                if ($data === '') {
+                    $headersFinished = true;
+                } elseif ($headersFinished) {
+                    $headersFinished = false;
+                }
+                if (!$headersFinished && ($pos = strpos($data, ':')) !== false) {
+                    $headers[strtolower(substr($data, 0, $pos))] = trim(substr($data, $pos + 1));
                 }
                 return mb_strlen($data, '8bit');
             },
             CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_FORBID_REUSE   => false,
         ];
         if ($this->connectionTimeout !== null) {
             $options[CURLOPT_CONNECTTIMEOUT] = $this->connectionTimeout;
@@ -349,6 +364,8 @@ class Connection extends Component
         if ($method == 'HEAD') {
             $options[CURLOPT_NOBODY] = true;
             unset($options[CURLOPT_WRITEFUNCTION]);
+        } else {
+            $options[CURLOPT_NOBODY] = false;
         }
 
         if (is_array($url)) {
@@ -370,10 +387,11 @@ class Connection extends Component
             Yii::beginProfile($profile, __METHOD__);
         }
 
-        $curl = curl_init($url);
-        curl_setopt_array($curl, $options);
-        if (curl_exec($curl) === false) {
-            throw new Exception('Elasticsearch request failed: ' . curl_errno($curl) . ' - ' . curl_error($curl), [
+        $this->resetCurlHandle();
+        curl_setopt($this->_curl, CURLOPT_URL, $url);
+        curl_setopt_array($this->_curl, $options);
+        if (curl_exec($this->_curl) === false) {
+            throw new Exception('Elasticsearch request failed: ' . curl_errno($this->_curl) . ' - ' . curl_error($this->_curl), [
                 'requestMethod' => $method,
                 'requestUrl' => $url,
                 'requestBody' => $requestBody,
@@ -382,8 +400,7 @@ class Connection extends Component
             ]);
         }
 
-        $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+        $responseCode = curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
 
         if ($profile !== false) {
             Yii::endProfile($profile, __METHOD__);
@@ -400,7 +417,7 @@ class Connection extends Component
                         'requestBody' => $requestBody,
                         'responseCode' => $responseCode,
                         'responseHeaders' => $headers,
-                        'responseBody' => $this->decodeErrorBody($body),
+                        'responseBody' => $body,
                     ]);
                 }
                 if (isset($headers['content-type']) && !strncmp($headers['content-type'], 'application/json', 16)) {
@@ -426,6 +443,21 @@ class Connection extends Component
                 'responseHeaders' => $headers,
                 'responseBody' => $this->decodeErrorBody($body),
             ]);
+        }
+    }
+
+    private function resetCurlHandle()
+    {
+        // these functions do not get reset by curl automatically
+        static $unsetValues = [
+            CURLOPT_HEADERFUNCTION => null,
+            CURLOPT_WRITEFUNCTION => null,
+            CURLOPT_READFUNCTION => null,
+            CURLOPT_PROGRESSFUNCTION => null,
+        ];
+        curl_setopt_array($this->_curl, $unsetValues);
+        if (function_exists('curl_reset')) { // since PHP 5.5.0
+            curl_reset($this->_curl);
         }
     }
 
