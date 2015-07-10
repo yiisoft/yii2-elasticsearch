@@ -233,7 +233,66 @@ class Command extends Component
         return $this->db->post([$index, $type, $id, '_update'], $options, Json::encode($body));
     }
 
-    // TODO bulk http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+    /**
+     * Perform many index/delete operations in a single call. This can greatly increase the indexing speed.
+     * http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+     * @param $index
+     * @param $type
+     * @param $data
+     * @param array $options
+     * @return mixed
+     * @throws ErrorException
+     */
+    public function bulk($index, $type, $data, $options = [])
+    {
+        $body = empty($data) ? '{}' : (is_array($data) ? $this->formatBulkData($index, $type, $data) : $data);
+        return $this->db->post([$index, $type, '_bulk'], $options, $body);
+    }
+    
+    /**
+     * Formatting Bulk data
+     * @param $index
+     * @param $type
+     * @param $data
+     * @return string
+     * @throws ErrorException
+     */
+    private function formatBulkData($index, $type, $data)
+    {
+        $formattedData = [];
+        foreach ($data as $operation => $objects) {
+            foreach ($objects as $object) {
+                switch ($operation) {
+                    case 'INDEX' :
+                        $formattedData[] = Json::encode(
+                            [
+                                'index' => [
+                                    '_index' => $index,
+                                    '_type' => $type,
+                                    '_id' => $object['id']
+                                ]
+                            ]
+                        );
+                        $formattedData[] = Json::encode($object);
+                        break;
+                    case 'DELETE' :
+                        $formattedData[] = Json::encode(
+                            [
+                                'delete' => [
+                                    '_index' => $index,
+                                    '_type' => $type,
+                                    '_id' => $object['id']
+                                ]
+                            ]
+                        );
+                        break;
+                    default:
+                        throw new InvalidCallException('Unknown operation ' . $operation);
+                }
+            }
+        };
+        return implode("\n", $formattedData) . "\n";
+    }
 
     /**
      * creates an index
