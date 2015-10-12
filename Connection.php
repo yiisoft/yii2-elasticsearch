@@ -110,22 +110,40 @@ class Connection extends Component
         }
         $this->_curl = curl_init();
         if ($this->autodetectCluster) {
-            $node = reset($this->nodes);
-            $host = $node['http_address'];
-            if (strncmp($host, 'inet[/', 6) == 0) {
-                $host = substr($host, 6, -1);
-            }
-            $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
-            $this->nodes = $response['nodes'];
-            if (empty($this->nodes)) {
-                curl_close($this->_curl);
-                throw new Exception('cluster autodetection did not find any active node.');
-            }
+            $this->populateNodes();
         }
         $this->selectActiveNode();
         Yii::trace('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
             . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
+    }
+
+    /**
+     * Populates [[nodes]] with the result of a cluster nodes request.
+     * @throws Exception if no active node(s) found
+     * @since 2.0.4
+     */
+    protected function populateNodes()
+    {
+        $node = reset($this->nodes);
+        $host = $node['http_address'];
+        if (strncmp($host, 'inet[/', 6) === 0) {
+            $host = substr($host, 6, -1);
+        }
+        $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
+        if (!empty($response['nodes'])) {
+            // Make sure that nodes have an 'http_address' property, which is not the case if you're using AWS
+            // Elasticsearch service (at least as of Oct., 2015).
+            foreach ($response['nodes'] as &$node) {
+                if (!isset($node['http_address'])) {
+                    $node['http_address'] = $host;
+                }
+            }
+            $this->nodes = $response['nodes'];
+        } else {
+            curl_close($this->_curl);
+            throw new Exception('Cluster autodetection did not find any active node.');
+        }
     }
 
     /**
@@ -420,7 +438,7 @@ class Connection extends Component
                         'responseBody' => $body,
                     ]);
                 }
-                if (isset($headers['content-type']) && !strncmp($headers['content-type'], 'application/json', 16)) {
+                if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json', 16) || !strncmp($headers['content-type'], 'text/plain', 10))) {
                     return $raw ? $body : Json::decode($body);
                 }
                 throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
