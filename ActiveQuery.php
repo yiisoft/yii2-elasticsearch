@@ -227,16 +227,18 @@ class ActiveQuery extends Query implements ActiveQueryInterface
         }
     }
 
-
+    /**
+     * @param $result
+     * @return \yii\db\ActiveRecord[]
+     */
     public function createAllModels($result)
     {
+       if (empty($result['hits']['hits'])) {
+          return [];
+       }
        if ($this->asArray) {
           // TODO implement with
           return $result['hits']['hits'];
-       }
-
-       if (empty($result['hits']['hits'])) {
-          return [];
        }
        $models = $this->createModels($result['hits']['hits']);
        if (!empty($this->with)) {
@@ -248,10 +250,15 @@ class ActiveQuery extends Query implements ActiveQueryInterface
        return $models;
     }
 
-    public function iterator($db = null,$options = [])
+    /**
+     * @param $db
+     * @param array $options
+     * @return ScrollIterator
+     */
+    public function iterator($db = null, $options = [])
     {
-       $command=$command = $this->createCommand($db);
-       $scrollIterator=new ScrollIterator($command,$this, $options);
+       $command = $this->createCommand($db);
+       $scrollIterator = new ScrollIterator($command, $this, $options);
        return $scrollIterator;
     }
 

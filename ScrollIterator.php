@@ -2,9 +2,9 @@
 namespace yii\elasticsearch;
 
 /**
- * User: 13leaf
- * Date: 15-10-19
- * Time: 下午1:16
+ * Scroll Iterator use elasticsearch scroll API for iterate large dataset
+ * @author wangfeng
+ * @since 2.0
  */
 class ScrollIterator implements \Iterator
 {
@@ -16,25 +16,25 @@ class ScrollIterator implements \Iterator
 
     protected $lastScrollId;
 
-    protected $bufferModels=[];
+    protected $bufferModels = [];
 
     protected $readResult;
 
     protected $total;
 
-    protected $cursor=0;
+    protected $cursor = 0;
 
     protected $key;
 
-    protected $scrollOptions=[
-        'scroll'=>'1m',
-        'size'=>50,
+    protected $scrollOptions = [
+        'scroll' => '1m',
+        'size' => 50,
     ];
 
-    public function __construct($command,$activeQuery,$scrollOptions=[])
+    public function __construct($command, $activeQuery, $scrollOptions = [])
     {
-        $this->command=$command;
-        $this->activeQuery=$activeQuery;
+        $this->command = $command;
+        $this->activeQuery = $activeQuery;
         $this->scrollOptions = array_merge($this->scrollOptions, $scrollOptions);
     }
 
@@ -59,7 +59,7 @@ class ScrollIterator implements \Iterator
     public function next()
     {
         if(empty($this->bufferModels)){
-            $res=$this->command->scroll($this->lastScrollId,$this->scrollOptions);
+            $res = $this->command->scroll($this->lastScrollId, $this->scrollOptions);
             $this->total = $res['hits']['total'];
             $this->lastScrollId = $res['_scroll_id'];
             $this->bufferModels = $this->createBufferModels($res);
@@ -101,7 +101,7 @@ class ScrollIterator implements \Iterator
         if($this->activeQuery->limit !== NULL && $this->cursor > $this->activeQuery->limit){
             return false;
         }
-        return $this->cursor<=$this->total;
+        return $this->cursor <= $this->total;
     }
 
     /**
@@ -115,7 +115,7 @@ class ScrollIterator implements \Iterator
         if(isset($this->lastScrollId)){
             $this->command->clearScroll($this->lastScrollId);
         }
-        if($this->activeQuery->orderBy){
+        if(!$this->activeQuery->orderBy){
             $this->scrollOptions['search_type'] = 'scan';
         }
         $res=$this->command->search($this->scrollOptions);
