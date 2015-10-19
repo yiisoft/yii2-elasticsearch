@@ -319,6 +319,16 @@ class Command extends Component
         return $this->db->post([$index, '_close']);
     }
 
+    public function scroll($scrollId,$options=[])
+    {
+       return $this->db->get(['_search','scroll'],$options,$scrollId);
+    }
+
+    public function clearScroll($scrollId,$options=[])
+    {
+       return $this->db->delete(['_search','scroll'],$options,$scrollId);
+    }
+
     /**
      * @param $index
      * @return mixed

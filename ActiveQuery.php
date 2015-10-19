@@ -227,6 +227,34 @@ class ActiveQuery extends Query implements ActiveQueryInterface
         }
     }
 
+
+    public function createAllModels($result)
+    {
+       if ($this->asArray) {
+          // TODO implement with
+          return $result['hits']['hits'];
+       }
+
+       if (empty($result['hits']['hits'])) {
+          return [];
+       }
+       $models = $this->createModels($result['hits']['hits']);
+       if (!empty($this->with)) {
+          $this->findWith($this->with, $models);
+       }
+       foreach ($models as $model) {
+          $model->afterFind();
+       }
+       return $models;
+    }
+
+    public function iterator($db = null,$options = [])
+    {
+       $command=$command = $this->createCommand($db);
+       $scrollIterator=new ScrollIterator($command,$this, $options);
+       return $scrollIterator;
+    }
+
     /**
      * @inheritdoc
      */
