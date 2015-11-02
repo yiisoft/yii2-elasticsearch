@@ -367,9 +367,10 @@ class Command extends Component
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/0.90/indices-gateway-snapshot.html
 
     /**
-     * @param $index
-     * @param $type
-     * @param $mapping
+     * @param string $index
+     * @param string $type
+     * @param array $mapping
+     * @param array $options
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
      */
