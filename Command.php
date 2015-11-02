@@ -369,7 +369,7 @@ class Command extends Component
     /**
      * @param string $index
      * @param string $type
-     * @param array $mapping
+     * @param string|array $mapping
      * @param array $options
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
