@@ -294,7 +294,34 @@ class Command extends Component
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
 
-    // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html
+    /**
+     * @param string $index
+     * @param string|array $setting
+     * @param array $options URL options
+     * @return mixed
+     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
+     */
+    public function updateSettings($index, $setting, $options = [])
+    {
+        $body = $setting !== null ? (is_string($setting) ? $setting : Json::encode($setting)) : null;
+        return $this->db->put([$index, '_settings'], $options, $body);
+    }
+
+    /**
+     * @param string $index
+     * @param string|array $setting
+     * @param array $options URL options
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html#update-settings-analysis
+     */
+    public function updateAnalyzers($index, $setting, $options = [])
+    {
+        $this->closeIndex($index);
+        $result = $this->updateSettings($index, $setting, $options);
+        $this->openIndex($index);
+        return $result;
+    }
+    
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-settings.html
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-warmers.html
