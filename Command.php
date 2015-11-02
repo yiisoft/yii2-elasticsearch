@@ -295,6 +295,10 @@ class Command extends Component
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
 
     /**
+     * Change specific index level settings in real time.
+     * Note that update analyzers required to [[close()]] the index first and [[open()]] it after the changes are made, 
+     * use [[updateAnalyzers()]] for it.
+     * 
      * @param string $index
      * @param string|array $setting
      * @param array $options URL options
@@ -308,6 +312,32 @@ class Command extends Component
     }
 
     /**
+     * Define new analyzers for the index.  
+     * For example if content analyzer hasn’t been defined on "myindex" yet 
+     * you can use the following commands to add it:
+     *
+     * ~~~
+     *  $setting = [
+     *      'analysis' => [
+     *          'analyzer' => [
+     *              'ngram_analyzer_with_filter' => [
+     *                  'tokenizer' => 'ngram_tokenizer',
+     *                  'filter' => 'lowercase, snowball'
+     *              ],
+     *          ],
+     *          'tokenizer' => [
+     *              'ngram_tokenizer' => [
+     *                  'type' => 'nGram',
+     *                  'min_gram' => 3,
+     *                  'max_gram' => 10,
+     *                  'token_chars' => ['letter', 'digit', 'whitespace', 'punctuation', 'symbol']
+     *              ],
+     *          ],
+     *      ]
+     * ];
+     * $elasticQuery->createCommand()->updateAnalyzers('myindex', $setting);
+     * ~~~
+     * 
      * @param string $index
      * @param string|array $setting
      * @param array $options URL options
