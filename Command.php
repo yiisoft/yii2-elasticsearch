@@ -294,7 +294,64 @@ class Command extends Component
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
 
-    // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html
+    /**
+     * Change specific index level settings in real time.
+     * Note that update analyzers required to [[close()]] the index first and [[open()]] it after the changes are made, 
+     * use [[updateAnalyzers()]] for it.
+     * 
+     * @param string $index
+     * @param string|array $setting
+     * @param array $options URL options
+     * @return mixed
+     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
+     */
+    public function updateSettings($index, $setting, $options = [])
+    {
+        $body = $setting !== null ? (is_string($setting) ? $setting : Json::encode($setting)) : null;
+        return $this->db->put([$index, '_settings'], $options, $body);
+    }
+
+    /**
+     * Define new analyzers for the index.  
+     * For example if content analyzer hasn’t been defined on "myindex" yet 
+     * you can use the following commands to add it:
+     *
+     * ~~~
+     *  $setting = [
+     *      'analysis' => [
+     *          'analyzer' => [
+     *              'ngram_analyzer_with_filter' => [
+     *                  'tokenizer' => 'ngram_tokenizer',
+     *                  'filter' => 'lowercase, snowball'
+     *              ],
+     *          ],
+     *          'tokenizer' => [
+     *              'ngram_tokenizer' => [
+     *                  'type' => 'nGram',
+     *                  'min_gram' => 3,
+     *                  'max_gram' => 10,
+     *                  'token_chars' => ['letter', 'digit', 'whitespace', 'punctuation', 'symbol']
+     *              ],
+     *          ],
+     *      ]
+     * ];
+     * $elasticQuery->createCommand()->updateAnalyzers('myindex', $setting);
+     * ~~~
+     * 
+     * @param string $index
+     * @param string|array $setting
+     * @param array $options URL options
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html#update-settings-analysis
+     */
+    public function updateAnalyzers($index, $setting, $options = [])
+    {
+        $this->closeIndex($index);
+        $result = $this->updateSettings($index, $setting, $options);
+        $this->openIndex($index);
+        return $result;
+    }
+    
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-settings.html
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-warmers.html
