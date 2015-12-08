@@ -50,7 +50,7 @@ class ElasticsearchTarget extends Target
     public function export()
     {
         $messages = array_map([$this, 'prepareMessage'], $this->messages);
-        $body = implode("\n", $messages);
+        $body = implode("\n", $messages) . "\n";
         $this->elasticsearch->post([$this->index, $this->type, '_bulk'], $this->options, $body);
     }
 
