@@ -489,7 +489,11 @@ class Connection extends Component
         try {
             $decoded = Json::decode($body);
             if (isset($decoded['error'])) {
-                $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
+                if (is_array($decoded['error'])){
+                    $decoded['error'] = preg_replace("/\n/", "\n               ", print_r($decoded['error'], true));
+                }else{
+                    $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
+                }
             }
             return $decoded;
         } catch(InvalidParamException $e) {
