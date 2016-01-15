@@ -101,9 +101,22 @@ class QueryBuilder extends \yii\base\Object
         if (!empty($query->highlight)) {
             $parts['highlight'] = $query->highlight;
         }
+
+        // Aggregations
         if (!empty($query->aggregations)) {
             $parts['aggregations'] = $query->aggregations;
         }
+        if (!empty($query->globalAggregations)) {
+            if (!isset($parts['aggregations'])) {
+                $parts['aggregations'] = [];
+            }
+
+            $parts['aggregations']['all'] = [
+                'global' => new \stdClass(),
+                'aggregations' => $query->globalAggregations,
+            ];
+        }
+
         if (!empty($query->stats)) {
             $parts['stats'] = $query->stats;
         }
