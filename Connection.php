@@ -346,13 +346,13 @@ class Connection extends Component
         $body = '';
 
         $options = [
-            CURLOPT_USERAGENT      => 'Yii Framework ' . Yii::getVersion() . ' ' . __CLASS__,
+            CURLOPT_USERAGENT => 'Yii Framework ' . Yii::getVersion() . ' ' . __CLASS__,
             CURLOPT_RETURNTRANSFER => false,
-            CURLOPT_HEADER         => false,
+            CURLOPT_HEADER => false,
             // http://www.php.net/manual/en/function.curl-setopt.php#82418
-            CURLOPT_HTTPHEADER     => ['Expect:'],
+            CURLOPT_HTTPHEADER => ['Expect:'],
 
-            CURLOPT_WRITEFUNCTION  => function ($curl, $data) use (&$body) {
+            CURLOPT_WRITEFUNCTION => function ($curl, $data) use (&$body) {
                 $body .= $data;
                 return mb_strlen($data, '8bit');
             },
@@ -367,8 +367,8 @@ class Connection extends Component
                 }
                 return mb_strlen($data, '8bit');
             },
-            CURLOPT_CUSTOMREQUEST  => $method,
-            CURLOPT_FORBID_REUSE   => false,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_FORBID_REUSE => false,
         ];
         if ($this->connectionTimeout !== null) {
             $options[CURLOPT_CONNECTTIMEOUT] = $this->connectionTimeout;
@@ -409,13 +409,14 @@ class Connection extends Component
         curl_setopt($this->_curl, CURLOPT_URL, $url);
         curl_setopt_array($this->_curl, $options);
         if (curl_exec($this->_curl) === false) {
-            throw new Exception('Elasticsearch request failed: ' . curl_errno($this->_curl) . ' - ' . curl_error($this->_curl), [
-                'requestMethod' => $method,
-                'requestUrl' => $url,
-                'requestBody' => $requestBody,
-                'responseHeaders' => $headers,
-                'responseBody' => $this->decodeErrorBody($body),
-            ]);
+            throw new Exception('Elasticsearch request failed: ' . curl_errno($this->_curl) . ' - ' . curl_error($this->_curl),
+                [
+                    'requestMethod' => $method,
+                    'requestUrl' => $url,
+                    'requestBody' => $requestBody,
+                    'responseHeaders' => $headers,
+                    'responseBody' => $this->decodeErrorBody($body),
+                ]);
         }
 
         $responseCode = curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
@@ -428,17 +429,22 @@ class Connection extends Component
             if ($method == 'HEAD') {
                 return true;
             } else {
-                if (isset($headers['content-length']) && ($len = mb_strlen($body, '8bit')) < $headers['content-length']) {
-                    throw new Exception("Incomplete data received from elasticsearch: $len < {$headers['content-length']}", [
-                        'requestMethod' => $method,
-                        'requestUrl' => $url,
-                        'requestBody' => $requestBody,
-                        'responseCode' => $responseCode,
-                        'responseHeaders' => $headers,
-                        'responseBody' => $body,
-                    ]);
+                if (isset($headers['content-length']) && ($len = mb_strlen($body,
+                        '8bit')) < $headers['content-length']
+                ) {
+                    throw new Exception("Incomplete data received from elasticsearch: $len < {$headers['content-length']}",
+                        [
+                            'requestMethod' => $method,
+                            'requestUrl' => $url,
+                            'requestBody' => $requestBody,
+                            'responseCode' => $responseCode,
+                            'responseHeaders' => $headers,
+                            'responseBody' => $body,
+                        ]);
                 }
-                if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json', 16) || !strncmp($headers['content-type'], 'text/plain', 10))) {
+                if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json',
+                            16) || !strncmp($headers['content-type'], 'text/plain', 10))
+                ) {
                     return $raw ? $body : Json::decode($body);
                 }
                 throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
@@ -489,10 +495,15 @@ class Connection extends Component
         try {
             $decoded = Json::decode($body);
             if (isset($decoded['error'])) {
-                $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
+                if (is_array($decoded['error'])) {
+                    $decoded['error'] = preg_replace("/\n/", "\n               ", print_r($decoded['error'], true));
+                } else {
+                    $decoded['error'] = preg_replace('/\b\w+?Exception\[/',
+                        "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
+                }
             }
             return $decoded;
-        } catch(InvalidParamException $e) {
+        } catch (InvalidParamException $e) {
             return $body;
         }
     }
