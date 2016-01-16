@@ -399,7 +399,7 @@ class Connection extends Component
             }
 
             $options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
-            $headers['Authorization'] = 'Basic: ' . base64_encode($auth['username'] . ':' . $auth['password']);
+            $options[CURLOPT_USERPWD] = $auth['username'] . ':' . $auth['password'];
         }
 
         if ($this->connectionTimeout !== null) {
