@@ -35,19 +35,37 @@ class Connection extends Component
      */
     public $autodetectCluster = true;
     /**
-     * @var array cluster nodes
+     * @var array[] cluster nodes
      * This is populated with the result of a cluster nodes request when [[autodetectCluster]] is true.
+     * Additional special options:
+     *  - `auth`: overrides [[auth]] property. For example:
+     * ```php
+     * [
+     *  'http_address' => 'inet[/127.0.0.1:9200]',
+     *  'auth' => ['username' => 'yiiuser', 'password' => 'yiipw'], // Overrides the `auth` property of the class with specific login and password
+     *  //'auth' => ['username' => 'yiiuser', 'password' => 'yiipw'], // Disabled auth regardless of `auth` property of the class
+     * ]
+     * ```
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html#cluster-nodes-info
      */
     public $nodes = [
         ['http_address' => 'inet[/127.0.0.1:9200]'],
     ];
     /**
-     * @var array the active node. key of [[nodes]]. Will be randomly selected on [[open()]].
+     * @var string the active node. Key of one of the [[nodes]]. Will be randomly selected on [[open()]].
      */
     public $activeNode;
-    // TODO http://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html#_host_configuration
+
+    /**
+     * @var array|\Closure Authorization data used to connect to the ElasticSearch node.
+     * Possible array elements:
+     *  - `username`: the username for authentication.
+     *  - `password`: the password for authentication.
+     * Array MUST contain both `username` and `password`, when is set.
+     * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
+     */
     public $auth = [];
+
     /**
      * @var float timeout to use for connecting to an elasticsearch node.
      * This value will be used to configure the curl `CURLOPT_CONNECTTIMEOUT` option.
@@ -224,7 +242,7 @@ class Connection extends Component
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function get($url, $options = [], $body = null, $raw = false)
     {
@@ -240,7 +258,7 @@ class Connection extends Component
      * @param string $body request body
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function head($url, $options = [], $body = null)
     {
@@ -257,7 +275,7 @@ class Connection extends Component
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function post($url, $options = [], $body = null, $raw = false)
     {
@@ -274,7 +292,7 @@ class Connection extends Component
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function put($url, $options = [], $body = null, $raw = false)
     {
@@ -291,7 +309,7 @@ class Connection extends Component
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function delete($url, $options = [], $body = null, $raw = false)
     {
@@ -332,9 +350,9 @@ class Connection extends Component
      * @param string $url URL
      * @param string $requestBody request body
      * @param boolean $raw if response body contains JSON and should be decoded
+     * @return mixed if request failed
      * @throws Exception if request failed
-     * @throws \yii\base\InvalidParamException
-     * @return mixed response
+     * @throws InvalidConfigException
      */
     protected function httpRequest($method, $url, $requestBody = null, $raw = false)
     {
@@ -370,6 +388,20 @@ class Connection extends Component
             CURLOPT_CUSTOMREQUEST  => $method,
             CURLOPT_FORBID_REUSE   => false,
         ];
+
+        if (!empty($this->auth) || isset($this->nodes[$this->activeNode]['auth']) && $this->nodes[$this->activeNode]['auth'] !== false) {
+            $auth = isset($this->nodes[$this->activeNode]['auth']) ? $this->nodes[$this->activeNode]['auth'] : $this->auth;
+            if (empty($auth['username'])) {
+                throw new InvalidConfigException('Username is required to use authentication');
+            }
+            if (empty($auth['password'])) {
+                throw new InvalidConfigException('Password is required to use authentication');
+            }
+
+            $options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
+            $headers['Authorization'] = 'Basic: ' . base64_encode($auth['username'] . ':' . $auth['password']);
+        }
+
         if ($this->connectionTimeout !== null) {
             $options[CURLOPT_CONNECTTIMEOUT] = $this->connectionTimeout;
         }
