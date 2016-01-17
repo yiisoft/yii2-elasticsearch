@@ -5,6 +5,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.4 under development
 -----------------------
 
+- Enh #2: Added `min_score` option to query (knut)
 - Bug #8: Fixed issue with running out of sockets when running a large number of requests by reusing curl handles (cebe)
 - Enh #28: AWS Elasticsearch service compatibility (andrey-bahrachev)
 - Enh #33: Implemented `Command::updateSettings()` and `Command::updateAnalyzers()` (githubjeka)
