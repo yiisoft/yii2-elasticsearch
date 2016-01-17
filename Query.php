@@ -142,6 +142,12 @@ class Query extends Component implements QueryInterface
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
      */
     public $aggregations = [];
+
+    /**
+     * @var array
+     */
+    public $globalAggregations = [];
+
     /**
      * @var array the 'stats' part of the query. An array of groups to maintain a statistics aggregation for.
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#stats-groups
@@ -394,12 +400,18 @@ class Query extends Component implements QueryInterface
      * @param string $name the name of the aggregation
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
+     * @param bool $global see ElasticSearch - global aggregations
      * @return $this the query object itself
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
      */
-    public function addAggregation($name, $type, $options)
+    public function addAggregation($name, $type, $options, $global = false)
     {
-        $this->aggregations[$name] = [$type => $options];
+        if ($global === true ) {
+            $this->globalAggregations[$name] = [$type => $options];
+        } else {
+            $this->aggregations[$name] = [$type => $options];
+        }
+
         return $this;
     }
 
@@ -411,12 +423,13 @@ class Query extends Component implements QueryInterface
      * @param string $name the name of the aggregation
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
+     * @param bool $global see ElasticSearch - global aggregations
      * @return $this the query object itself
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
      */
-    public function addAgg($name, $type, $options)
+    public function addAgg($name, $type, $options, $global = false)
     {
-        return $this->addAggregation($name, $type, $options);
+        return $this->addAggregation($name, $type, $options, $global);
     }
 
     /**
