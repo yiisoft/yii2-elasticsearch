@@ -57,11 +57,11 @@ class Connection extends Component
     public $activeNode;
 
     /**
-     * @var array|\Closure Authorization data used to connect to the ElasticSearch node.
-     * Possible array elements:
+     * @var array Authentication data used to connect to the ElasticSearch node.
+     * Array elements:
      *  - `username`: the username for authentication.
      *  - `password`: the password for authentication.
-     * Array MUST contain both `username` and `password`, when is set.
+     * Array either MUST contain both username and password on not contain any authentication credentials.
      * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
      */
     public $auth = [];
