@@ -152,7 +152,11 @@ class Query extends Component implements QueryInterface
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      */
     public $suggest = [];
-
+    /**
+     * @var float Exclude documents which have a _score less than the minimum specified in min_score
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
+     */
+    public $minScore;
 
     /**
      * @inheritdoc
@@ -512,6 +516,16 @@ class Query extends Component implements QueryInterface
     public function timeout($timeout)
     {
         $this->timeout = $timeout;
+        return $this;
+    }
+
+    /**
+     * @param float $minScore Exclude documents which have a `_score` less than the minimum specified minScore
+     * @return static the query object itself
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
+     */
+    public function minScore($minScore) {
+        $this->minScore = $minScore;
         return $this;
     }
 }
