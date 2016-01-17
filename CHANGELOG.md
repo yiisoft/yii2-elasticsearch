@@ -8,6 +8,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Bug #8: Fixed issue with running out of sockets when running a large number of requests by reusing curl handles (cebe)
 - Enh #28: AWS Elasticsearch service compatibility (andrey-bahrachev)
 - Enh #33: Implemented `Command::updateSettings()` and `Command::updateAnalyzers()` (githubjeka)
+- Enh #50: Implemented HTTP auth (silverfire)
 
 2.0.3 March 01, 2015
 --------------------
