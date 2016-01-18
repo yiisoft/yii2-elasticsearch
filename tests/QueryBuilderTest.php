@@ -10,7 +10,6 @@ use yii\elasticsearch\QueryBuilder;
  */
 class QueryBuilderTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -68,7 +67,7 @@ class QueryBuilderTest extends TestCase
         $result = $query->search($this->getConnection());
         $this->assertEquals(0, $result['hits']['total']);
 
-        $query->minScore(0.1);
+        $query->minScore(0.3);
         $result = $query->search($this->getConnection());
         $this->assertEquals(1, $result['hits']['total']);
     }
