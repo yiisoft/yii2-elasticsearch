@@ -10,6 +10,11 @@ use yii\elasticsearch\QueryBuilder;
  */
 class QueryBuilderTest extends TestCase
 {
+    /**
+     * @var string ES version
+     */
+    private $version;
+
     public function setUp()
     {
         parent::setUp();
@@ -19,6 +24,9 @@ class QueryBuilderTest extends TestCase
         if ($command->indexExists('yiitest')) {
             $command->deleteIndex('yiitest');
         }
+
+        $info = $command->db->get('/');
+        $this->version = $info['version']['number'];
 
         $this->prepareDbData();
     }
@@ -59,6 +67,9 @@ class QueryBuilderTest extends TestCase
 
     public function testMinScore()
     {
+        if (version_compare($this->version, '1.6', '<')) {
+            $this->markTestSkipped('Score calculation in ES < 1.6 is untestable');
+        }
         $queryParts = ['term' => ['title' => 'yii']];
         $query = new Query();
         $query->from('yiitest', 'article');
@@ -67,7 +78,7 @@ class QueryBuilderTest extends TestCase
         $result = $query->search($this->getConnection());
         $this->assertEquals(0, $result['hits']['total']);
 
-        $query->minScore(0.2);
+        $query->minScore(0.6);
         $result = $query->search($this->getConnection());
         $this->assertEquals(1, $result['hits']['total']);
     }
