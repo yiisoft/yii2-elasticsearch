@@ -73,13 +73,14 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(1, $result['hits']['total']);
     }
 
-    public function testFuzzySearch()
+    public function testMltSearch()
     {
         $queryParts = [
-            "fuzzy_like_this" => [
+            "more_like_this" => [
                 "fields" => ["title"],
-                "like_text" => "Similar to YII",
-                "max_query_terms" => 4
+                "like_text" => "Mention YII now",
+                "min_term_freq" => 1,
+                "min_doc_freq" => 1,
             ]
         ];
         $query = new Query();
