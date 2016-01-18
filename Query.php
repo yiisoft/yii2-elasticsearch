@@ -524,7 +524,8 @@ class Query extends Component implements QueryInterface
      * @return static the query object itself
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
      */
-    public function minScore($minScore) {
+    public function minScore($minScore)
+    {
         $this->minScore = $minScore;
         return $this;
     }
