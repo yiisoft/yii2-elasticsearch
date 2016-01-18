@@ -520,7 +520,7 @@ class Connection extends Component
     {
         try {
             $decoded = Json::decode($body);
-            if (isset($decoded['error'])) {
+            if (isset($decoded['error']) && !is_array($decoded['error'])) {
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;

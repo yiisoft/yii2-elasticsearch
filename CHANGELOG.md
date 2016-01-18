@@ -28,6 +28,7 @@ Yii Framework 2 elasticsearch extension Change Log
 
 - Bug #5662: Elasticsearch AR updateCounters() now uses explicitly `groovy` script for updating making it compatible with ES >1.3.0 (cebe)
 - Bug #6065: `ActiveRecord::unlink()` was failing in some situations when working with relations via array valued attributes (cebe)
+- Bug: Fixed warning `array to string conversion` when parsing error response (silverfire)
 - Enh #5758: Allow passing custom options to `ActiveRecord::update()` and `::delete()` including support for routing needed for updating records with parent relation (cebe)
 - Enh: Add support for optimistic locking (cebe)
 
