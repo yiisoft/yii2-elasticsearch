@@ -20,6 +20,8 @@ class QueryBuilderTest extends TestCase
         if ($command->indexExists('yiitest')) {
             $command->deleteIndex('yiitest');
         }
+
+        $this->prepareDbData();
     }
 
     private function prepareDbData()
@@ -48,7 +50,6 @@ class QueryBuilderTest extends TestCase
 
     public function testYiiCanBeFoundByQuery()
     {
-        $this->prepareDbData();
         $queryParts = ['term' => ['title' => 'yii']];
         $query = new Query();
         $query->from('yiitest', 'article');
@@ -57,9 +58,23 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(2, $result['hits']['total']);
     }
 
+    public function testMinScore()
+    {
+        $queryParts = ['term' => ['title' => 'yii']];
+        $query = new Query();
+        $query->from('yiitest', 'article');
+        $query->query = $queryParts;
+        $query->minScore(0.9);
+        $result = $query->search($this->getConnection());
+        $this->assertEquals(0, $result['hits']['total']);
+
+        $query->minScore(0.6);
+        $result = $query->search($this->getConnection());
+        $this->assertEquals(1, $result['hits']['total']);
+    }
+
     public function testFuzzySearch()
     {
-        $this->prepareDbData();
         $queryParts = [
             "fuzzy_like_this" => [
                 "fields" => ["title"],
