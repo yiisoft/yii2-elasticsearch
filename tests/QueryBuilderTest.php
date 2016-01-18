@@ -68,7 +68,7 @@ class QueryBuilderTest extends TestCase
         $result = $query->search($this->getConnection());
         $this->assertEquals(0, $result['hits']['total']);
 
-        $query->minScore(0.6);
+        $query->minScore(0.1);
         $result = $query->search($this->getConnection());
         $this->assertEquals(1, $result['hits']['total']);
     }
