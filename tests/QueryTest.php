@@ -264,4 +264,82 @@ class QueryTest extends TestCase
     public function testUnion()
     {
     }
+
+    public function testBatch()
+    {
+        $names = [
+            'user1',
+            'user2',
+            'user3',
+            'user4',
+            'user5',
+            'user6',
+            'user7',
+            'user8',
+            'user9',
+            'usera',
+            'userb',
+            'userc',
+        ];
+
+        $emails = [
+            'user1@example.com',
+            'user2@example.com',
+            'user3@example.com',
+            'user4@example.com',
+            'user5@example.com',
+            'user6@example.com',
+            'user7@example.com',
+            'user8@example.com',
+            'user9@example.com',
+            'user10@example.com',
+            'user11@example.com',
+            'user12@example.com',
+        ];
+
+        //test each
+        $query = new Query;
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name');
+
+        $result_keys = [];
+        $result_values = [];
+        foreach ($query->each('1m', $this->getConnection()) as $key => $value) {
+            $result_keys[] = $key;
+            $result_values[] = $value['_source']['email'];
+        }
+
+        $this->assertEquals(12, count($result_keys));
+        $this->assertEquals($names, $result_keys);
+
+        $this->assertEquals(12, count($result_values));
+        $this->assertEquals($emails, $result_values);
+
+        //test batch
+        $query = new Query;
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name');
+
+        $results = [];
+        foreach ($query->batch('1m', $this->getConnection()) as $batchId => $batch) {
+            $results = $results + $batch;
+        }
+
+        $this->assertEquals(12, count($results));
+        $this->assertEquals($names, array_keys($results));
+        foreach ($names as $id => $name) {
+            $this->assertEquals($emails[$id], $results[$name]['_source']['email']);
+        }
+
+        //test scan (no ordering)
+        $query = new Query;
+        $query->from('yiitest', 'user')->limit(3);
+
+        $results = [];
+        foreach ($query->each('1m', $this->getConnection()) as $value) {
+            $results[] = $value['_source']['name'];
+        }
+
+        $this->assertEquals(12, count($results));
+        sort($results);
+        $this->assertEquals($names, $results);
+    }
 }
