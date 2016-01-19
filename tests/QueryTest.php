@@ -24,6 +24,14 @@ class QueryTest extends TestCase
         $command->insert('yiitest', 'user', ['name' => 'user2', 'email' => 'user2@example.com', 'status' => 1], 2);
         $command->insert('yiitest', 'user', ['name' => 'user3', 'email' => 'user3@example.com', 'status' => 2], 3);
         $command->insert('yiitest', 'user', ['name' => 'user4', 'email' => 'user4@example.com', 'status' => 1], 4);
+        $command->insert('yiitest', 'user', ['name' => 'user5', 'email' => 'user5@example.com', 'status' => 1], 5);
+        $command->insert('yiitest', 'user', ['name' => 'user6', 'email' => 'user6@example.com', 'status' => 1], 6);
+        $command->insert('yiitest', 'user', ['name' => 'user7', 'email' => 'user7@example.com', 'status' => 2], 7);
+        $command->insert('yiitest', 'user', ['name' => 'user8', 'email' => 'user8@example.com', 'status' => 1], 8);
+        $command->insert('yiitest', 'user', ['name' => 'user9', 'email' => 'user9@example.com', 'status' => 1], 9);
+        $command->insert('yiitest', 'user', ['name' => 'usera', 'email' => 'user10@example.com', 'status' => 1], 10);
+        $command->insert('yiitest', 'user', ['name' => 'userb', 'email' => 'user11@example.com', 'status' => 2], 11);
+        $command->insert('yiitest', 'user', ['name' => 'userc', 'email' => 'user12@example.com', 'status' => 1], 12);
 
         $command->flushIndex();
     }
@@ -83,7 +91,7 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('_id', $result);
         $this->assertEquals(1, $result['_id']);
 
-        $result = $query->where(['name' => 'user5'])->one($this->getConnection());
+        $result = $query->where(['name' => 'user15'])->one($this->getConnection());
         $this->assertFalse($result);
     }
 
@@ -92,8 +100,8 @@ class QueryTest extends TestCase
         $query = new Query;
         $query->from('yiitest', 'user');
 
-        $results = $query->all($this->getConnection());
-        $this->assertEquals(4, count($results));
+        $results = $query->limit(100)->all($this->getConnection());
+        $this->assertEquals(12, count($results));
         $result = reset($results);
         $this->assertEquals(3, count($result['_source']));
         $this->assertArrayHasKey('status', $result['_source']);
@@ -118,10 +126,23 @@ class QueryTest extends TestCase
         $query = new Query;
         $query->from('yiitest', 'user');
 
-        $results = $query->indexBy('name')->all($this->getConnection());
-        $this->assertEquals(4, count($results));
+        $results = $query->limit(100)->indexBy('name')->all($this->getConnection());
+        $this->assertEquals(12, count($results));
         ksort($results);
-        $this->assertEquals(['user1', 'user2', 'user3', 'user4'], array_keys($results));
+        $this->assertEquals([
+            'user1',
+            'user2',
+            'user3',
+            'user4',
+            'user5',
+            'user6',
+            'user7',
+            'user8',
+            'user9',
+            'usera',
+            'userb',
+            'userc'
+        ], array_keys($results));
     }
 
     public function testScalar()
@@ -133,7 +154,7 @@ class QueryTest extends TestCase
         $this->assertEquals('user1', $result);
         $result = $query->where(['name' => 'user1'])->scalar('noname', $this->getConnection());
         $this->assertNull($result);
-        $result = $query->where(['name' => 'user5'])->scalar('name', $this->getConnection());
+        $result = $query->where(['name' => 'user15'])->scalar('name', $this->getConnection());
         $this->assertNull($result);
     }
 
@@ -142,11 +163,11 @@ class QueryTest extends TestCase
         $query = new Query;
         $query->from('yiitest', 'user');
 
-        $result = $query->orderBy(['name' => SORT_ASC])->column('name', $this->getConnection());
+        $result = $query->orderBy(['name' => SORT_ASC])->limit(4)->column('name', $this->getConnection());
         $this->assertEquals(['user1', 'user2', 'user3', 'user4'], $result);
         $result = $query->column('noname', $this->getConnection());
         $this->assertEquals([null, null, null, null], $result);
-        $result = $query->where(['name' => 'user5'])->scalar('name', $this->getConnection());
+        $result = $query->where(['name' => 'user15'])->scalar('name', $this->getConnection());
         $this->assertNull($result);
 
     }
