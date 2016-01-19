@@ -460,6 +460,65 @@ class Query extends Component implements QueryInterface
     }
 
     /**
+     * Starts a batch query.
+     *
+     * A batch query supports fetching data in batches, which can keep the memory usage under a limit.
+     * This method will return a [[BatchQueryResult]] object which implements the [[\Iterator]] interface
+     * and can be traversed to retrieve the data in batches.
+     *
+     * For example,
+     *
+     * ```php
+     * $query = (new Query)->from('user');
+     * foreach ($query->batch() as $rows) {
+     *     // $rows is an array of 10 or fewer rows from user table
+     * }
+     * ```
+     *
+     * @param integer $batchSize the number of records to be fetched in each batch.
+     * @param Connection $db the database connection. If not set, the "db" application component will be used.
+     * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
+     * and can be traversed to retrieve the data in batches.
+     */
+    public function batch($scrollWindow = '1m', $db = null)
+    {
+        return Yii::createObject([
+            'class' => BatchQueryResult::className(),
+            'query' => $this,
+            'scrollWindow' => $scrollWindow,
+            'db' => $db,
+            'each' => false,
+        ]);
+    }
+
+    /**
+     * Starts a batch query and retrieves data row by row.
+     * This method is similar to [[batch()]] except that in each iteration of the result,
+     * only one row of data is returned. For example,
+     *
+     * ```php
+     * $query = (new Query)->from('user');
+     * foreach ($query->each() as $row) {
+     * }
+     * ```
+     *
+     * @param integer $batchSize the number of records to be fetched in each batch.
+     * @param Connection $db the database connection. If not set, the "db" application component will be used.
+     * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
+     * and can be traversed to retrieve the data in batches.
+     */
+    public function each($scrollWindow = '1m', $db = null)
+    {
+        return Yii::createObject([
+            'class' => BatchQueryResult::className(),
+            'query' => $this,
+            'scrollWindow' => $scrollWindow,
+            'db' => $db,
+            'each' => true,
+        ]);
+    }
+
+    /**
      * Sets the filter part of this search query.
      * @param string $filter
      * @return $this the query object itself

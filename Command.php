@@ -377,6 +377,26 @@ class Command extends Component
     }
 
     /**
+     * @param array $options
+     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/scan-scroll.html
+     * @return mixed
+     */
+    public function scroll($options = [])
+    {
+       return $this->db->get(['_search', 'scroll'], $options);
+    }
+
+    /**
+     * @param array $options
+     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/scan-scroll.html
+     * @return mixed
+     */
+    public function clearScroll($options = [])
+    {
+       return $this->db->delete(['_search', 'scroll'], $options);
+    }
+
+    /**
      * @param $index
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-status.html
