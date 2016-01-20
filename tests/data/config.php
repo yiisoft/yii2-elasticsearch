@@ -1,16 +1,14 @@
 <?php
 
 /**
- * This is the configuration file for the Yii2 unit tests.
+ * This is the configuration file for the Yii2 ElasticSearch unit tests.
  * You can override configuration values by creating a `config.local.php` file
  * and manipulate the `$config` variable.
- * For example to change MySQL username and password your `config.local.php` should
- * contain the following:
+ * For example to change ElasticSearch http address of nodes your `config.local.php`
+ * should contain the following:
  *
-<?php
-$config['databases']['mysql']['username'] = 'yiitest';
-$config['databases']['mysql']['password'] = 'changeme';
-
+ * <?php
+ * $config['elasticsearch']['nodes']['http_address'] = '192.168.1.2:9200';
  */
 
 $config = [
