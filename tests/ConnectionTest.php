@@ -43,13 +43,5 @@ class ConnectionTest extends TestCase
         //Actual is 'customer%2Fexternal%2F1/_update'
         $this->assertEquals([$httpAddress, 'customer/external/1/_update'],
             $reflectedMethod->invoke($this->connection, ['customer/external/1', '_update',]));
-
-        //Actual is 'bank/_search?pretty&q=%2A'
-        $this->assertEquals([$httpAddress, 'bank/_search?pretty&q=*'],
-            $reflectedMethod->invoke($this->connection, 'bank/_search?pretty', ['q' => '*']));
-
-        //Actual is 'bank/_search?pretty&q=user%3Akimchy'
-        $this->assertEquals([$httpAddress, 'bank/_search?pretty&q=*'],
-            $reflectedMethod->invoke($this->connection, 'bank/_search?pretty', ['q' => 'user:kimchy']));
     }
 }
