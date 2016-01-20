@@ -236,7 +236,7 @@ class Connection extends Component
     /**
      * Performs GET HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
@@ -253,7 +253,7 @@ class Connection extends Component
     /**
      * Performs HEAD HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @return mixed response
@@ -269,7 +269,7 @@ class Connection extends Component
     /**
      * Performs POST HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
@@ -286,7 +286,7 @@ class Connection extends Component
     /**
      * Performs PUT HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
@@ -303,7 +303,7 @@ class Connection extends Component
     /**
      * Performs DELETE HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
@@ -320,7 +320,7 @@ class Connection extends Component
     /**
      * Creates URL
      *
-     * @param mixed $path path
+     * @param string|array $path path
      * @param array $options URL options
      * @return array
      */
