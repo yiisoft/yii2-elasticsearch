@@ -56,11 +56,17 @@ class Command extends Component
         if (is_array($query)) {
             $query = Json::encode($query);
         }
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            $this->type !== null ? $this->type : '_all',
-            '_search'
-        ];
+
+        $url = [];
+        if ($this->index !== null){
+            $url[] = $this->index;
+        }else if($this->type !== null){
+            $url[] = '_all';
+        }
+        if ( $this->type !== null){
+            $url[] = $this->type;
+        }
+        $url[] = '_search';
 
         return $this->db->get($url, array_merge($this->options, $options), $query);
     }
@@ -82,11 +88,18 @@ class Command extends Component
             $query['filter'] = $this->queryParts['filter'];
         }
         $query = Json::encode($query);
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            $this->type !== null ? $this->type : '_all',
-            '_query'
-        ];
+
+
+        $url = [];
+        if ($this->index !== null){
+            $url[] = $this->index;
+        }else if($this->type !== null){
+            $url[] = '_all';
+        }
+        if ( $this->type !== null){
+            $url[] = $this->type;
+        }
+        $url[] = '_query';
 
         return $this->db->delete($url, array_merge($this->options, $options), $query);
     }
@@ -106,10 +119,12 @@ class Command extends Component
         if (is_array($suggester)) {
             $suggester = Json::encode($suggester);
         }
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            '_suggest'
-        ];
+
+        $url = [];
+        if ($this->index !== null){
+            $url[] = $this->index;
+        }
+        $url[] = '_suggest';
 
         return $this->db->post($url, array_merge($this->options, $options), $suggester);
     }
