@@ -35,7 +35,7 @@ use yii\db\BatchQueryResult as BaseBatchQueryResult;
  * ```
  *
  * @author Konstantin Sirotkin <beowulfenator@gmail.com>
- * @since 2.0
+ * @since 2.0.4
  */
 class BatchQueryResult extends BaseBatchQueryResult implements \Iterator
 {
