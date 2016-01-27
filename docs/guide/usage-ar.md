@@ -107,4 +107,101 @@ $query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
 $query->search(); // gives you all the records + stats about the visit_count field. e.g. mean, sum, min, max etc...
 ```
 
+##Complex Queries
+The following example show how get list of orders in filtered by terms and date range:
+
+```
+php
+        $orders= Order::find()
+            ->query([
+                'filtered' =>
+                    [
+                        'filter' => [
+                            'bool' => [
+                                'must' => [
+                                    [
+                                        'match' => [
+                                            'store_id' => 1
+                                        ]
+                                    ]
+                                ],
+                                //   'must_not' => [],
+                                'should' => [
+                                    [
+                                        "range" => [
+                                            "order_date" => [
+                                                "gte" => '2016-01-01',
+                                                 "lte" => '2016-01-20,
+                                                //   "boost" => 2.0
+                                            ]
+                                        ],
+                                    ],
+                                    [
+                                        "match" => [
+                                            "is_confirmed" => 1
+                                        ],
+                                    ],
+                                  
+                                ],
+
+                            ],
+                        ]
+                    ]
+
+
+            ])->all();
+```
+
+##Aggregation
+The blow example assum that you want to get the list of orders for specific list of customers aggregated by customer ID and  
+
+
+```
+php
+
+ $orders = Order::find()
+                    ->addAgg('players', 'terms', ["field" => "player_id", 'size' => 0, 'min_doc_count' => 0])
+                    ->query([
+                       
+                        'filtered' => [
+                            'filter' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            [
+                                                'terms' => [
+                                                    'customer_id' => [1,2,3], //customers ids , you can add more terms to the array
+
+                                                ],
+
+                                            ],
+                                            [
+
+                                                'match' => [
+                                                    'order_type' => ['confirmed','delivered']
+
+                                                ]
+                                            ],
+                                            [
+                                                'range' => [
+                                                    'order_date' => [
+                                                        'gte' => '2016-01-01,
+                                                        'lte' => '2016-01-20
+                                                    ]
+                                                ]
+                                            ]
+
+                                        ],
+
+
+                                    ],
+                                ]
+                            ]
+                        ]
+
+                    ])->asArray()->search();
+```                    
+
+For more information please check the elasticsearch Aggreagtion search page (https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html)
+
 And there is so much more in it. "it’s endless what you can build"[?](https://www.elastic.co/)
