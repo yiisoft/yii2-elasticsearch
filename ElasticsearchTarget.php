@@ -6,6 +6,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\di\Instance;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 use yii\log\Logger;
 use yii\log\Target;
 
@@ -62,6 +63,14 @@ class ElasticsearchTarget extends Target
     public function prepareMessage($message)
     {
         list($text, $level, $category, $timestamp) = $message;
+
+        if (!is_string($text)) {
+            if ($text instanceof \Exception) {
+                $text = (string) $text;
+            } else {
+                $text = VarDumper::export($text);
+            }
+        }
 
         $result = [
             'category' => $category,
