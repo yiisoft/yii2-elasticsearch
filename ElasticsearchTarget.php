@@ -79,7 +79,7 @@ class ElasticsearchTarget extends Target
             '@timestamp' => date('c', $timestamp),
         ];
 
-        if (isset($message[4]) === true) {
+        if (isset($message[4])) {
             $result['trace'] = $message[4];
         }
 
