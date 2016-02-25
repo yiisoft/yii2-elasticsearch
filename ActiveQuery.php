@@ -228,6 +228,41 @@ class ActiveQuery extends Query implements ActiveQueryInterface
     }
 
     /**
+     * @param $result
+     * @return \yii\db\ActiveRecord[]
+     */
+    public function createAllModels($result)
+    {
+       if (empty($result['hits']['hits'])) {
+          return [];
+       }
+       if ($this->asArray) {
+          // TODO implement with
+          return $result['hits']['hits'];
+       }
+       $models = $this->createModels($result['hits']['hits']);
+       if (!empty($this->with)) {
+          $this->findWith($this->with, $models);
+       }
+       foreach ($models as $model) {
+          $model->afterFind();
+       }
+       return $models;
+    }
+
+    /**
+     * @param $db
+     * @param array $options
+     * @return ScrollIterator
+     */
+    public function iterator($db = null, $options = [])
+    {
+       $command = $this->createCommand($db);
+       $scrollIterator = new ScrollIterator($command, $this, $options);
+       return $scrollIterator;
+    }
+
+    /**
      * @inheritdoc
      */
     public function search($db = null, $options = [])
