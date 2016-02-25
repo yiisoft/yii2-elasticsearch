@@ -265,6 +265,9 @@ class QueryTest extends TestCase
     {
     }
 
+    /**
+     * @since 2.0.4
+     */
     public function testBatch()
     {
         $names = [

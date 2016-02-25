@@ -41,7 +41,7 @@ class BatchQueryResult extends Object implements \Iterator
 {
     /**
      * @var Connection the DB connection to be used when performing batch query.
-     * If null, the "db" application component will be used.
+     * If null, the `elasticsearch` application component will be used.
      */
     public $db;
     /**

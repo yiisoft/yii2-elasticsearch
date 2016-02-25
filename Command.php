@@ -378,8 +378,9 @@ class Command extends Component
 
     /**
      * @param array $options
-     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/scan-scroll.html
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @return mixed
+     * @since 2.0.4
      */
     public function scroll($options = [])
     {
@@ -388,8 +389,9 @@ class Command extends Component
 
     /**
      * @param array $options
-     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/scan-scroll.html
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @return mixed
+     * @since 2.0.4
      */
     public function clearScroll($options = [])
     {

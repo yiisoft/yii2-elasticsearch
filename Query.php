@@ -210,6 +210,7 @@ class Query extends Component implements QueryInterface
      * into the format as required by this query.
      * @param array $rows the raw query result from database
      * @return array the converted query result
+     * @since 2.0.4
      */
     public function populate($rows)
     {
@@ -479,6 +480,7 @@ class Query extends Component implements QueryInterface
      * @param Connection $db the database connection. If not set, the "db" application component will be used.
      * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
      * and can be traversed to retrieve the data in batches.
+     * @since 2.0.4
      */
     public function batch($scrollWindow = '1m', $db = null)
     {
@@ -506,6 +508,7 @@ class Query extends Component implements QueryInterface
      * @param Connection $db the database connection. If not set, the "db" application component will be used.
      * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
      * and can be traversed to retrieve the data in batches.
+     * @since 2.0.4
      */
     public function each($scrollWindow = '1m', $db = null)
     {

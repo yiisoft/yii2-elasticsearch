@@ -565,6 +565,7 @@ class ActiveRecord extends BaseActiveRecord
      * @see updateAll()
      * @see updateAllCounters()
      * @see deleteAll()
+     * @since 2.0.4
      */
     protected static function primaryKeysByCondition($condition)
     {

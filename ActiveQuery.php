@@ -165,6 +165,12 @@ class ActiveQuery extends Query implements ActiveQueryInterface
         return parent::all($db);
     }
 
+    /**
+     * Converts found rows into model instances
+     * @param array $rows
+     * @return array|ActiveRecord[]
+     * @since 2.0.4
+     */
     private function createModels($rows)
     {
         $models = [];
@@ -210,6 +216,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
 
     /**
      * @inheritdoc
+     * @since 2.0.4
      */
     public function populate($rows)
     {

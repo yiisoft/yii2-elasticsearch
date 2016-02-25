@@ -12,6 +12,10 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #28: AWS Elasticsearch service compatibility (andrey-bahrachev)
 - Enh #33: Implemented `Command::updateSettings()` and `Command::updateAnalyzers()` (githubjeka)
 - Enh #50: Implemented HTTP auth (silverfire)
+- Enh #62: Added support for scroll API in `batch()` and `each()` (beowulfenator)
+- Bug #48: `UpdateAll` now updates all entries, not first 10 (beowulfenator)
+- Bug #19: `DeleteAll` now deletes all entries, not first 10 (beowulfenator)
+- Enh: Unified model creation from result set in `Query` and `ActiveQuery` with `populate()` (beowulfenator)
 
 2.0.3 March 01, 2015
 --------------------
