@@ -6,6 +6,7 @@ Yii Framework 2 elasticsearch extension Change Log
 -----------------------
 
 - Bug #8: Fixed issue with running out of sockets when running a large number of requests by reusing curl handles (cebe)
+- Bug #13: Fixed wrong API call for getting all types or searching all types, `_all` works only for indexes (cebe)
 - Bug #65: Fixed warning `array to string conversion` when parsing error response (rhertogh, silverfire)
 - Enh #2: Added `min_score` option to query (knut)
 - Enh #28: AWS Elasticsearch service compatibility (andrey-bahrachev)

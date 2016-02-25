@@ -56,11 +56,11 @@ class Command extends Component
         if (is_array($query)) {
             $query = Json::encode($query);
         }
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            $this->type !== null ? $this->type : '_all',
-            '_search'
-        ];
+        $url = [$this->index !== null ? $this->index : '_all'];
+        if ($this->type !== null) {
+            $url[] = $this->type;
+        }
+        $url[] = '_search';
 
         return $this->db->get($url, array_merge($this->options, $options), $query);
     }
@@ -82,11 +82,11 @@ class Command extends Component
             $query['filter'] = $this->queryParts['filter'];
         }
         $query = Json::encode($query);
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            $this->type !== null ? $this->type : '_all',
-            '_query'
-        ];
+        $url = [$this->index !== null ? $this->index : '_all'];
+        if ($this->type !== null) {
+            $url[] = $this->type;
+        }
+        $url[] = '_query';
 
         return $this->db->delete($url, array_merge($this->options, $options), $query);
     }
@@ -444,9 +444,13 @@ class Command extends Component
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-mapping.html
      */
-    public function getMapping($index = '_all', $type = '_all')
+    public function getMapping($index = '_all', $type = null)
     {
-        return $this->db->get([$index, '_mapping', $type]);
+        $url = [$index, '_mapping'];
+        if ($type !== null) {
+            $url[] = $type;
+        }
+        return $this->db->get($url);
     }
 
     /**
