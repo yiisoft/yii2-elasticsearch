@@ -476,8 +476,11 @@ class Query extends Component implements QueryInterface
      * }
      * ```
      *
-     * @param integer $batchSize the number of records to be fetched in each batch.
-     * @param Connection $db the database connection. If not set, the "db" application component will be used.
+     * Batch size is determined by the `limit` setting (note that in scan mode batch limit is per shard).
+     *
+     * @param string $scrollWindow how long Elasticsearch should keep the search context alive,
+     * in [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units)
+     * @param Connection $db the database connection. If not set, the `elasticsearch` application component will be used.
      * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
      * and can be traversed to retrieve the data in batches.
      * @since 2.0.4
@@ -504,8 +507,9 @@ class Query extends Component implements QueryInterface
      * }
      * ```
      *
-     * @param integer $batchSize the number of records to be fetched in each batch.
-     * @param Connection $db the database connection. If not set, the "db" application component will be used.
+     * @param string $scrollWindow how long Elasticsearch should keep the search context alive,
+     * in [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units)
+     * @param Connection $db the database connection. If not set, the `elasticsearch` application component will be used.
      * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
      * and can be traversed to retrieve the data in batches.
      * @since 2.0.4

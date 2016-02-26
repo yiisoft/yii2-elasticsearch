@@ -50,10 +50,6 @@ class BatchQueryResult extends Object implements \Iterator
      */
     public $query;
     /**
-     * @var integer the number of rows to be returned in each batch.
-     */
-    public $batchSize = 100;
-    /**
      * @var boolean whether to return a single row during each iteration.
      * If false, a whole batch of rows will be returned in each iteration.
      */
