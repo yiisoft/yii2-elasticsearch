@@ -302,7 +302,7 @@ class QueryTest extends TestCase
 
         //test each
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name');
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_only_nodes:_local']);
 
         $result_keys = [];
         $result_values = [];

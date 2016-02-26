@@ -157,6 +157,10 @@ class Query extends Component implements QueryInterface
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
      */
     public $minScore;
+    /**
+     * @var array list of options that will passed to commands created by this query.
+     */
+    public $options = [];
 
     /**
      * @inheritdoc
@@ -607,4 +611,20 @@ class Query extends Component implements QueryInterface
         $this->minScore = $minScore;
         return $this;
     }
+
+    /**
+     * Sets the options to be passed to the command created by this query.
+     * @param array $options the options to be set.
+     * @return $this the query object itself
+     */
+    public function options($options)
+    {
+        if (is_array($options) || $options === null) {
+            $this->options = $options;
+        } else {
+            $this->options = func_get_args();
+        }
+        return $this;
+    }
+
 }
