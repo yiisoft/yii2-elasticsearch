@@ -558,6 +558,32 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
+     * Performs a quick and highly efficient scroll/scan query to get the list of primary keys that
+     * satisfy the given condition.
+     * @param array $condition please refer to [[ActiveQuery::where()]] on how to specify this parameter
+     * @return array primary keys that correspond to given conditions
+     * @see updateAll()
+     * @see updateAllCounters()
+     * @see deleteAll()
+     * @since 2.0.4
+     */
+    protected static function primaryKeysByCondition($condition)
+    {
+        $pkName = static::primaryKey()[0];
+        if (count($condition) == 1 && isset($condition[$pkName])) {
+            $primaryKeys = (array)$condition[$pkName];
+        } else {
+            //fetch only document metadata (no fields), 1000 documents per shard
+            $query = static::find()->where($condition)->asArray()->source(false)->limit(1000);
+            $primaryKeys = [];
+            foreach ($query->each('1m') as $document) {
+                $primaryKeys[] = $document['_id'];
+            }
+        }
+        return $primaryKeys;
+    }
+
+    /**
      * Updates all records whos primary keys are given.
      * For example, to change the status to be 1 for all customers whose status is 2:
      *
@@ -573,12 +599,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function updateAll($attributes, $condition = [])
     {
-        $pkName = static::primaryKey()[0];
-        if (count($condition) == 1 && isset($condition[$pkName])) {
-            $primaryKeys = (array)$condition[$pkName];
-        } else {
-            $primaryKeys = static::find()->where($condition)->column($pkName); // TODO check whether this works with default pk _id
-        }
+        $primaryKeys = static::primaryKeysByCondition($condition);
         if (empty($primaryKeys)) {
             return 0;
         }
@@ -633,12 +654,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function updateAllCounters($counters, $condition = [])
     {
-        $pkName = static::primaryKey()[0];
-        if (count($condition) == 1 && isset($condition[$pkName])) {
-            $primaryKeys = (array)$condition[$pkName];
-        } else {
-            $primaryKeys = static::find()->where($condition)->column($pkName); // TODO check whether this works with default pk _id
-        }
+        $primaryKeys = static::primaryKeysByCondition($condition);
         if (empty($primaryKeys) || empty($counters)) {
             return 0;
         }
@@ -769,12 +785,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function deleteAll($condition = [])
     {
-        $pkName = static::primaryKey()[0];
-        if (count($condition) == 1 && isset($condition[$pkName])) {
-            $primaryKeys = (array)$condition[$pkName];
-        } else {
-            $primaryKeys = static::find()->where($condition)->column($pkName); // TODO check whether this works with default pk _id
-        }
+        $primaryKeys = static::primaryKeysByCondition($condition);
         if (empty($primaryKeys)) {
             return 0;
         }

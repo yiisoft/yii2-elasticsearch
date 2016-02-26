@@ -162,21 +162,76 @@ class ActiveQuery extends Query implements ActiveQueryInterface
      */
     public function all($db = null)
     {
+        return parent::all($db);
+    }
+
+    /**
+     * Converts found rows into model instances
+     * @param array $rows
+     * @return array|ActiveRecord[]
+     * @since 2.0.4
+     */
+    private function createModels($rows)
+    {
+        $models = [];
         if ($this->asArray) {
-            // TODO implement with
-            return parent::all($db);
+            if ($this->indexBy === null) {
+                return $rows;
+            }
+            foreach ($rows as $row) {
+                if (is_string($this->indexBy)) {
+                    $key = isset($row['fields'][$this->indexBy]) ? reset($row['fields'][$this->indexBy]) : $row['_source'][$this->indexBy];
+                } else {
+                    $key = call_user_func($this->indexBy, $row);
+                }
+                $models[$key] = $row;
+            }
+        } else {
+            /* @var $class ActiveRecord */
+            $class = $this->modelClass;
+            if ($this->indexBy === null) {
+                foreach ($rows as $row) {
+                    $model = $class::instantiate($row);
+                    $modelClass = get_class($model);
+                    $modelClass::populateRecord($model, $row);
+                    $models[] = $model;
+                }
+            } else {
+                foreach ($rows as $row) {
+                    $model = $class::instantiate($row);
+                    $modelClass = get_class($model);
+                    $modelClass::populateRecord($model, $row);
+                    if (is_string($this->indexBy)) {
+                        $key = $model->{$this->indexBy};
+                    } else {
+                        $key = call_user_func($this->indexBy, $model);
+                    }
+                    $models[$key] = $model;
+                }
+            }
         }
 
-        $result = $this->createCommand($db)->search();
-        if (empty($result['hits']['hits'])) {
+        return $models;
+    }
+
+    /**
+     * @inheritdoc
+     * @since 2.0.4
+     */
+    public function populate($rows)
+    {
+        if (empty($rows)) {
             return [];
         }
-        $models = $this->createModels($result['hits']['hits']);
+
+        $models = $this->createModels($rows);
         if (!empty($this->with)) {
             $this->findWith($this->with, $models);
         }
-        foreach ($models as $model) {
-            $model->afterFind();
+        if (!$this->asArray) {
+            foreach ($models as $model) {
+                $model->afterFind();
+            }
         }
 
         return $models;
