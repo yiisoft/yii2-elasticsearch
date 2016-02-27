@@ -625,7 +625,7 @@ class Query extends Component implements QueryInterface
     public function options($options)
     {
         if (!is_array($options)) {
-            throw new \yii\base\InvalidParamException('Array parameter exepcted, ' . gettype($options) . ' received.');
+            throw new \yii\base\InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
         }
 
         $this->options = $options;
@@ -643,7 +643,7 @@ class Query extends Component implements QueryInterface
     public function addOptions($options)
     {
         if (!is_array($options)) {
-            throw new \yii\base\InvalidParamException('Array parameter exepcted, ' . gettype($options) . ' received.');
+            throw new \yii\base\InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
         }
 
         $this->options = array_merge($this->options, $options);
