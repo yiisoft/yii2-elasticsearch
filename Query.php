@@ -9,6 +9,7 @@ namespace yii\elasticsearch;
 
 use Yii;
 use yii\base\Component;
+use yii\base\InvalidParamException;
 use yii\db\QueryInterface;
 use yii\db\QueryTrait;
 
@@ -157,6 +158,12 @@ class Query extends Component implements QueryInterface
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
      */
     public $minScore;
+    /**
+     * @var array list of options that will passed to commands created by this query.
+     * @see Command::$options
+     * @since  2.0.4
+     */
+    public $options = [];
 
     /**
      * @inheritdoc
@@ -607,4 +614,41 @@ class Query extends Component implements QueryInterface
         $this->minScore = $minScore;
         return $this;
     }
+
+    /**
+     * Sets the options to be passed to the command created by this query.
+     * @param array $options the options to be set.
+     * @return $this the query object itself
+     * @throws InvalidParamException if $options is not an array
+     * @see Command::$options
+     * @since  2.0.4
+     */
+    public function options($options)
+    {
+        if (!is_array($options)) {
+            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+        }
+
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Adds more options, overwriting existing options.
+     * @param array $options the options to be added.
+     * @return $this the query object itself
+     * @throws InvalidParamException if $options is not an array
+     * @see options()
+     * @since  2.0.4
+     */
+    public function addOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+        }
+
+        $this->options = array_merge($this->options, $options);
+        return $this;
+    }
+
 }

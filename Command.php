@@ -39,6 +39,9 @@ class Command extends Component
      * @var array list of arrays or json strings that become parts of a query
      */
     public $queryParts;
+    /**
+     * @var array options to be appended to the query URL, such as "search_type" for search or "timeout" for delete
+     */
     public $options = [];
 
 

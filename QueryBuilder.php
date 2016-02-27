@@ -119,7 +119,7 @@ class QueryBuilder extends \yii\base\Object
             $parts['sort'] = $sort;
         }
 
-        $options = [];
+        $options = $query->options;
         if ($query->timeout !== null) {
             $options['timeout'] = $query->timeout;
         }
