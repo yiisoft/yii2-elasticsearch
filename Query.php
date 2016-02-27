@@ -159,6 +159,8 @@ class Query extends Component implements QueryInterface
     public $minScore;
     /**
      * @var array list of options that will passed to commands created by this query.
+     * @see Command::$options
+     * @since  2.0.4
      */
     public $options = [];
 
@@ -616,14 +618,35 @@ class Query extends Component implements QueryInterface
      * Sets the options to be passed to the command created by this query.
      * @param array $options the options to be set.
      * @return $this the query object itself
+     * @throws \yii\base\InvalidParamException if $options is not an array
+     * @see Command::$options
+     * @since  2.0.4
      */
     public function options($options)
     {
-        if (is_array($options) || $options === null) {
-            $this->options = $options;
-        } else {
-            $this->options = func_get_args();
+        if (!is_array($options)) {
+            throw new \yii\base\InvalidParamException('Array parameter exepcted, ' . gettype($options) . ' received.');
         }
+
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Adds more options, overwriting existing options.
+     * @param array $options the options to be added.
+     * @return $this the query object itself
+     * @throws \yii\base\InvalidParamException if $options is not an array
+     * @see options()
+     * @since  2.0.4
+     */
+    public function addOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new \yii\base\InvalidParamException('Array parameter exepcted, ' . gettype($options) . ' received.');
+        }
+
+        $this->options = array_merge($this->options, $options);
         return $this;
     }
 

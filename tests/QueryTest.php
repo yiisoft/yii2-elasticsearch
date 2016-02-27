@@ -302,7 +302,8 @@ class QueryTest extends TestCase
 
         //test each
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_only_nodes:_local']);
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $result_keys = [];
         $result_values = [];
@@ -319,7 +320,8 @@ class QueryTest extends TestCase
 
         //test batch
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name');
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $results = [];
         foreach ($query->batch('1m', $this->getConnection()) as $batchId => $batch) {
