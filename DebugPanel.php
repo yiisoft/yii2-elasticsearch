@@ -157,7 +157,7 @@ HTML;
         if ($this->_timings !== null) {
             return $this->_timings;
         }
-        $messages = $this->data['messages'];
+        $messages = isset($this->data['messages']) ? $this->data['messages'] : [];
         $timings = [];
         $stack = [];
         foreach ($messages as $i => $log) {

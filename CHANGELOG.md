@@ -10,6 +10,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Bug #19: `DeleteAll` now deletes all entries, not first 10 (beowulfenator)
 - Bug #48: `UpdateAll` now updates all entries, not first 10 (beowulfenator)
 - Bug #65: Fixed warning `array to string conversion` when parsing error response (rhertogh, silverfire)
+- Bug #73: Fixed debug panel exception when no data was recorded for elasticsearch panel (jafaripur)
 - Enh #2: Added `min_score` option to query (knut)
 - Enh #28: AWS Elasticsearch service compatibility (andrey-bahrachev)
 - Enh #33: Implemented `Command::updateSettings()` and `Command::updateAnalyzers()` (githubjeka)
