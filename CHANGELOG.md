@@ -1,6 +1,12 @@
 Yii Framework 2 elasticsearch extension Change Log
 ==================================================
 
+2.0.5 under development
+-----------------------
+
+- no changes in this release.
+
+
 
 2.0.4 March 17, 2016
 --------------------
