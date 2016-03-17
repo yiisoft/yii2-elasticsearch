@@ -75,10 +75,12 @@ class BatchQueryResult extends Object implements \Iterator
      * (in ElasticSearch [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units).
      */
     public $scrollWindow = '1m';
+
     /*
      * @var string internal ElasticSearch scroll id
      */
     private $_lastScrollId = null;
+
 
     /**
      * Destructor.

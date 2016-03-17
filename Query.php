@@ -156,14 +156,16 @@ class Query extends Component implements QueryInterface
     /**
      * @var float Exclude documents which have a _score less than the minimum specified in min_score
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
+     * @since 2.0.4
      */
     public $minScore;
     /**
      * @var array list of options that will passed to commands created by this query.
      * @see Command::$options
-     * @since  2.0.4
+     * @since 2.0.4
      */
     public $options = [];
+
 
     /**
      * @inheritdoc
@@ -608,6 +610,7 @@ class Query extends Component implements QueryInterface
      * @param float $minScore Exclude documents which have a `_score` less than the minimum specified minScore
      * @return static the query object itself
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
+     * @since 2.0.4
      */
     public function minScore($minScore)
     {
@@ -621,7 +624,7 @@ class Query extends Component implements QueryInterface
      * @return $this the query object itself
      * @throws InvalidParamException if $options is not an array
      * @see Command::$options
-     * @since  2.0.4
+     * @since 2.0.4
      */
     public function options($options)
     {
@@ -639,7 +642,7 @@ class Query extends Component implements QueryInterface
      * @return $this the query object itself
      * @throws InvalidParamException if $options is not an array
      * @see options()
-     * @since  2.0.4
+     * @since 2.0.4
      */
     public function addOptions($options)
     {

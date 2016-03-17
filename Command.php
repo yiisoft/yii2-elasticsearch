@@ -299,14 +299,15 @@ class Command extends Component
 
     /**
      * Change specific index level settings in real time.
-     * Note that update analyzers required to [[close()]] the index first and [[open()]] it after the changes are made, 
+     * Note that update analyzers required to [[close()]] the index first and [[open()]] it after the changes are made,
      * use [[updateAnalyzers()]] for it.
-     * 
+     *
      * @param string $index
      * @param string|array $setting
      * @param array $options URL options
      * @return mixed
      * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
+     * @since 2.0.4
      */
     public function updateSettings($index, $setting, $options = [])
     {
@@ -315,8 +316,8 @@ class Command extends Component
     }
 
     /**
-     * Define new analyzers for the index.  
-     * For example if content analyzer hasn’t been defined on "myindex" yet 
+     * Define new analyzers for the index.
+     * For example if content analyzer hasn’t been defined on "myindex" yet
      * you can use the following commands to add it:
      *
      * ~~~
@@ -340,12 +341,13 @@ class Command extends Component
      * ];
      * $elasticQuery->createCommand()->updateAnalyzers('myindex', $setting);
      * ~~~
-     * 
+     *
      * @param string $index
      * @param string|array $setting
      * @param array $options URL options
      * @return mixed
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html#update-settings-analysis
+     * @since 2.0.4
      */
     public function updateAnalyzers($index, $setting, $options = [])
     {

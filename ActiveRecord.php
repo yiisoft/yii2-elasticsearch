@@ -483,7 +483,7 @@ class ActiveRecord extends BaseActiveRecord
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
      * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
      * @throws Exception in case update failed.
-    */
+     */
     public function update($runValidation = true, $attributeNames = null, $options = [])
     {
         if ($runValidation && !$this->validate($attributeNames)) {

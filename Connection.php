@@ -35,10 +35,14 @@ class Connection extends Component
      */
     public $autodetectCluster = true;
     /**
-     * @var array[] cluster nodes
+     * @var array The elasticsearch cluster nodes to connect to.
+     *
      * This is populated with the result of a cluster nodes request when [[autodetectCluster]] is true.
+     *
      * Additional special options:
+     *
      *  - `auth`: overrides [[auth]] property. For example:
+     *
      * ```php
      * [
      *  'http_address' => 'inet[/127.0.0.1:9200]',
@@ -55,17 +59,18 @@ class Connection extends Component
      * @var string the active node. Key of one of the [[nodes]]. Will be randomly selected on [[open()]].
      */
     public $activeNode;
-
     /**
      * @var array Authentication data used to connect to the ElasticSearch node.
+     *
      * Array elements:
+     *
      *  - `username`: the username for authentication.
      *  - `password`: the password for authentication.
+     *
      * Array either MUST contain both username and password on not contain any authentication credentials.
      * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
      */
     public $auth = [];
-
     /**
      * @var float timeout to use for connecting to an elasticsearch node.
      * This value will be used to configure the curl `CURLOPT_CONNECTTIMEOUT` option.
@@ -83,6 +88,7 @@ class Connection extends Component
      * @var resource the curl instance returned by [curl_init()](http://php.net/manual/en/function.curl-init.php).
      */
     private $_curl;
+
 
     public function init()
     {
