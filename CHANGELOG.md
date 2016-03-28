@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.5 under development
 -----------------------
 
-- no changes in this release.
+- Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
 
 
 
