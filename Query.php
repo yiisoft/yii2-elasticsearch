@@ -9,6 +9,7 @@ namespace yii\elasticsearch;
 
 use Yii;
 use yii\base\Component;
+use yii\base\InvalidParamException;
 use yii\db\QueryInterface;
 use yii\db\QueryTrait;
 
@@ -152,6 +153,18 @@ class Query extends Component implements QueryInterface
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      */
     public $suggest = [];
+    /**
+     * @var float Exclude documents which have a _score less than the minimum specified in min_score
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
+     * @since 2.0.4
+     */
+    public $minScore;
+    /**
+     * @var array list of options that will passed to commands created by this query.
+     * @see Command::$options
+     * @since 2.0.4
+     */
+    public $options = [];
 
 
     /**
@@ -197,6 +210,19 @@ class Query extends Component implements QueryInterface
             return [];
         }
         $rows = $result['hits']['hits'];
+        return $this->populate($rows);
+    }
+
+    /**
+     * Converts the raw query results into the format as specified by this query.
+     * This method is internally used to convert the data fetched from database
+     * into the format as required by this query.
+     * @param array $rows the raw query result from database
+     * @return array the converted query result
+     * @since 2.0.4
+     */
+    public function populate($rows)
+    {
         if ($this->indexBy === null) {
             return $rows;
         }
@@ -444,6 +470,71 @@ class Query extends Component implements QueryInterface
     }
 
     /**
+     * Starts a batch query.
+     *
+     * A batch query supports fetching data in batches, which can keep the memory usage under a limit.
+     * This method will return a [[BatchQueryResult]] object which implements the [[\Iterator]] interface
+     * and can be traversed to retrieve the data in batches.
+     *
+     * For example,
+     *
+     * ```php
+     * $query = (new Query)->from('user');
+     * foreach ($query->batch() as $rows) {
+     *     // $rows is an array of 10 or fewer rows from user table
+     * }
+     * ```
+     *
+     * Batch size is determined by the `limit` setting (note that in scan mode batch limit is per shard).
+     *
+     * @param string $scrollWindow how long Elasticsearch should keep the search context alive,
+     * in [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units)
+     * @param Connection $db the database connection. If not set, the `elasticsearch` application component will be used.
+     * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
+     * and can be traversed to retrieve the data in batches.
+     * @since 2.0.4
+     */
+    public function batch($scrollWindow = '1m', $db = null)
+    {
+        return Yii::createObject([
+            'class' => BatchQueryResult::className(),
+            'query' => $this,
+            'scrollWindow' => $scrollWindow,
+            'db' => $db,
+            'each' => false,
+        ]);
+    }
+
+    /**
+     * Starts a batch query and retrieves data row by row.
+     * This method is similar to [[batch()]] except that in each iteration of the result,
+     * only one row of data is returned. For example,
+     *
+     * ```php
+     * $query = (new Query)->from('user');
+     * foreach ($query->each() as $row) {
+     * }
+     * ```
+     *
+     * @param string $scrollWindow how long Elasticsearch should keep the search context alive,
+     * in [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units)
+     * @param Connection $db the database connection. If not set, the `elasticsearch` application component will be used.
+     * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
+     * and can be traversed to retrieve the data in batches.
+     * @since 2.0.4
+     */
+    public function each($scrollWindow = '1m', $db = null)
+    {
+        return Yii::createObject([
+            'class' => BatchQueryResult::className(),
+            'query' => $this,
+            'scrollWindow' => $scrollWindow,
+            'db' => $db,
+            'each' => true,
+        ]);
+    }
+
+    /**
      * Sets the filter part of this search query.
      * @param string $filter
      * @return $this the query object itself
@@ -514,4 +605,53 @@ class Query extends Component implements QueryInterface
         $this->timeout = $timeout;
         return $this;
     }
+
+    /**
+     * @param float $minScore Exclude documents which have a `_score` less than the minimum specified minScore
+     * @return static the query object itself
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
+     * @since 2.0.4
+     */
+    public function minScore($minScore)
+    {
+        $this->minScore = $minScore;
+        return $this;
+    }
+
+    /**
+     * Sets the options to be passed to the command created by this query.
+     * @param array $options the options to be set.
+     * @return $this the query object itself
+     * @throws InvalidParamException if $options is not an array
+     * @see Command::$options
+     * @since 2.0.4
+     */
+    public function options($options)
+    {
+        if (!is_array($options)) {
+            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+        }
+
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Adds more options, overwriting existing options.
+     * @param array $options the options to be added.
+     * @return $this the query object itself
+     * @throws InvalidParamException if $options is not an array
+     * @see options()
+     * @since 2.0.4
+     */
+    public function addOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+        }
+
+        $this->options = array_merge($this->options, $options);
+        return $this;
+    }
+
 }

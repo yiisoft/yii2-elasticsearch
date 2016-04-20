@@ -35,18 +35,41 @@ class Connection extends Component
      */
     public $autodetectCluster = true;
     /**
-     * @var array cluster nodes
+     * @var array The elasticsearch cluster nodes to connect to.
+     *
      * This is populated with the result of a cluster nodes request when [[autodetectCluster]] is true.
+     *
+     * Additional special options:
+     *
+     *  - `auth`: overrides [[auth]] property. For example:
+     *
+     * ```php
+     * [
+     *  'http_address' => 'inet[/127.0.0.1:9200]',
+     *  'auth' => ['username' => 'yiiuser', 'password' => 'yiipw'], // Overrides the `auth` property of the class with specific login and password
+     *  //'auth' => ['username' => 'yiiuser', 'password' => 'yiipw'], // Disabled auth regardless of `auth` property of the class
+     * ]
+     * ```
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html#cluster-nodes-info
      */
     public $nodes = [
         ['http_address' => 'inet[/127.0.0.1:9200]'],
     ];
     /**
-     * @var array the active node. key of [[nodes]]. Will be randomly selected on [[open()]].
+     * @var string the active node. Key of one of the [[nodes]]. Will be randomly selected on [[open()]].
      */
     public $activeNode;
-    // TODO http://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html#_host_configuration
+    /**
+     * @var array Authentication data used to connect to the ElasticSearch node.
+     *
+     * Array elements:
+     *
+     *  - `username`: the username for authentication.
+     *  - `password`: the password for authentication.
+     *
+     * Array either MUST contain both username and password on not contain any authentication credentials.
+     * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
+     */
     public $auth = [];
     /**
      * @var float timeout to use for connecting to an elasticsearch node.
@@ -65,6 +88,7 @@ class Connection extends Component
      * @var resource the curl instance returned by [curl_init()](http://php.net/manual/en/function.curl-init.php).
      */
     private $_curl;
+
 
     public function init()
     {
@@ -110,22 +134,40 @@ class Connection extends Component
         }
         $this->_curl = curl_init();
         if ($this->autodetectCluster) {
-            $node = reset($this->nodes);
-            $host = $node['http_address'];
-            if (strncmp($host, 'inet[/', 6) == 0) {
-                $host = substr($host, 6, -1);
-            }
-            $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
-            $this->nodes = $response['nodes'];
-            if (empty($this->nodes)) {
-                curl_close($this->_curl);
-                throw new Exception('cluster autodetection did not find any active node.');
-            }
+            $this->populateNodes();
         }
         $this->selectActiveNode();
         Yii::trace('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
             . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
+    }
+
+    /**
+     * Populates [[nodes]] with the result of a cluster nodes request.
+     * @throws Exception if no active node(s) found
+     * @since 2.0.4
+     */
+    protected function populateNodes()
+    {
+        $node = reset($this->nodes);
+        $host = $node['http_address'];
+        if (strncmp($host, 'inet[/', 6) === 0) {
+            $host = substr($host, 6, -1);
+        }
+        $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
+        if (!empty($response['nodes'])) {
+            // Make sure that nodes have an 'http_address' property, which is not the case if you're using AWS
+            // Elasticsearch service (at least as of Oct., 2015).
+            foreach ($response['nodes'] as &$node) {
+                if (!isset($node['http_address'])) {
+                    $node['http_address'] = $host;
+                }
+            }
+            $this->nodes = $response['nodes'];
+        } else {
+            curl_close($this->_curl);
+            throw new Exception('Cluster autodetection did not find any active node.');
+        }
     }
 
     /**
@@ -200,13 +242,13 @@ class Connection extends Component
     /**
      * Performs GET HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function get($url, $options = [], $body = null, $raw = false)
     {
@@ -217,12 +259,12 @@ class Connection extends Component
     /**
      * Performs HEAD HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function head($url, $options = [], $body = null)
     {
@@ -233,13 +275,13 @@ class Connection extends Component
     /**
      * Performs POST HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function post($url, $options = [], $body = null, $raw = false)
     {
@@ -250,13 +292,13 @@ class Connection extends Component
     /**
      * Performs PUT HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function put($url, $options = [], $body = null, $raw = false)
     {
@@ -267,13 +309,13 @@ class Connection extends Component
     /**
      * Performs DELETE HTTP request
      *
-     * @param string $url URL
+     * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
      * @param boolean $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function delete($url, $options = [], $body = null, $raw = false)
     {
@@ -284,7 +326,7 @@ class Connection extends Component
     /**
      * Creates URL
      *
-     * @param mixed $path path
+     * @param string|array $path path
      * @param array $options URL options
      * @return array
      */
@@ -314,9 +356,9 @@ class Connection extends Component
      * @param string $url URL
      * @param string $requestBody request body
      * @param boolean $raw if response body contains JSON and should be decoded
+     * @return mixed if request failed
      * @throws Exception if request failed
-     * @throws \yii\base\InvalidParamException
-     * @return mixed response
+     * @throws InvalidConfigException
      */
     protected function httpRequest($method, $url, $requestBody = null, $raw = false)
     {
@@ -352,6 +394,20 @@ class Connection extends Component
             CURLOPT_CUSTOMREQUEST  => $method,
             CURLOPT_FORBID_REUSE   => false,
         ];
+
+        if (!empty($this->auth) || isset($this->nodes[$this->activeNode]['auth']) && $this->nodes[$this->activeNode]['auth'] !== false) {
+            $auth = isset($this->nodes[$this->activeNode]['auth']) ? $this->nodes[$this->activeNode]['auth'] : $this->auth;
+            if (empty($auth['username'])) {
+                throw new InvalidConfigException('Username is required to use authentication');
+            }
+            if (empty($auth['password'])) {
+                throw new InvalidConfigException('Password is required to use authentication');
+            }
+
+            $options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
+            $options[CURLOPT_USERPWD] = $auth['username'] . ':' . $auth['password'];
+        }
+
         if ($this->connectionTimeout !== null) {
             $options[CURLOPT_CONNECTTIMEOUT] = $this->connectionTimeout;
         }
@@ -420,7 +476,7 @@ class Connection extends Component
                         'responseBody' => $body,
                     ]);
                 }
-                if (isset($headers['content-type']) && !strncmp($headers['content-type'], 'application/json', 16)) {
+                if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json', 16) || !strncmp($headers['content-type'], 'text/plain', 10))) {
                     return $raw ? $body : Json::decode($body);
                 }
                 throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
@@ -470,7 +526,7 @@ class Connection extends Component
     {
         try {
             $decoded = Json::decode($body);
-            if (isset($decoded['error'])) {
+            if (isset($decoded['error']) && !is_array($decoded['error'])) {
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;

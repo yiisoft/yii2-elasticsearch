@@ -39,6 +39,9 @@ class Command extends Component
      * @var array list of arrays or json strings that become parts of a query
      */
     public $queryParts;
+    /**
+     * @var array options to be appended to the query URL, such as "search_type" for search or "timeout" for delete
+     */
     public $options = [];
 
 
@@ -56,11 +59,11 @@ class Command extends Component
         if (is_array($query)) {
             $query = Json::encode($query);
         }
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            $this->type !== null ? $this->type : '_all',
-            '_search'
-        ];
+        $url = [$this->index !== null ? $this->index : '_all'];
+        if ($this->type !== null) {
+            $url[] = $this->type;
+        }
+        $url[] = '_search';
 
         return $this->db->get($url, array_merge($this->options, $options), $query);
     }
@@ -82,11 +85,11 @@ class Command extends Component
             $query['filter'] = $this->queryParts['filter'];
         }
         $query = Json::encode($query);
-        $url = [
-            $this->index !== null ? $this->index : '_all',
-            $this->type !== null ? $this->type : '_all',
-            '_query'
-        ];
+        $url = [$this->index !== null ? $this->index : '_all'];
+        if ($this->type !== null) {
+            $url[] = $this->type;
+        }
+        $url[] = '_query';
 
         return $this->db->delete($url, array_merge($this->options, $options), $query);
     }
@@ -294,7 +297,66 @@ class Command extends Component
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
 
-    // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html
+    /**
+     * Change specific index level settings in real time.
+     * Note that update analyzers required to [[close()]] the index first and [[open()]] it after the changes are made,
+     * use [[updateAnalyzers()]] for it.
+     *
+     * @param string $index
+     * @param string|array $setting
+     * @param array $options URL options
+     * @return mixed
+     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
+     * @since 2.0.4
+     */
+    public function updateSettings($index, $setting, $options = [])
+    {
+        $body = $setting !== null ? (is_string($setting) ? $setting : Json::encode($setting)) : null;
+        return $this->db->put([$index, '_settings'], $options, $body);
+    }
+
+    /**
+     * Define new analyzers for the index.
+     * For example if content analyzer hasn’t been defined on "myindex" yet
+     * you can use the following commands to add it:
+     *
+     * ~~~
+     *  $setting = [
+     *      'analysis' => [
+     *          'analyzer' => [
+     *              'ngram_analyzer_with_filter' => [
+     *                  'tokenizer' => 'ngram_tokenizer',
+     *                  'filter' => 'lowercase, snowball'
+     *              ],
+     *          ],
+     *          'tokenizer' => [
+     *              'ngram_tokenizer' => [
+     *                  'type' => 'nGram',
+     *                  'min_gram' => 3,
+     *                  'max_gram' => 10,
+     *                  'token_chars' => ['letter', 'digit', 'whitespace', 'punctuation', 'symbol']
+     *              ],
+     *          ],
+     *      ]
+     * ];
+     * $elasticQuery->createCommand()->updateAnalyzers('myindex', $setting);
+     * ~~~
+     *
+     * @param string $index
+     * @param string|array $setting
+     * @param array $options URL options
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html#update-settings-analysis
+     * @since 2.0.4
+     */
+    public function updateAnalyzers($index, $setting, $options = [])
+    {
+        $this->closeIndex($index);
+        $result = $this->updateSettings($index, $setting, $options);
+        $this->openIndex($index);
+        return $result;
+    }
+    
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-settings.html
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-warmers.html
@@ -317,6 +379,28 @@ class Command extends Component
     public function closeIndex($index)
     {
         return $this->db->post([$index, '_close']);
+    }
+
+    /**
+     * @param array $options
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
+     * @return mixed
+     * @since 2.0.4
+     */
+    public function scroll($options = [])
+    {
+       return $this->db->get(['_search', 'scroll'], $options);
+    }
+
+    /**
+     * @param array $options
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
+     * @return mixed
+     * @since 2.0.4
+     */
+    public function clearScroll($options = [])
+    {
+       return $this->db->delete(['_search', 'scroll'], $options);
     }
 
     /**
@@ -367,9 +451,10 @@ class Command extends Component
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/0.90/indices-gateway-snapshot.html
 
     /**
-     * @param $index
-     * @param $type
-     * @param $mapping
+     * @param string $index
+     * @param string $type
+     * @param string|array $mapping
+     * @param array $options
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
      */
@@ -386,9 +471,13 @@ class Command extends Component
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-mapping.html
      */
-    public function getMapping($index = '_all', $type = '_all')
+    public function getMapping($index = '_all', $type = null)
     {
-        return $this->db->get([$index, '_mapping', $type]);
+        $url = [$index, '_mapping'];
+        if ($type !== null) {
+            $url[] = $type;
+        }
+        return $this->db->get($url);
     }
 
     /**
