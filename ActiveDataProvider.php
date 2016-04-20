@@ -16,7 +16,7 @@ use yii\base\InvalidConfigException;
  *
  * Note: this data provider fetches result models and total count using single ElasticSearch query, so results total
  * count will be fetched after pagination limit applying, which eliminates ability to verify if requested page number
- * actually exist. Data provider disables `yii\data\Pagination::validatePage` automatically because of this.
+ * actually exist. Data provider disables [[yii\data\Pagination::validatePage]] automatically because of this.
  *
  * @property array $queryResults the query results.
  * @property array $aggregations all aggregations results.

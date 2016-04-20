@@ -4,14 +4,8 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.5 under development
 -----------------------
 
-- Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
-
-
-2.0.4 under development
------------------------
-
 - Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
-
+- Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
 
 
 2.0.4 March 17, 2016
