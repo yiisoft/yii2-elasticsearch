@@ -15,6 +15,7 @@ Usage
 
 * [Using the Query](usage-query.md)
 * [Using the ActiveRecord](usage-ar.md)
+* [Working with data providers](usage-data-providers.md)
 
 Additional topics
 -----------------
