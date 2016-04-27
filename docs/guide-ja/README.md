@@ -14,6 +14,7 @@ Yii 2.0 elasticsearch エクステンション
 
 * [クエリを使う](usage-query.md)
 * [アクティブレコードを使う](usage-ar.md)
+* [データプロバイダと連携する](usage-data-providers.md)
 
 追加のトピック
 --------------
