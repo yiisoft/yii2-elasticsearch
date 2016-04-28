@@ -12,7 +12,7 @@ Getting Started
 
 Usage
 ----- 
-
+* [Data Mapping & Indexing](mapping-indexing.md)
 * [Using the Query](usage-query.md)
 * [Using the ActiveRecord](usage-ar.md)
 * [Working with data providers](usage-data-providers.md)
