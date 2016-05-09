@@ -125,7 +125,7 @@ class CustomerQuery extends ActiveQuery
         return ['match' => ['address' => $address]];
     }
 
-    public static function dateRange($dateFrom, $dateTo)
+    public static function registrationDateRange($dateFrom, $dateTo)
     {
         return ['range' => ['registration_date' => [
             'gte' => $dateFrom,
