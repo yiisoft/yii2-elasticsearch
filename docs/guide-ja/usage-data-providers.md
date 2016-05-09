@@ -33,9 +33,9 @@ $models = $provider->getModels();
 
 ただし、ページネーションを有効にして [[\yii\data\ActiveDataProvider]] を使用するのは非効率的です。
 何故なら、ページネーションのためには、総アイテム数を取得するための余計なクエリが追加で必要になるからです。
-また、クエリアグリゲーションの結果にアクセスすることも出来ません。
+また、クエリの集合 (Aggregations) の結果にアクセスすることも出来ません。
 代りに、 `yii\elasticsearch\ActiveDataProvider` を使うことが出来ます。
-こちらであれば、'meta' 情報のクエリを使って総アイテム数を準備したり、アグリゲーションの結果を取得したりすることが出来ます。
+こちらであれば、'meta' 情報のクエリを使って総アイテム数を準備したり、集合の結果を取得したりすることが出来ます。
 
 ```php
 use yii\elasticsearch\ActiveDataProvider;

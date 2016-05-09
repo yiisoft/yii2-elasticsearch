@@ -11,7 +11,7 @@ Yii 2.0 elasticsearch エクステンション
 
 使用方法
 --------
-
+* [データのマッピングとインデクシング](mapping-indexing.md)
 * [クエリを使う](usage-query.md)
 * [アクティブレコードを使う](usage-ar.md)
 * [データプロバイダと連携する](usage-data-providers.md)

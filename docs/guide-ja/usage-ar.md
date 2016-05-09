@@ -60,7 +60,7 @@ elasticsearch のアクティブレコードの一般的な使用方法は、[�
 - Elasticsearch はデータストレージであると同時に検索エンジンでもありますので、当然ながら、レコードの検索に対するサポートが追加されています。
   Elasticsearch のクエリを構成するための [[yii\elasticsearch\ActiveQuery::query()|query()]]、[[yii\elasticsearch\ActiveQuery::filter()|filter()]] そして [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] というメソッドがあります。
   これらがどのように働くかについて、下の使用例を見てください。
-  また、`query` と `filter` の部分を構成する方法については、[Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) を参照してください。
+  また、`query` と `filter` の部分を構成する方法については、[クエリ DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) を参照してください。
 - Elasticsearch のアクティブレコードから通常のアクティブレコードクラスへのリレーションを定義することも可能です。また、その逆も可能です。
 
 > Note: デフォルトでは、elasticsearch は、どんなクエリでも、返されるレコードの数を 10 に限定しています。
@@ -100,5 +100,79 @@ $query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
 $query->search(); // 全てのレコード、および、visit_count フィールドに関する統計 (例えば、平均、合計、最小、最大など) を取得
 ```
 
-そして、まだ、いろいろと沢山あります。
-"it's endless what you can build"[?](https://www.elastic.co/)
+## 複雑なクエリ
+
+どのようなクエリでも、ElasticSearch のクエリ DSL を使って作成して `ActiveRecord::query()` メソッドに渡すことが出来ます。
+しかし、ES のクエリ DSL は冗長さで悪名高いものです。
+長すぎるクエリは、すぐに管理できないものになってしまいます。
+クエリをもっと保守しやすくする方法があります。
+SQL ベースの `ActiveRecord` のために定義されているようなクエリクラスを定義することから始めましょう。
+
+```php
+class CustomerQuery extends ActiveQuery
+{
+    public static function name($name)
+    {
+        return ['match' => ['name' => $name]];
+    }
+
+    public static function address($address)
+    {
+        return ['match' => ['address' => $address]];
+    }
+
+    public static function registrationDateRange($dateFrom, $dateTo)
+    {
+        return ['range' => ['registration_date' => [
+            'gte' => $dateFrom,
+            'lte' => $dateTo,
+        ]]];
+    }
+}
+
+```
+
+こうすれば、これらのクエリコンポーネントを、結果となるクエリやフィルタを組み上げるために使用することが出来ます。
+
+```php
+$customers = Customer::find()->filter([
+    CustomerQuery::registrationDateRange('2016-01-01', '2016-01-20'),
+])->query([
+    'bool' => [
+        'should' => [
+            CustomerQuery::name('John'),
+            CustomerQuery::address('London'),
+        ],
+        'must_not' => [
+            CustomerQuery::name('Jack'),
+        ],
+    ],
+])->all();
+```
+
+## 集合 (Aggregations)
+
+[集合フレームワーク](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) が、検索クエリに基づいた集合データを提供するのを助けてくれます。
+これは集合 (aggregation) と呼ばれる単純な構成要素に基づくもので、複雑なデータの要約を構築するために作成することが出来るものです。
+
+以前に定義された `Customer` クラスを使って、毎日何人の顧客が登録されているかを検索しましょう。
+そうするために `terms` 集合を使います。
+
+
+```php
+$aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
+    'field' => 'registration_date',
+    'order' => ['_count' => 'desc'],
+    'size' => 10, // 登録日の上位 10
+])->search(null, ['search_type' => 'count']);
+
+```                    
+
+この例では、集合の結果だけを特にリクエストしています。
+データを更に処理するために次のコードを使います。
+
+```php
+$customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date']['buckets'], 'key', 'doc_count');
+```
+
+これで `$customersByDate` に、ユーザー登録数の最も多い日付け上位 10 個が入ります。
