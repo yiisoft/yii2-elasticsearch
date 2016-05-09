@@ -231,6 +231,21 @@ class Connection extends Component
     }
 
     /**
+     * Creates a bulk command for execution.
+     * @param array $config the configuration for the BulkCommand class
+     * @return BulkCommand the DB command
+     * @since 2.0.5
+     */
+    public function createBulkCommand($config = [])
+    {
+        $this->open();
+        $config['db'] = $this;
+        $command = new BulkCommand($config);
+
+        return $command;
+    }
+
+    /**
      * Creates new query builder instance
      * @return QueryBuilder
      */

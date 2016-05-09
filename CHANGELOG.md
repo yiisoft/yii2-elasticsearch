@@ -8,7 +8,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
 - Enh #60: Minor updates to guide (devypt, beowulfenator)
 - Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
-
+- Enh: Bulk API implemented and used in AR (tibee, beowulfenator)
 
 2.0.4 March 17, 2016
 --------------------
