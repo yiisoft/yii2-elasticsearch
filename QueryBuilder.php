@@ -348,6 +348,13 @@ class QueryBuilder extends \yii\base\Object
         return $filter;
     }
 
+    /**
+     * Builds a half-bounded range condition
+     * (for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators)
+     * @param string $operator
+     * @param array $operands
+     * @return array Filter expression
+     */
     private function buildHalfBoundedRangeCondition($operator, $operands)
     {
         if (!isset($operands[0], $operands[1])) {
@@ -371,14 +378,14 @@ class QueryBuilder extends \yii\base\Object
             $range_operator = 'lt';
         }
 
-        if (null === $range_operator) {
+        if ($range_operator === null) {
             throw new InvalidParamException("Operator '$operator' is not implemented.");
         }
 
         $filter = [
             'range' => [
-                "$column" => [
-                    "$range_operator" => $value
+                $column => [
+                    $range_operator => $value
                 ]
             ]
         ];
