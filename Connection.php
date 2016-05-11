@@ -232,7 +232,7 @@ class Connection extends Component
 
     /**
      * Creates a bulk command for execution.
-     * @param array $config the configuration for the BulkCommand class
+     * @param array $config the configuration for the [[BulkCommand]] class
      * @return BulkCommand the DB command
      * @since 2.0.5
      */

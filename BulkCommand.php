@@ -12,7 +12,7 @@ use yii\base\InvalidCallException;
 use yii\helpers\Json;
 
 /**
- * The BulkCommand class implements the API for accessing the elasticsearch bulk REST API.
+ * The [[BulkCommand]] class implements the API for accessing the elasticsearch bulk REST API.
  *
  * Further details on bulk API is available in
  * [elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html).
@@ -52,11 +52,11 @@ class BulkCommand extends Component
     public function execute()
     {
         //valid endpoints are /_bulk, /{index}/_bulk, and {index}/{type}/_bulk
-        if (null === $this->index && null === $this->type) {
+        if ($this->index === null && $this->type === null) {
             $endpoint = ['_bulk'];
-        } elseif (null !== $this->index && null === $this->type) {
+        } elseif ($this->index !== null && $this->type === null) {
             $endpoint = [$this->index, '_bulk'];
-        } elseif (null !== $this->index && null !== $this->type) {
+        } elseif ($this->index !== null && $this->type !== null) {
             $endpoint = [$this->index, $this->type, '_bulk'];
         } else {
             throw new InvalidCallException('Invalid endpoint: if type is defined, index must be defined too.');
@@ -67,7 +67,7 @@ class BulkCommand extends Component
         } elseif (is_array($this->actions)) {
             $body = '';
             foreach ($this->actions as $action) {
-                $body .= Json::encode($action)."\n";
+                $body .= Json::encode($action) . "\n";
             }
         } else {
             $body = $this->actions;
@@ -88,18 +88,18 @@ class BulkCommand extends Component
 
         $this->actions[] = $line1;
 
-        if (null !== $line2) {
+        if ($line2 !== null) {
             $this->actions[] = $line2;
         }
     }
 
     /**
      * Adds a delete action to the command.
+     * @param string $id Document ID
      * @param string $index Index that the document belogs to. Can be set to null if the command has
      * a default index ([[BulkCommand::$index]]) assigned.
      * @param string $type Type that the document belogs to. Can be set to null if the command has
      * a default type ([[BulkCommand::$type]]) assigned.
-     * @param string $id Document ID
      */
     public function addDeleteAction($id, $index = null, $type = null)
     {
