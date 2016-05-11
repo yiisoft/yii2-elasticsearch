@@ -185,6 +185,14 @@ class QueryBuilder extends \yii\base\Object
             'not like' => 'buildLikeCondition',
             'or like' => 'buildLikeCondition',
             'or not like' => 'buildLikeCondition',
+            'lt' => 'buildHalfBoundedRangeCondition',
+            '<' => 'buildHalfBoundedRangeCondition',
+            'lte' => 'buildHalfBoundedRangeCondition',
+            '<=' => 'buildHalfBoundedRangeCondition',
+            'gt' => 'buildHalfBoundedRangeCondition',
+            '>' => 'buildHalfBoundedRangeCondition',
+            'gte' => 'buildHalfBoundedRangeCondition',
+            '>=' => 'buildHalfBoundedRangeCondition',
         ];
 
         if (empty($condition)) {
@@ -336,6 +344,51 @@ class QueryBuilder extends \yii\base\Object
         if ($operator == 'not in') {
             $filter = ['not' => $filter];
         }
+
+        return $filter;
+    }
+
+    /**
+     * Builds a half-bounded range condition
+     * (for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators)
+     * @param string $operator
+     * @param array $operands
+     * @return array Filter expression
+     */
+    private function buildHalfBoundedRangeCondition($operator, $operands)
+    {
+        if (!isset($operands[0], $operands[1])) {
+            throw new InvalidParamException("Operator '$operator' requires two operands.");
+        }
+
+        list($column, $value) = $operands;
+        if ($column == '_id') {
+            $column = '_uid';
+        }
+
+        $range_operator = null;
+
+        if (in_array($operator, ['gte', '>='])) {
+            $range_operator = 'gte';
+        } else if (in_array($operator, ['lte', '<='])) {
+            $range_operator = 'lte';
+        } else if (in_array($operator, ['gt', '>'])) {
+            $range_operator = 'gt';
+        } else if (in_array($operator, ['lt', '<'])) {
+            $range_operator = 'lt';
+        }
+
+        if ($range_operator === null) {
+            throw new InvalidParamException("Operator '$operator' is not implemented.");
+        }
+
+        $filter = [
+            'range' => [
+                $column => [
+                    $range_operator => $value
+                ]
+            ]
+        ];
 
         return $filter;
     }

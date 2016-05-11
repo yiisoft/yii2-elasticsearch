@@ -7,6 +7,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
 - Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
 - Enh #60: Minor updates to guide (devypt, beowulfenator)
+- Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
 
 
 2.0.4 March 17, 2016
