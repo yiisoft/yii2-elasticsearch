@@ -559,7 +559,8 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * Performs a quick and highly efficient scroll/scan query to get the list of primary keys that
-     * satisfy the given condition.
+     * satisfy the given condition. If condition is a list of primary keys
+     * (e.g.: `['_id' => ['1', '2', '3']]`), the query is not performed for performance considerations.
      * @param array $condition please refer to [[ActiveQuery::where()]] on how to specify this parameter
      * @return array primary keys that correspond to given conditions
      * @see updateAll()
@@ -588,12 +589,13 @@ class ActiveRecord extends BaseActiveRecord
      * For example, to change the status to be 1 for all customers whose status is 2:
      *
      * ~~~
-     * Customer::updateAll(['status' => 1], [2, 3, 4]);
+     * Customer::updateAll(['status' => 1], ['status' => 2]);
      * ~~~
      *
      * @param array $attributes attribute values (name-value pairs) to be saved into the table
-     * @param array $condition the conditions that will be put in the WHERE part of the UPDATE SQL.
+     * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return integer the number of rows updated
      * @throws Exception on error.
      */
@@ -639,16 +641,17 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * Updates all matching records using the provided counter changes and conditions.
-     * For example, to increment all customers' age by 1,
+     * For example, to add 1 to age of all customers whose status is 2,
      *
      * ~~~
-     * Customer::updateAllCounters(['age' => 1]);
+     * Customer::updateAllCounters(['age' => 1], ['status' => 2]);
      * ~~~
      *
      * @param array $counters the counters to be updated (attribute name => increment value).
      * Use negative values if you want to decrement the counters.
-     * @param string|array $condition the conditions that will be put in the WHERE part of the UPDATE SQL.
-     * Please refer to [[Query::where()]] on how to specify this parameter.
+     * @param array $condition the conditions that will be passed to the `where()` method when building the query.
+     * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return integer the number of rows updated
      * @throws Exception on error.
      */
@@ -775,11 +778,12 @@ class ActiveRecord extends BaseActiveRecord
      * For example, to delete all customers whose status is 3:
      *
      * ~~~
-     * Customer::deleteAll('status = 3');
+     * Customer::deleteAll(['status' => 3]);
      * ~~~
      *
-     * @param array $condition the conditions that will be put in the WHERE part of the DELETE SQL.
+     * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return integer the number of rows deleted
      * @throws Exception on error.
      */
