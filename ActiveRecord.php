@@ -605,24 +605,16 @@ class ActiveRecord extends BaseActiveRecord
         if (empty($primaryKeys)) {
             return 0;
         }
-        $bulk = '';
-        foreach ($primaryKeys as $pk) {
-            $action = Json::encode([
-                "update" => [
-                    "_id" => $pk,
-                    "_type" => static::type(),
-                    "_index" => static::index(),
-                ],
-            ]);
-            $data = Json::encode([
-                "doc" => $attributes
-            ]);
-            $bulk .= $action . "\n" . $data . "\n";
-        }
 
-        // TODO do this via command
-        $url = [static::index(), static::type(), '_bulk'];
-        $response = static::getDb()->post($url, [], $bulk);
+        $bulkCommand = static::getDb()->createBulkCommand([
+            "index" => static::index(),
+            "type" => static::type(),
+        ]);
+        foreach ($primaryKeys as $pk) {
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["doc" => $attributes]);
+        }
+        $response = $bulkCommand->execute();
+
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {
@@ -661,30 +653,20 @@ class ActiveRecord extends BaseActiveRecord
         if (empty($primaryKeys) || empty($counters)) {
             return 0;
         }
-        $bulk = '';
+
+        $bulkCommand = static::getDb()->createBulkCommand([
+            "index" => static::index(),
+            "type" => static::type(),
+        ]);
         foreach ($primaryKeys as $pk) {
-            $action = Json::encode([
-                "update" => [
-                    "_id" => $pk,
-                    "_type" => static::type(),
-                    "_index" => static::index(),
-                ],
-            ]);
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.$counter += $counter;\n";
+                $script .= "ctx._source.{$counter} += {$counter};\n";
             }
-            $data = Json::encode([
-                "script" => $script,
-                "params" => $counters,
-                "lang" => "groovy",
-            ]);
-            $bulk .= $action . "\n" . $data . "\n";
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["script" => $script, "params" => $counters, "lang" => "groovy"]);
         }
+        $response = $bulkCommand->execute();
 
-        // TODO do this via command
-        $url = [static::index(), static::type(), '_bulk'];
-        $response = static::getDb()->post($url, [], $bulk);
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {
@@ -793,20 +775,16 @@ class ActiveRecord extends BaseActiveRecord
         if (empty($primaryKeys)) {
             return 0;
         }
-        $bulk = '';
-        foreach ($primaryKeys as $pk) {
-            $bulk .= Json::encode([
-                "delete" => [
-                    "_id" => $pk,
-                    "_type" => static::type(),
-                    "_index" => static::index(),
-                ],
-            ]) . "\n";
-        }
 
-        // TODO do this via command
-        $url = [static::index(), static::type(), '_bulk'];
-        $response = static::getDb()->post($url, [], $bulk);
+        $bulkCommand = static::getDb()->createBulkCommand([
+            "index" => static::index(),
+            "type" => static::type(),
+        ]);
+        foreach ($primaryKeys as $pk) {
+            $bulkCommand->addDeleteAction($pk);
+        }
+        $response = $bulkCommand->execute();
+
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {
