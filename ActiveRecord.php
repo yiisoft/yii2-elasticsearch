@@ -559,7 +559,8 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * Performs a quick and highly efficient scroll/scan query to get the list of primary keys that
-     * satisfy the given condition.
+     * satisfy the given condition. If condition is a list of primary keys
+     * (e.g.: `['_id' => ['1', '2', '3']]`), the query is not performed for performance considerations.
      * @param array $condition please refer to [[ActiveQuery::where()]] on how to specify this parameter
      * @return array primary keys that correspond to given conditions
      * @see updateAll()
@@ -588,12 +589,13 @@ class ActiveRecord extends BaseActiveRecord
      * For example, to change the status to be 1 for all customers whose status is 2:
      *
      * ~~~
-     * Customer::updateAll(['status' => 1], [2, 3, 4]);
+     * Customer::updateAll(['status' => 1], ['status' => 2]);
      * ~~~
      *
      * @param array $attributes attribute values (name-value pairs) to be saved into the table
-     * @param array $condition the conditions that will be put in the WHERE part of the UPDATE SQL.
+     * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return integer the number of rows updated
      * @throws Exception on error.
      */
@@ -603,24 +605,16 @@ class ActiveRecord extends BaseActiveRecord
         if (empty($primaryKeys)) {
             return 0;
         }
-        $bulk = '';
-        foreach ($primaryKeys as $pk) {
-            $action = Json::encode([
-                "update" => [
-                    "_id" => $pk,
-                    "_type" => static::type(),
-                    "_index" => static::index(),
-                ],
-            ]);
-            $data = Json::encode([
-                "doc" => $attributes
-            ]);
-            $bulk .= $action . "\n" . $data . "\n";
-        }
 
-        // TODO do this via command
-        $url = [static::index(), static::type(), '_bulk'];
-        $response = static::getDb()->post($url, [], $bulk);
+        $bulkCommand = static::getDb()->createBulkCommand([
+            "index" => static::index(),
+            "type" => static::type(),
+        ]);
+        foreach ($primaryKeys as $pk) {
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["doc" => $attributes]);
+        }
+        $response = $bulkCommand->execute();
+
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {
@@ -639,16 +633,17 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * Updates all matching records using the provided counter changes and conditions.
-     * For example, to increment all customers' age by 1,
+     * For example, to add 1 to age of all customers whose status is 2,
      *
      * ~~~
-     * Customer::updateAllCounters(['age' => 1]);
+     * Customer::updateAllCounters(['age' => 1], ['status' => 2]);
      * ~~~
      *
      * @param array $counters the counters to be updated (attribute name => increment value).
      * Use negative values if you want to decrement the counters.
-     * @param string|array $condition the conditions that will be put in the WHERE part of the UPDATE SQL.
-     * Please refer to [[Query::where()]] on how to specify this parameter.
+     * @param array $condition the conditions that will be passed to the `where()` method when building the query.
+     * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return integer the number of rows updated
      * @throws Exception on error.
      */
@@ -658,30 +653,20 @@ class ActiveRecord extends BaseActiveRecord
         if (empty($primaryKeys) || empty($counters)) {
             return 0;
         }
-        $bulk = '';
+
+        $bulkCommand = static::getDb()->createBulkCommand([
+            "index" => static::index(),
+            "type" => static::type(),
+        ]);
         foreach ($primaryKeys as $pk) {
-            $action = Json::encode([
-                "update" => [
-                    "_id" => $pk,
-                    "_type" => static::type(),
-                    "_index" => static::index(),
-                ],
-            ]);
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.$counter += $counter;\n";
+                $script .= "ctx._source.{$counter} += {$counter};\n";
             }
-            $data = Json::encode([
-                "script" => $script,
-                "params" => $counters,
-                "lang" => "groovy",
-            ]);
-            $bulk .= $action . "\n" . $data . "\n";
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["script" => $script, "params" => $counters, "lang" => "groovy"]);
         }
+        $response = $bulkCommand->execute();
 
-        // TODO do this via command
-        $url = [static::index(), static::type(), '_bulk'];
-        $response = static::getDb()->post($url, [], $bulk);
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {
@@ -775,11 +760,12 @@ class ActiveRecord extends BaseActiveRecord
      * For example, to delete all customers whose status is 3:
      *
      * ~~~
-     * Customer::deleteAll('status = 3');
+     * Customer::deleteAll(['status' => 3]);
      * ~~~
      *
-     * @param array $condition the conditions that will be put in the WHERE part of the DELETE SQL.
+     * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return integer the number of rows deleted
      * @throws Exception on error.
      */
@@ -789,20 +775,16 @@ class ActiveRecord extends BaseActiveRecord
         if (empty($primaryKeys)) {
             return 0;
         }
-        $bulk = '';
-        foreach ($primaryKeys as $pk) {
-            $bulk .= Json::encode([
-                "delete" => [
-                    "_id" => $pk,
-                    "_type" => static::type(),
-                    "_index" => static::index(),
-                ],
-            ]) . "\n";
-        }
 
-        // TODO do this via command
-        $url = [static::index(), static::type(), '_bulk'];
-        $response = static::getDb()->post($url, [], $bulk);
+        $bulkCommand = static::getDb()->createBulkCommand([
+            "index" => static::index(),
+            "type" => static::type(),
+        ]);
+        foreach ($primaryKeys as $pk) {
+            $bulkCommand->addDeleteAction($pk);
+        }
+        $response = $bulkCommand->execute();
+
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {

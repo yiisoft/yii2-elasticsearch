@@ -51,6 +51,11 @@ class Customer extends ActiveRecord
         return $this->hasMany(OrderWithNullFK::className(), ['customer_id' => 'id'])->orderBy('created_at');
     }
 
+    public function getOrdersWithItems()
+    {
+        return $this->hasMany(Order::className(), ['customer_id' => 'id'])->with('orderItems');
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         ActiveRecordTest::$afterSaveInsert = $insert;

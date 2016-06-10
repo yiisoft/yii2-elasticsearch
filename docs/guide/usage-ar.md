@@ -107,4 +107,73 @@ $query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
 $query->search(); // gives you all the records + stats about the visit_count field. e.g. mean, sum, min, max etc...
 ```
 
-And there is so much more in it. "it’s endless what you can build"[?](https://www.elastic.co/)
+## Complex queries
+
+Any query can be composed using ElasticSearch's query DSL and passed to the `ActiveRecord::query()` method. However, ES query DSL is notorious for its verbosity, and these oversized queries soon become unmanageable.
+Here is a method to make queries more maintainable. Start by defining a query class just as it is done for SQL-based `ActiveRecord`.
+
+```php
+class CustomerQuery extends ActiveQuery
+{
+    public static function name($name)
+    {
+        return ['match' => ['name' => $name]];
+    }
+
+    public static function address($address)
+    {
+        return ['match' => ['address' => $address]];
+    }
+
+    public static function registrationDateRange($dateFrom, $dateTo)
+    {
+        return ['range' => ['registration_date' => [
+            'gte' => $dateFrom,
+            'lte' => $dateTo,
+        ]]];
+    }
+}
+
+```
+
+Now you can use these query components to assemble the resulting query and/or filter.
+
+```php
+$customers = Customer::find()->filter([
+    CustomerQuery::registrationDateRange('2016-01-01', '2016-01-20'),
+])->query([
+    'bool' => [
+        'should' => [
+            CustomerQuery::name('John'),
+            CustomerQuery::address('London'),
+        ],
+        'must_not' => [
+            CustomerQuery::name('Jack'),
+        ],
+    ],
+])->all();
+```
+
+## Aggregation
+
+[The aggregations framework](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) helps provide aggregated data based on a search query. It is based on simple building blocks called aggregations, that can be composed in order to build complex summaries of the data.  
+
+Using the previously defined `Customer` class, let's find out how many customers have registered each day. To do that we use the `terms` aggregation.
+
+
+```php
+$aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
+    'field' => 'registration_date',
+    'order' => ['_count' => 'desc'],
+    'size' => 10, //top 10 registration dates
+])->search(null, ['search_type' => 'count']);
+
+```                    
+
+In this example we are specifically requesting aggregation results only. The following code further process the data.
+
+```php
+$customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date']['buckets'], 'key', 'doc_count');
+```
+
+Now `$customersByDate` contains 10 dates that correspond to the the highest number of users registered.

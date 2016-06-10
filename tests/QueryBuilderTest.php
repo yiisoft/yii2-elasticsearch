@@ -34,10 +34,10 @@ class QueryBuilderTest extends TestCase
     private function prepareDbData()
     {
         $command = $this->getConnection()->createCommand();
-        $command->insert('yiitest', 'article', ['title' => 'I love yii!', 'weight' => 1], 1);
-        $command->insert('yiitest', 'article', ['title' => 'Symfony2 is another framework', 'weight' => 2], 2);
-        $command->insert('yiitest', 'article', ['title' => 'Yii2 out now!', 'weight' => 3], 3);
-        $command->insert('yiitest', 'article', ['title' => 'yii test', 'weight' => 4], 4);
+        $command->insert('yiitest', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'], 1);
+        $command->insert('yiitest', 'article', ['title' => 'Symfony2 is another framework', 'weight' => 2, 'created_at' => '2010-01-15'], 2);
+        $command->insert('yiitest', 'article', ['title' => 'Yii2 out now!', 'weight' => 3, 'created_at' => '2010-01-20'], 3);
+        $command->insert('yiitest', 'article', ['title' => 'yii test', 'weight' => 4, 'created_at' => '2012-05-11'], 4);
 
         $command->flushIndex('yiitest');
     }
@@ -113,4 +113,64 @@ class QueryBuilderTest extends TestCase
         $result = $query->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);
     }
+
+    public function testHalfBoundedRange()
+    {
+        // >= 2010-01-15, 3 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['>=', 'created_at', '2010-01-15'])
+                    ->search($this->getConnection());
+        $this->assertEquals(3, $result['hits']['total']);
+
+        // >= 2010-01-15, 3 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['gte', 'created_at', '2010-01-15'])
+                    ->search($this->getConnection());
+        $this->assertEquals(3, $result['hits']['total']);
+
+        // > 2010-01-15, 2 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['>', 'created_at', '2010-01-15'])
+                    ->search($this->getConnection());
+        $this->assertEquals(2, $result['hits']['total']);
+
+        // > 2010-01-15, 2 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['gt', 'created_at', '2010-01-15'])
+                    ->search($this->getConnection());
+        $this->assertEquals(2, $result['hits']['total']);
+
+        // <= 2010-01-20, 3 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['<=', 'created_at', '2010-01-20'])
+                    ->search($this->getConnection());
+        $this->assertEquals(3, $result['hits']['total']);
+
+        // <= 2010-01-20, 3 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['lte', 'created_at', '2010-01-20'])
+                    ->search($this->getConnection());
+        $this->assertEquals(3, $result['hits']['total']);
+
+        // < 2010-01-20, 2 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['<', 'created_at', '2010-01-20'])
+                    ->search($this->getConnection());
+        $this->assertEquals(2, $result['hits']['total']);
+
+        // < 2010-01-20, 2 results
+        $result = (new Query())
+                    ->from('yiitest', 'article')
+                    ->where(['lt', 'created_at', '2010-01-20'])
+                    ->search($this->getConnection());
+        $this->assertEquals(2, $result['hits']['total']);
+    }
+
 }
