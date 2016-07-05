@@ -133,6 +133,12 @@ class Query extends Component implements QueryInterface
      */
     public $filter;
     /**
+     * @var string|array The `post_filter` part of the search query for differentially filter search results and aggregations.
+     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/_post_filter.html
+     * @since 2.0.5
+     */
+    public $postFilter;
+    /**
      * @var array The highlight part of this search query. This is an array that allows to highlight search results
      * on one or more fields.
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
@@ -654,4 +660,15 @@ class Query extends Component implements QueryInterface
         return $this;
     }
 
+    /**
+     * Set the `post_filter` part of the search query.
+     * @param string|array $filter
+     * @return $this the query object itself
+     * @see $postFilter
+     */
+    public function addPostFilter($filter)
+    {
+        $this->postFilter = $filter;
+        return $this;
+    }
 }
