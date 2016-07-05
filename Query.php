@@ -412,6 +412,8 @@ class Query extends Component implements QueryInterface
     }
 
     /**
+     * @deprecated since 2.0.5 use addAggragate() instead
+     *
      * Adds an aggregation to this query.
      * @param string $name the name of the aggregation
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
@@ -421,11 +423,12 @@ class Query extends Component implements QueryInterface
      */
     public function addAggregation($name, $type, $options)
     {
-        $this->aggregations[$name] = [$type => $options];
-        return $this;
+        return $this->addAggregate($name, [$type => $options]);
     }
 
     /**
+     * @deprecated since 2.0.5 use addAggragate() instead
+     *
      * Adds an aggregation to this query.
      *
      * This is an alias for [[addAggregation]].
@@ -438,9 +441,22 @@ class Query extends Component implements QueryInterface
      */
     public function addAgg($name, $type, $options)
     {
-        return $this->addAggregation($name, $type, $options);
+        return $this->addAggregate($name, [$type => $options]);
     }
 
+    /**
+     * Adds an aggregation to this query. Supports nested aggregations.
+     * @param string $name the name of the aggregation
+     * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
+     * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
+     * @return $this the query object itself
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.3/search-aggregations.html
+     */
+    public function addAggregate($name, $options)
+    {
+        $this->aggregations[$name] = $options;
+        return $this;
+    }
     /**
      * Adds a suggester to this query.
      * @param string $name the name of the suggester
