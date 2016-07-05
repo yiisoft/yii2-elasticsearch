@@ -226,7 +226,13 @@ class QueryTest extends TestCase
     public function testFilterWhereRecursively()
     {
         $query = new Query();
-        $query->filterWhere(['and', ['like', 'name', ''], ['like', 'title', ''], ['id' => 1], ['not', ['like', 'name', '']]]);
+        $query->filterWhere([
+            'and',
+            ['like', 'name', ''],
+            ['like', 'title', ''],
+            ['id' => 1],
+            ['not', ['like', 'name', '']]
+        ]);
         $this->assertEquals(['and', ['id' => 1]], $query->where);
     }
 
@@ -302,7 +308,8 @@ class QueryTest extends TestCase
 
         //test each
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        $query->from('yiitest',
+            'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $result_keys = [];
@@ -320,7 +327,8 @@ class QueryTest extends TestCase
 
         //test batch
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        $query->from('yiitest',
+            'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $results = [];
@@ -346,5 +354,22 @@ class QueryTest extends TestCase
         $this->assertEquals(12, count($results));
         sort($results);
         $this->assertEquals($names, $results);
+    }
+
+    /**
+     * @group postfilter
+     * @since 2.0.5
+     */
+    public function testPostFilter()
+    {
+        $postFilter = [
+            'match' => ['status' => 2]
+        ];
+        $query = new Query();
+        $query->from('yiitest', 'user');
+        $query->addPostFilter($postFilter);
+        $query->addAggregation('statuses', 'terms', ['field' => 'status']);
+        $result = $query->search($this->getConnection());
+        $this->assertEquals(3, $result['hits']['total']);
     }
 }

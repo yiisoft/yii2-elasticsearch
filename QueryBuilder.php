@@ -51,7 +51,7 @@ class QueryBuilder extends \yii\base\Object
         } elseif ($query->fields !== null) {
             $fields = [];
             $scriptFields = [];
-            foreach($query->fields as $key => $field) {
+            foreach ($query->fields as $key => $field) {
                 if (is_int($key)) {
                     $fields[] = $field;
                 } else {
@@ -72,14 +72,14 @@ class QueryBuilder extends \yii\base\Object
             $parts['size'] = $query->limit;
         }
         if ($query->offset > 0) {
-            $parts['from'] = (int) $query->offset;
+            $parts['from'] = (int)$query->offset;
         }
         if (isset($query->minScore)) {
-            $parts['min_score'] = (float) $query->minScore;
+            $parts['min_score'] = (float)$query->minScore;
         }
 
         if (empty($query->query)) {
-            $parts['query'] = ["match_all" => (object) []];
+            $parts['query'] = ["match_all" => (object)[]];
         } else {
             $parts['query'] = $query->query;
         }
@@ -112,6 +112,9 @@ class QueryBuilder extends \yii\base\Object
         }
         if (!empty($query->suggest)) {
             $parts['suggest'] = $query->suggest;
+        }
+        if (!empty($query->postFilter)) {
+            $parts['post_filter'] = $query->postFilter;
         }
 
         $sort = $this->buildOrderBy($query->orderBy);
@@ -301,7 +304,7 @@ class QueryBuilder extends \yii\base\Object
 
         list($column, $values) = $operands;
 
-        $values = (array) $values;
+        $values = (array)$values;
 
         if (empty($values) || $column === []) {
             return $operator === 'in' ? ['terms' => ['_uid' => []]] : []; // this condition is equal to WHERE false
@@ -328,7 +331,12 @@ class QueryBuilder extends \yii\base\Object
             } else {
                 $filter = ['ids' => ['values' => array_values($values)]];
                 if ($canBeNull) {
-                    $filter = ['or' => [$filter, ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]]];
+                    $filter = [
+                        'or' => [
+                            $filter,
+                            ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]
+                        ]
+                    ];
                 }
             }
         } else {
@@ -337,7 +345,12 @@ class QueryBuilder extends \yii\base\Object
             } else {
                 $filter = ['in' => [$column => array_values($values)]];
                 if ($canBeNull) {
-                    $filter = ['or' => [$filter, ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]]];
+                    $filter = [
+                        'or' => [
+                            $filter,
+                            ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]
+                        ]
+                    ];
                 }
             }
         }
@@ -370,12 +383,18 @@ class QueryBuilder extends \yii\base\Object
 
         if (in_array($operator, ['gte', '>='])) {
             $range_operator = 'gte';
-        } else if (in_array($operator, ['lte', '<='])) {
-            $range_operator = 'lte';
-        } else if (in_array($operator, ['gt', '>'])) {
-            $range_operator = 'gt';
-        } else if (in_array($operator, ['lt', '<'])) {
-            $range_operator = 'lt';
+        } else {
+            if (in_array($operator, ['lte', '<='])) {
+                $range_operator = 'lte';
+            } else {
+                if (in_array($operator, ['gt', '>'])) {
+                    $range_operator = 'gt';
+                } else {
+                    if (in_array($operator, ['lt', '<'])) {
+                        $range_operator = 'lt';
+                    }
+                }
+            }
         }
 
         if ($range_operator === null) {

@@ -165,6 +165,12 @@ class Query extends Component implements QueryInterface
      * @since 2.0.4
      */
     public $options = [];
+    /**
+     * @var string|array The post filter query for differentially filter search results and aggregations
+     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/_post_filter.html
+     * @since 2.0.5
+     */
+    public $postFilter = [];
 
 
     /**
@@ -651,6 +657,17 @@ class Query extends Component implements QueryInterface
         }
 
         $this->options = array_merge($this->options, $options);
+        return $this;
+    }
+
+    /**
+     * Set the post filter query
+     * @param string|array $filter
+     * @return $this the query object itself
+     */
+    public function addPostFilter($filter)
+    {
+        $this->postFilter = $filter;
         return $this;
     }
 

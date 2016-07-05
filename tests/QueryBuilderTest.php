@@ -34,9 +34,12 @@ class QueryBuilderTest extends TestCase
     private function prepareDbData()
     {
         $command = $this->getConnection()->createCommand();
-        $command->insert('yiitest', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'], 1);
-        $command->insert('yiitest', 'article', ['title' => 'Symfony2 is another framework', 'weight' => 2, 'created_at' => '2010-01-15'], 2);
-        $command->insert('yiitest', 'article', ['title' => 'Yii2 out now!', 'weight' => 3, 'created_at' => '2010-01-20'], 3);
+        $command->insert('yiitest', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'],
+            1);
+        $command->insert('yiitest', 'article',
+            ['title' => 'Symfony2 is another framework', 'weight' => 2, 'created_at' => '2010-01-15'], 2);
+        $command->insert('yiitest', 'article',
+            ['title' => 'Yii2 out now!', 'weight' => 3, 'created_at' => '2010-01-20'], 3);
         $command->insert('yiitest', 'article', ['title' => 'yii test', 'weight' => 4, 'created_at' => '2012-05-11'], 4);
 
         $command->flushIndex('yiitest');
@@ -51,8 +54,27 @@ class QueryBuilderTest extends TestCase
         $build = $queryBuilder->build($query);
         $this->assertTrue(array_key_exists('queryParts', $build));
         $this->assertTrue(array_key_exists('query', $build['queryParts']));
-        $this->assertFalse(array_key_exists('match_all', $build['queryParts']), 'Match all should not be set');
         $this->assertSame($queryParts, $build['queryParts']['query']);
+        $this->assertFalse(array_key_exists('match_all', $build['queryParts']), 'Match all should not be set');
+    }
+
+    /**
+     * @group postfilter
+     */
+    public function testQueryBuilderPostFilterQuery()
+    {
+        $postFilter = [
+            'bool' => [
+                'must' => [
+                    ['term' => ['title' => 'yii test']]
+                ]
+            ]
+        ];
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $query = new Query();
+        $query->addPostFilter($postFilter);
+        $build = $queryBuilder->build($query);
+        $this->assertSame($postFilter, $build['queryParts']['post_filter']);
     }
 
     public function testYiiCanBeFoundByQuery()
@@ -72,9 +94,11 @@ class QueryBuilderTest extends TestCase
                 'boost_mode' => 'replace',
                 'query' => ['term' => ['title' => 'yii']],
                 'functions' => [
-                    ['script_score' => [
-                        'script' => "doc['weight'].getValue()",
-                    ]],
+                    [
+                        'script_score' => [
+                            'script' => "doc['weight'].getValue()",
+                        ]
+                    ],
                 ],
             ],
         ];
@@ -118,58 +142,58 @@ class QueryBuilderTest extends TestCase
     {
         // >= 2010-01-15, 3 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['>=', 'created_at', '2010-01-15'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['>=', 'created_at', '2010-01-15'])
+            ->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);
 
         // >= 2010-01-15, 3 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['gte', 'created_at', '2010-01-15'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['gte', 'created_at', '2010-01-15'])
+            ->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);
 
         // > 2010-01-15, 2 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['>', 'created_at', '2010-01-15'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['>', 'created_at', '2010-01-15'])
+            ->search($this->getConnection());
         $this->assertEquals(2, $result['hits']['total']);
 
         // > 2010-01-15, 2 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['gt', 'created_at', '2010-01-15'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['gt', 'created_at', '2010-01-15'])
+            ->search($this->getConnection());
         $this->assertEquals(2, $result['hits']['total']);
 
         // <= 2010-01-20, 3 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['<=', 'created_at', '2010-01-20'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['<=', 'created_at', '2010-01-20'])
+            ->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);
 
         // <= 2010-01-20, 3 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['lte', 'created_at', '2010-01-20'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['lte', 'created_at', '2010-01-20'])
+            ->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);
 
         // < 2010-01-20, 2 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['<', 'created_at', '2010-01-20'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['<', 'created_at', '2010-01-20'])
+            ->search($this->getConnection());
         $this->assertEquals(2, $result['hits']['total']);
 
         // < 2010-01-20, 2 results
         $result = (new Query())
-                    ->from('yiitest', 'article')
-                    ->where(['lt', 'created_at', '2010-01-20'])
-                    ->search($this->getConnection());
+            ->from('yiitest', 'article')
+            ->where(['lt', 'created_at', '2010-01-20'])
+            ->search($this->getConnection());
         $this->assertEquals(2, $result['hits']['total']);
     }
 
