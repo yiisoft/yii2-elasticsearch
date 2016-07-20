@@ -13,8 +13,9 @@ class ElasticSearchConnectionTest extends TestCase
     {
         $connection = new Connection();
         $connection->autodetectCluster;
+        $config = require "data/config.php";
         $connection->nodes = [
-            ['http_address' => 'inet[/127.0.0.1:9200]'],
+            ['http_address' => $config['elasticsearch']['nodes'][0]['http_address']],
         ];
         $this->assertNull($connection->activeNode);
         $connection->open();
