@@ -89,13 +89,27 @@ class Connection extends Component
      */
     private $_curl;
 
+    /**
+     * @var array List of nodes where HTTPS protocol was specified in configuration,
+     *            for example https://example.com
+     */
+    private $httpsHosts = [];
+
 
     public function init()
     {
-        foreach ($this->nodes as $node) {
+        foreach ($this->nodes as &$node) {
             if (!isset($node['http_address'])) {
                 throw new InvalidConfigException('Elasticsearch node needs at least a http_address configured.');
             }
+
+            // #82 Allow to connect to ES cluster using HTTPS
+            if (substr($node['http_address'], 0, 8) === 'https://') {
+                $node['http_address'] = substr($node['http_address'], 8);
+                $this->httpsHosts[]   = $node['http_address'];
+            }
+
+            $node['http_address'] = str_replace('http://', '', $node['http_address']);
         }
     }
 
@@ -154,7 +168,7 @@ class Connection extends Component
         if (strncmp($host, 'inet[/', 6) === 0) {
             $host = substr($host, 6, -1);
         }
-        $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
+        $response = $this->httpRequest('GET', $this->getProtocol($host) . $host . '/_nodes');
         if (!empty($response['nodes'])) {
             // Make sure that nodes have an 'http_address' property, which is not the case if you're using AWS
             // Elasticsearch service (at least as of Oct., 2015).
@@ -448,7 +462,7 @@ class Connection extends Component
                 }
             }
             $profile = $method . ' ' . $q . '#' . $requestBody;
-            $url = 'http://' . $host . '/' . $q;
+            $url     = $this->getProtocol($host) . $host . '/' . $q;
         } else {
             $profile = false;
         }
@@ -558,5 +572,19 @@ class Connection extends Component
     public function getClusterState()
     {
         return $this->get(['_cluster', 'state']);
+    }
+
+    /**
+     * Retrieve protocol
+     *
+     * https:// should be appended to HTTPS nodes instead of http://
+     *
+     * @author Denys Dorofeiev <dor.denis.de@gmail.com>
+     *
+     * @return string
+     */
+    protected function getProtocol($host)
+    {
+        return in_array($host, $this->httpsHosts) ? 'https://' : 'http://';
     }
 }
