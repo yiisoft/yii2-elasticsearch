@@ -497,8 +497,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $attributes attributes to update
      * @param array $options options given in this parameter are passed to elasticsearch
      * as request URI parameters. See [[update()]] for details.
-     * @return integer|boolean the number of rows affected, or false if validation fails
-     * or [[beforeSave()]] stops the updating process.
+     * @return integer|false the number of rows affected, or false if [[beforeSave()]] stops the updating process.
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
      * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
      * @throws Exception in case update failed.
