@@ -149,24 +149,22 @@ class Connection extends Component
      */
     protected function populateNodes()
     {
-        $node = reset($this->nodes);
-        $host = $node['http_address'];
-        if (strncmp($host, 'inet[/', 6) === 0) {
-            $host = substr($host, 6, -1);
-        }
-        $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
-        if (!empty($response['nodes'])) {
-            // Make sure that nodes have an 'http_address' property, which is not the case if you're using AWS
-            // Elasticsearch service (at least as of Oct., 2015).
+        foreach ($this->nodes as $node) {
+            $host = $node['http_address'];
+            if (strncmp($host, 'inet[/', 6) === 0) {
+                $host = substr($host, 6, -1);
+            }
+            $response = $this->httpRequest('GET', 'http://' . $host . '/_nodes');
+            if (empty($response['nodes'])) {
+                continue;
+            }
             foreach ($response['nodes'] as &$node) {
                 if (!isset($node['http_address'])) {
                     $node['http_address'] = $host;
                 }
             }
             $this->nodes = $response['nodes'];
-        } else {
-            curl_close($this->_curl);
-            throw new Exception('Cluster autodetection did not find any active node.');
+            return;
         }
     }
 
@@ -175,8 +173,20 @@ class Connection extends Component
      */
     protected function selectActiveNode()
     {
+        $sumScore = [];
+        $currentSumScore = 0;
+        foreach ($this->nodes as $key => $node) {
+            $currentSumScore += isset($node['weight']) ? (int)$node['weight'] : 1;
+            $sumScore[$key] = $currentSumScore;
+        }
         $keys = array_keys($this->nodes);
-        $this->activeNode = $keys[rand(0, count($keys) - 1)];
+        $seed = rand(0, $sumScore - 1);
+        foreach ($sumScore as $score) {
+            if ($seed < $score) {
+                $this->activeNode = array_keys($keys, $score);
+                return;
+            }
+        }
     }
 
     /**
