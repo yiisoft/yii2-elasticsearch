@@ -365,7 +365,7 @@ class QueryTest extends TestCase
         ];
         $query = new Query();
         $query->from('yiitest', 'user');
-        $query->addPostFilter($postFilter);
+        $query->postFilter($postFilter);
         $query->addAggregation('statuses', 'terms', ['field' => 'status']);
         $result = $query->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);

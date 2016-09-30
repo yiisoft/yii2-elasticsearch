@@ -69,7 +69,7 @@ class QueryBuilderTest extends TestCase
         ];
         $queryBuilder = new QueryBuilder($this->getConnection());
         $query = new Query();
-        $query->addPostFilter($postFilter);
+        $query->postFilter($postFilter);
         $build = $queryBuilder->build($query);
         $this->assertSame($postFilter, $build['queryParts']['post_filter']);
     }

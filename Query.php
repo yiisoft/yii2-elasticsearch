@@ -665,8 +665,9 @@ class Query extends Component implements QueryInterface
      * @param string|array $filter
      * @return $this the query object itself
      * @see $postFilter
+     * @since 2.0.5
      */
-    public function addPostFilter($filter)
+    public function postFilter($filter)
     {
         $this->postFilter = $filter;
         return $this;
