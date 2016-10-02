@@ -99,6 +99,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         $config = self::getParam('elasticsearch');
         $db = new Connection($config);
+        $db->init();
         if ($reset) {
             $db->open();
         }
