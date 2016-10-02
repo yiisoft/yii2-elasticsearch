@@ -361,7 +361,7 @@ class QueryTest extends TestCase
     public function testPostFilter()
     {
         $postFilter = [
-            'match' => ['status' => 2]
+            'term' => ['status' => 2]
         ];
         $query = new Query();
         $query->from('yiitest', 'user');
