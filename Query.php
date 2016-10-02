@@ -150,6 +150,11 @@ class Query extends Component implements QueryInterface
      */
     public $aggregations = [];
     /**
+     * @var array List of buckets aggregations to add to this query.
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     */
+    public $buckets = [];
+    /**
      * @var array the 'stats' part of the query. An array of groups to maintain a statistics aggregation for.
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#stats-groups
      */
@@ -445,6 +450,21 @@ class Query extends Component implements QueryInterface
     public function addAgg($name, $type, $options)
     {
         return $this->addAggregation($name, $type, $options);
+    }
+
+    /**
+     * Adds  bucket to aggregations in this query.
+     * @param string $parent the name of the aggregation to insert bucket
+     * @param string $name the name of the bucket
+     * @param string $type the bucket type. e.g. `terms`, `range`, `histogram`...
+     * @param string|array $options the configuration options for this bucket aggregation. Can be an array or a json string.
+     * @return static the query object itself
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     */
+    public function addBucket($parent, $name, $type, $options)
+    {
+        $this->buckets[$parent][$name] = [$type => $options];
+        return $this;
     }
 
     /**
