@@ -30,7 +30,7 @@ class ElasticsearchTarget extends Target
      * @var Connection|array|string the elasticsearch connection object or the application component ID
      * of the elasticsearch connection.
      */
-    public $elasticsearch = 'elasticsearch';
+    public $db = 'elasticsearch';
     /**
      * @var array $options URL options.
      */
@@ -61,7 +61,7 @@ class ElasticsearchTarget extends Target
     public function init()
     {
         parent::init();
-        $this->elasticsearch = Instance::ensure($this->elasticsearch, Connection::className());
+        $this->db = Instance::ensure($this->db, Connection::className());
     }
 
     /**
@@ -71,7 +71,7 @@ class ElasticsearchTarget extends Target
     {
         $messages = array_map([$this, 'prepareMessage'], $this->messages);
         $body = implode("\n", $messages) . "\n";
-        $this->elasticsearch->post([$this->index, $this->type, '_bulk'], $this->options, $body);
+        $this->db->post([$this->index, $this->type, '_bulk'], $this->options, $body);
     }
 
     /**
