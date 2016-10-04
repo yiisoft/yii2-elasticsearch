@@ -173,7 +173,7 @@ class Connection extends Component
         if (strncmp($host, 'inet[/', 6) === 0) {
             $host = substr($host, 6, -1);
         }
-        $response = $this->httpRequest('GET', $protocol.'://' . $host . '/_nodes');
+        $response = $this->httpRequest('GET', "$protocol://$host/_nodes");
         if (!empty($response['nodes'])) {
             $nodes = $response['nodes'];
         } else {
@@ -481,8 +481,8 @@ class Connection extends Component
                     $host = substr($host, $pos + 1);
                 }
             }
-            $profile = $method . ' ' . $q . '#' . $requestBody;
-            $url = $protocol.'://' . $host . '/' . $q;
+            $profile = "$method $q#$requestBody";
+            $url = "$protocol://$host/$q";
         } else {
             $profile = false;
         }
