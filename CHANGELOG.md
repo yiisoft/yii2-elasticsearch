@@ -11,6 +11,8 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
 - Enh: Bulk API implemented and used in AR (tibee, beowulfenator)
 - Enh #82: Support HTTPS protocol (dor-denis, beowulfenator)
+- Enh #43: Elasticsearch log target (trntv, beowulfenator)
+
 
 2.0.4 March 17, 2016
 --------------------
