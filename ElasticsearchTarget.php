@@ -15,6 +15,7 @@ use yii\log\Target;
  * ElasticsearchTarget stores log messages in a elasticsearch index.
  *
  * @author Eugene Terentev <eugene@terentev.net>
+ * @since 2.0.5
  */
 class ElasticsearchTarget extends Target
 {
@@ -45,7 +46,7 @@ class ElasticsearchTarget extends Target
      */
     public $includeContext = false;
     /**
-     * @var boolean If true, context message will cached once it's been created. Makes sense to use with `includeContext`.
+     * @var boolean If true, context message will cached once it's been created. Makes sense to use with [[includeContext]].
      */
     public $cacheContext = false;
     /**
@@ -75,9 +76,9 @@ class ElasticsearchTarget extends Target
     }
 
     /**
-     * If `includeContext` property is false, returns context message normally.
-     * If `includeContext` is true, returns an empty string (so that context message in `collect` is not generated),
-     * expecting that context will be appended to every message in `prepareMessage`.
+     * If [[includeContext]] property is false, returns context message normally.
+     * If [[includeContext]] is true, returns an empty string (so that context message in [[collect]] is not generated),
+     * expecting that context will be appended to every message in [[prepareMessage]].
      * @return array the context information
      */
     protected function getContextMessage()
@@ -93,7 +94,7 @@ class ElasticsearchTarget extends Target
      * Processes the given log messages.
      * This method will filter the given messages with [[levels]] and [[categories]].
      * And if requested, it will also export the filtering result to specific medium (e.g. email).
-     * Depending on the `includeContext` attribute, a context message will be either created or ignored.
+     * Depending on the [[includeContext]] attribute, a context message will be either created or ignored.
      * @param array $messages log messages to be processed. See [[Logger::messages]] for the structure
      * of each message.
      * @param boolean $final whether this method is called at the end of the current application
