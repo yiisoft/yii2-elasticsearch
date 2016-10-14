@@ -262,16 +262,6 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
-     * Accessor method for getting the default primary key.
-     *
-     * @return mixed the value of the primary key
-     */
-    public function get_id()
-    {
-        return $this->_id;
-    }
-
-    /**
      * Returns the list of all attribute names of the model.
      *
      * This method must be overridden by child classes to define available attributes.

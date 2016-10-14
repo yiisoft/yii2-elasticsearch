@@ -9,6 +9,7 @@ namespace yii\elasticsearch;
 
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveQueryInterface;
 
 /**
  * ActiveDataProvider is an enhanced version of [[\yii\data\ActiveDataProvider]] specific to the ElasticSearch.
@@ -115,5 +116,45 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
         $results = $this->getQueryResults();
         return (int)$results['hits']['total'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function prepareKeys($models)
+    {
+        $keys = [];
+        if ($this->key !== null) {
+            foreach ($models as $model) {
+                if (is_string($this->key)) {
+                    $keys[] = $model[$this->key];
+                } else {
+                    $keys[] = call_user_func($this->key, $model);
+                }
+            }
+
+            return $keys;
+        } elseif ($this->query instanceof ActiveQueryInterface) {
+            /* @var $class \yii\db\ActiveRecord */
+            $class = $this->query->modelClass;
+            $pks = $class::primaryKey();
+            if (count($pks) === 1) {
+                foreach ($models as $model) {
+                    $keys[] = $model->primaryKey;
+                }
+            } else {
+                foreach ($models as $model) {
+                    $kk = [];
+                    foreach ($pks as $pk) {
+                        $kk[$pk] = $model[$pk];
+                    }
+                    $keys[] = $kk;
+                }
+            }
+
+            return $keys;
+        } else {
+            return array_keys($models);
+        }
     }
 }
