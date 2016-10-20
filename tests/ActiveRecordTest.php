@@ -923,5 +923,42 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals('meow', $animal->getDoes());
     }
 
+    public function testAttributeAccess()
+    {
+        /* @var $customerClass \yii\db\ActiveRecordInterface */
+        $customerClass = $this->getCustomerClass();
+        $model = new $customerClass();
+
+        $this->assertTrue($model->canSetProperty('name'));
+        $this->assertTrue($model->canGetProperty('name'));
+        $this->assertFalse($model->canSetProperty('unExistingColumn'));
+        $this->assertFalse(isset($model->name));
+
+        $model->name = 'foo';
+        $this->assertTrue(isset($model->name));
+        unset($model->name);
+        $this->assertNull($model->name);
+
+        // @see https://github.com/yiisoft/yii2-gii/issues/190
+        $baseModel = new $customerClass();
+        $this->assertFalse($baseModel->hasProperty('unExistingColumn'));
+
+
+        /* @var $customer ActiveRecord */
+        $customer = new $customerClass();
+        $this->assertTrue($customer instanceof $customerClass);
+
+        $this->assertTrue($customer->canGetProperty('id'));
+        $this->assertTrue($customer->canSetProperty('id'));
+
+        // tests that we really can get and set this property
+        $this->assertNull($customer->id);
+        $customer->id = 10;
+        $this->assertNotNull($customer->id);
+
+        $this->assertFalse($customer->canGetProperty('non_existing_property'));
+        $this->assertFalse($customer->canSetProperty('non_existing_property'));
+    }
+
     // TODO test AR with not mapped PK
 }
