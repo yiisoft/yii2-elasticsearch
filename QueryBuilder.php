@@ -196,6 +196,8 @@ class QueryBuilder extends \yii\base\Object
             '>' => 'buildHalfBoundedRangeCondition',
             'gte' => 'buildHalfBoundedRangeCondition',
             '>=' => 'buildHalfBoundedRangeCondition',
+            'script' => 'buildScriptCondition',
+
         ];
 
         if (empty($condition)) {
@@ -415,4 +417,22 @@ class QueryBuilder extends \yii\base\Object
     {
         throw new NotSupportedException('like conditions are not supported by elasticsearch.');
     }
+    
+    private function buildScriptCondition($operator, $operands)
+    {
+        if (!isset($operands[0])) {
+            throw new InvalidParamException("Operator '$operator' requires at least one operand.");
+        }
+        $filter = [
+            'script' => $operands[0],
+        ];
+        if (!empty($operands[1])) {
+            $filter['params'] = $operands[1];
+        }
+        $filter = [
+        	'script' => $filter
+        ];
+        return $filter;
+    }
+    
 }
