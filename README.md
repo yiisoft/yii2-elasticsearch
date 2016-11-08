@@ -16,7 +16,7 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 Requirements
 ------------
 
-elasticsearch version 1.0 or higher is required.
+This extension works with elasticsearch version 1.0 to 4.x. elasticsearch 5.0 is currently not supported.
 
 Installation
 ------------
