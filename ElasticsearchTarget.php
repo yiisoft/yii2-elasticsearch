@@ -83,7 +83,7 @@ class ElasticsearchTarget extends Target
      */
     protected function getContextMessage()
     {
-        if (null === $this->_contextMessage || !$this->$cacheContext) {
+        if (null === $this->_contextMessage || !$this->cacheContext) {
             $this->_contextMessage = ArrayHelper::filter($GLOBALS, $this->logVars);
         }
 
