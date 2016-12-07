@@ -557,17 +557,6 @@ class Query extends Component implements QueryInterface
     }
 
     /**
-     * Sets the filter part of this search query.
-     * @param string $filter
-     * @return $this the query object itself
-     */
-    public function filter($filter)
-    {
-        $this->filter = $filter;
-        return $this;
-    }
-
-    /**
      * Sets the index and type to retrieve documents from.
      * @param string|array $index The index to retrieve data from. This can be a string representing a single index
      * or a an array of multiple indexes. If this is `null` it means that all indexes are being queried.

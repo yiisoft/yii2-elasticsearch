@@ -78,27 +78,18 @@ class QueryBuilder extends \yii\base\Object
             $parts['min_score'] = (float)$query->minScore;
         }
 
-        if (empty($query->query)) {
-            $parts['query'] = ["match_all" => (object)[]];
-        } else {
-            $parts['query'] = $query->query;
-        }
-
         $whereFilter = $this->buildCondition($query->where);
-        if (is_string($query->filter)) {
-            if (empty($whereFilter)) {
-                $parts['filter'] = $query->filter;
-            } else {
-                $parts['filter'] = '{"and": [' . $query->filter . ', ' . Json::encode($whereFilter) . ']}';
-            }
-        } elseif ($query->filter !== null) {
-            if (empty($whereFilter)) {
-                $parts['filter'] = $query->filter;
-            } else {
-                $parts['filter'] = ['and' => [$query->filter, $whereFilter]];
-            }
-        } elseif (!empty($whereFilter)) {
-            $parts['filter'] = $whereFilter;
+        if ($whereFilter) {
+            $parts['query'] = [
+                'bool' => [
+                    'query' => empty($query->query) ? [ 'match_all' => (object)[] ] : $query->query,
+                    'filter' => $whereFilter,
+                ],
+            ];
+        } else if ($query->query) {
+            $parts['query'] = $query->query;
+        } else {
+            $parts['query'] = [ "match_all" => (object)[] ];
         }
 
         if (!empty($query->highlight)) {
