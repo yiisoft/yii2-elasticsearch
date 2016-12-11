@@ -78,18 +78,11 @@ class QueryBuilder extends \yii\base\Object
             $parts['min_score'] = (float)$query->minScore;
         }
 
-        $whereFilter = $this->buildCondition($query->where);
-        if ($whereFilter) {
-            $parts['query'] = [
-                'bool' => [
-                    'query' => empty($query->query) ? [ 'match_all' => (object)[] ] : $query->query,
-                    'filter' => $whereFilter,
-                ],
-            ];
+        $whereQuery = $this->buildQueryFromWhere($query->where);
+        if ($whereQuery) {
+            $parts['query'] = $whereQuery;
         } else if ($query->query) {
             $parts['query'] = $query->query;
-        } else {
-            $parts['query'] = [ "match_all" => (object)[] ];
         }
 
         if (!empty($query->highlight)) {
@@ -157,6 +150,16 @@ class QueryBuilder extends \yii\base\Object
         return $orders;
     }
 
+    public function buildQueryFromWhere($condition) {
+        $where = $this->buildCondition($condition);
+        $query = [
+            'constant_score' => [
+                'filter' => $where,
+            ],
+        ];
+        return $query;
+    }
+
     /**
      * Parses the condition specification and generates the corresponding SQL expression.
      *
@@ -213,7 +216,7 @@ class QueryBuilder extends \yii\base\Object
 
     private function buildHashCondition($condition)
     {
-        $parts = [];
+        $parts = $emptyFields = [];
         foreach ($condition as $attribute => $value) {
             if ($attribute == '_id') {
                 if ($value === null) { // there is no null pk
@@ -223,18 +226,26 @@ class QueryBuilder extends \yii\base\Object
                 }
             } else {
                 if (is_array($value)) { // IN condition
-                    $parts[] = ['in' => [$attribute => $value]];
+                    $parts[] = ['terms' => [$attribute => $value]];
                 } else {
                     if ($value === null) {
-                        $parts[] = ['missing' => ['field' => $attribute, 'existence' => true, 'null_value' => true]];
+                        $emptyFields[] = [ 'exists' => [ 'field' => $attribute ] ];
                     } else {
                         $parts[] = ['term' => [$attribute => $value]];
                     }
                 }
             }
         }
-
-        return count($parts) === 1 ? $parts[0] : ['and' => $parts];
+        if ($emptyFields) {
+            return [
+                'bool' => [
+                    'must' => $parts,
+                    'must_not' => $emptyFields,
+                ],
+            ];
+        } else {
+            return $parts;
+        }
     }
 
     private function buildNotCondition($operator, $operands)
