@@ -236,16 +236,12 @@ class QueryBuilder extends \yii\base\Object
                 }
             }
         }
-        if ($emptyFields) {
-            return [
-                'bool' => [
-                    'must' => $parts,
-                    'must_not' => $emptyFields,
-                ],
-            ];
-        } else {
-            return $parts;
-        }
+        return [
+            'bool' => [
+                'must' => $parts,
+                'must_not' => $emptyFields,
+            ],
+        ];
     }
 
     private function buildNotCondition($operator, $operands)
