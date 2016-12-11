@@ -540,7 +540,7 @@ class Connection extends Component
         } elseif ($responseCode == 404) {
             return false;
         } else {
-            throw new Exception("Elasticsearch request failed with code $responseCode.", [
+            throw new Exception("Elasticsearch request failed with code $responseCode. Response body:\n{$body}", [
                 'requestMethod' => $method,
                 'requestUrl' => $url,
                 'requestBody' => $requestBody,
