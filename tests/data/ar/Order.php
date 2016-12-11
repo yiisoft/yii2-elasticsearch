@@ -114,7 +114,6 @@ class Order extends ActiveRecord
         $command->deleteMapping(static::index(), static::type());
         $command->setMapping(static::index(), static::type(), [
             static::type() => [
-                "_id" => ["path" => "id", "index" => "not_analyzed", "store" => "yes"],
                 "properties" => [
                     "customer_id" => ["type" => "integer"],
 //					"created_at" => ["type" => "string", "index" => "not_analyzed"],
