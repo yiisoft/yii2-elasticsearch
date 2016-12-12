@@ -152,12 +152,16 @@ class QueryBuilder extends \yii\base\Object
 
     public function buildQueryFromWhere($condition) {
         $where = $this->buildCondition($condition);
-        $query = [
-            'constant_score' => [
-                'filter' => $where,
-            ],
-        ];
-        return $query;
+        if ($where) {
+            $query = [
+                'constant_score' => [
+                    'filter' => $where,
+                ],
+            ];
+            return $query;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -269,10 +273,12 @@ class QueryBuilder extends \yii\base\Object
                 $parts[] = $operand;
             }
         }
-        if (!empty($parts)) {
-            return [$operator => $parts];
-        } else {
-            return [];
+        if ($parts) {
+            return [
+                'bool' => [
+                    'must' => $parts,
+                ]
+            ];
         }
     }
 
