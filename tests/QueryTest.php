@@ -19,6 +19,10 @@ class QueryTest extends TestCase
         if ($command->indexExists('yiitest')) {
             $command->deleteIndex('yiitest');
         }
+        /* FIXME: setup proper mapping for an index?
+         * elasticsearch autocreates field and field.keyword field
+         * for text fields
+         */
 
         $command->insert('yiitest', 'user', ['name' => 'user1', 'email' => 'user1@example.com', 'status' => 1], 1);
         $command->insert('yiitest', 'user', ['name' => 'user2', 'email' => 'user2@example.com', 'status' => 1], 2);
@@ -163,7 +167,7 @@ class QueryTest extends TestCase
         $query = new Query;
         $query->from('yiitest', 'user');
 
-        $result = $query->orderBy(['name' => SORT_ASC])->limit(4)->column('name', $this->getConnection());
+        $result = $query->orderBy(['name.keyword' => SORT_ASC])->limit(4)->column('name', $this->getConnection());
         $this->assertEquals(['user1', 'user2', 'user3', 'user4'], $result);
         $result = $query->column('noname', $this->getConnection());
         $this->assertEquals([null, null, null, null], $result);
@@ -308,7 +312,7 @@ class QueryTest extends TestCase
 
         //test each
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name.keyword' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $result_keys = [];
@@ -326,7 +330,7 @@ class QueryTest extends TestCase
 
         //test batch
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        $query->from('yiitest', 'user')->limit(3)->orderBy(['name.keyword' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $results = [];
