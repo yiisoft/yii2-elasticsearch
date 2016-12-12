@@ -19,12 +19,13 @@ class QueryTest extends TestCase
         if ($command->indexExists('yiitest')) {
             $command->deleteIndex('yiitest');
         }
+        $command->createIndex('yiitest');
 
         $command->setMapping('yiitest', 'user', [
             'properties' => [
                 'name' => [ 'type' => 'keyword', 'store' => true ],
                 'email' => [ 'type' => 'keyword', 'store' => true ],
-                'status' => [ 'type' => 'integer' ],
+                'status' => [ 'type' => 'integer', 'store' => true ],
             ],
         ]);
 

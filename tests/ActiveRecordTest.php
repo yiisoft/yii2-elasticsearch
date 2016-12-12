@@ -409,55 +409,16 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals([], $order->items);
     }
 
-    /**
-     * Some PDO implementations(e.g. cubrid) do not support boolean values.
-     * Make sure this does not affect AR layer.
-     */
-    public function testBooleanAttribute()
-    {
-        $db = $this->getConnection();
-        Customer::deleteAll();
-        Customer::setUpMapping($db->createCommand(), true);
-
-        $customerClass = $this->getCustomerClass();
-        $customer = new $customerClass();
-        $customer->name = 'boolean customer';
-        $customer->email = 'mail@example.com';
-        $customer->status = true;
-        $customer->save(false);
-
-        $customer->refresh();
-        $this->assertEquals(true, $customer->status);
-
-        $customer->status = false;
-        $customer->save(false);
-
-        $customer->refresh();
-        $this->assertEquals(false, $customer->status);
-
-        $customer = new Customer();
-        $customer->setAttributes(['email' => 'user2b@example.com', 'name' => 'user2b', 'status' => true], false);
-        $customer->save(false);
-        $customer = new Customer();
-        $customer->setAttributes(['email' => 'user3b@example.com', 'name' => 'user3b', 'status' => false], false);
-        $customer->save(false);
-        $this->afterSave();
-
-        $customers = Customer::find()->where(['status' => true])->all();
-        $this->assertEquals(1, count($customers));
-
-        $customers = Customer::find()->where(['status' => false])->all();
-        $this->assertEquals(2, count($customers));
-    }
-
     public function testScriptFields()
     {
         $orderItems = OrderItem::find()
-            ->storedFields('quantity', 'subtotal')
+            ->source('quantity', 'subtotal')
             ->scriptFields([
                 'total' => [
-                    'script' => "doc['quantity'].value * doc['subtotal'].value",
-                    'lang' => 'groovy',
+                    'script' => [
+                        'lang' => 'painless',
+                        'inline' => "doc['quantity'].value * doc['subtotal'].value",
+                    ]
                 ]
             ])->all();
         $this->assertNotEmpty($orderItems);
@@ -542,7 +503,7 @@ class ActiveRecordTest extends TestCase
         // indexBy callable + asArray
         $customers = Customer::find()->indexBy(function ($customer) {
                     return $customer->id . '-' . $customer->name;
-                })->fields('id', 'name')->all();
+                })->storedFields('id', 'name')->all();
         $this->assertEquals(3, count($customers));
         $this->assertTrue($customers['1-user1'] instanceof $customerClass);
         $this->assertTrue($customers['2-user2'] instanceof $customerClass);
@@ -568,7 +529,7 @@ class ActiveRecordTest extends TestCase
     {
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
-        $customers = Customer::find()->indexBy('name')->asArray()->fields('id', 'name')->all();
+        $customers = Customer::find()->indexBy('name')->asArray()->storedFields('id', 'name')->all();
         $this->assertEquals(3, count($customers));
         $this->assertArrayHasKey('id', $customers['user1']['fields']);
         $this->assertArrayHasKey('name', $customers['user1']['fields']);
@@ -589,7 +550,7 @@ class ActiveRecordTest extends TestCase
         // indexBy callable + asArray
         $customers = Customer::find()->indexBy(function ($customer) {
                     return reset($customer['fields']['id']) . '-' . reset($customer['fields']['name']);
-                })->asArray()->fields('id', 'name')->all();
+                })->asArray()->storedFields('id', 'name')->all();
         $this->assertEquals(3, count($customers));
         $this->assertArrayHasKey('id', $customers['1-user1']['fields']);
         $this->assertArrayHasKey('name', $customers['1-user1']['fields']);
@@ -959,6 +920,10 @@ class ActiveRecordTest extends TestCase
 
         $this->assertFalse($customer->canGetProperty('non_existing_property'));
         $this->assertFalse($customer->canSetProperty('non_existing_property'));
+    }
+
+    public function testBooleanAttribute()
+    {
     }
 
     // TODO test AR with not mapped PK

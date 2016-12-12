@@ -29,11 +29,10 @@ class Item extends ActiveRecord
      */
     public static function setUpMapping($command)
     {
-        $command->deleteMapping(static::index(), static::type());
         $command->setMapping(static::index(), static::type(), [
             static::type() => [
                 "properties" => [
-                    "name" =>        ["type" => "string", "index" => "not_analyzed"],
+                    "name" =>        ["type" => "keyword", "index" => "not_analyzed", "store" => true],
                     "category_id" =>      ["type" => "integer"],
                 ]
             ]
