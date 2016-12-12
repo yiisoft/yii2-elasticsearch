@@ -78,8 +78,8 @@ class Customer extends ActiveRecord
         $command->setMapping(static::index(), static::type(), [
             static::type() => [
                 "properties" => [
-                    "name" =>        ["type" => "string", "index" => "not_analyzed"],
-                    "email" =>       ["type" => "string", "index" => "not_analyzed"],
+                    "name" =>        ["type" => "string", "index" => "not_analyzed", "store" => true],
+                    "email" =>       ["type" => "string", "index" => "not_analyzed" ],
                     "address" =>     ["type" => "string", "index" => "analyzed"],
                     "status" => $statusIsBoolean ? ["type" => "boolean"] : ["type" => "integer"],
                 ]

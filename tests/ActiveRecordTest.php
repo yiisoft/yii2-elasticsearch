@@ -452,14 +452,14 @@ class ActiveRecordTest extends TestCase
 
     public function testScriptFields()
     {
-        $orderItems = OrderItem::find()->fields([
-                    'quantity',
-                    'subtotal',
-                    'total' => [
-                        'script' => "doc['quantity'].value * doc['subtotal'].value",
-                        'lang' => 'groovy',
-                    ]
-                ])->all();
+        $orderItems = OrderItem::find()
+            ->storedFields('quantity', 'subtotal')
+            ->scriptFields([
+                'total' => [
+                    'script' => "doc['quantity'].value * doc['subtotal'].value",
+                    'lang' => 'groovy',
+                ]
+            ])->all();
         $this->assertNotEmpty($orderItems);
         foreach ($orderItems as $item) {
             $this->assertEquals($item->subtotal * $item->quantity, $item->total);
@@ -470,7 +470,8 @@ class ActiveRecordTest extends TestCase
     {
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
-        $customers = Customer::find()->asArray()->fields(['id', 'name'])->all();
+        $customers = Customer::find()->asArray()
+            ->storedFields(['id', 'name'])->all();
         $this->assertEquals(3, count($customers));
         $this->assertArrayHasKey('id', $customers[0]['fields']);
         $this->assertArrayHasKey('name', $customers[0]['fields']);

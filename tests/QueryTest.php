@@ -49,11 +49,11 @@ class QueryTest extends TestCase
         $query = new Query;
         $query->from('yiitest', 'user');
 
-        $query->fields(['name', 'status']);
-        $this->assertEquals(['name', 'status'], $query->fields);
+        $query->storedFields(['name', 'status']);
+        $this->assertEquals(['name', 'status'], $query->storedFields);
 
-        $query->fields('name', 'status');
-        $this->assertEquals(['name', 'status'], $query->fields);
+        $query->storedFields('name', 'status');
+        $this->assertEquals(['name', 'status'], $query->storedFields);
 
         $result = $query->one($this->getConnection());
         $this->assertEquals(2, count($result['fields']));
@@ -61,15 +61,15 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('name', $result['fields']);
         $this->assertArrayHasKey('_id', $result);
 
-        $query->fields([]);
-        $this->assertEquals([], $query->fields);
+        $query->storedFields([]);
+        $this->assertEquals([], $query->storedFields);
 
         $result = $query->one($this->getConnection());
         $this->assertArrayNotHasKey('fields', $result);
         $this->assertArrayHasKey('_id', $result);
 
-        $query->fields(null);
-        $this->assertNull($query->fields);
+        $query->storedFields(null);
+        $this->assertNull($query->storedFields);
 
         $result = $query->one($this->getConnection());
         $this->assertEquals(3, count($result['_source']));
