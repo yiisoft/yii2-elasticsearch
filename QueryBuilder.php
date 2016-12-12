@@ -176,8 +176,8 @@ class QueryBuilder extends \yii\base\Object
     {
         static $builders = [
             'not' => 'buildNotCondition',
-            'and' => 'buildAndCondition',
-            'or' => 'buildAndCondition',
+            'and' => 'buildBoolCondition',
+            'or' => 'buildBoolCondition',
             'between' => 'buildBetweenCondition',
             'not between' => 'buildBetweenCondition',
             'in' => 'buildInCondition',
@@ -262,9 +262,17 @@ class QueryBuilder extends \yii\base\Object
         return [$operator => $operand];
     }
 
-    private function buildAndCondition($operator, $operands)
+    private function buildBoolCondition($operator, $operands)
     {
         $parts = [];
+        if ($operator == 'and') {
+            $clause = 'must';
+        } else if ($operator == 'or') {
+            $clause = 'should';
+        } else {
+            throw InvalidParamExcepton("Operator should be 'or' or 'and'");
+        }
+
         foreach ($operands as $operand) {
             if (is_array($operand)) {
                 $operand = $this->buildCondition($operand);
@@ -276,9 +284,11 @@ class QueryBuilder extends \yii\base\Object
         if ($parts) {
             return [
                 'bool' => [
-                    'must' => $parts,
+                    $clause => $parts,
                 ]
             ];
+        } else {
+            return null;
         }
     }
 
