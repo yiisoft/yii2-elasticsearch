@@ -377,7 +377,7 @@ class Query extends Component implements QueryInterface
         // http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_search_requests.html
 
         $options = [];
-        $options['search_type'] = 'count';
+        $options['size'] = 0;
 
         return $this->createCommand($db)->search($options)['hits']['total'];
     }
