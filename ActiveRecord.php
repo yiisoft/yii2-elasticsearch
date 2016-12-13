@@ -662,9 +662,15 @@ class ActiveRecord extends BaseActiveRecord
         foreach ($primaryKeys as $pk) {
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.{$counter} += {$counter};\n";
+                $script .= "ctx._source.{$counter} += params.{$counter};\n";
             }
-            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["script" => $script, "params" => $counters, "lang" => "groovy"]);
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], [
+                'script' => [
+                    'inline' => $script,
+                    'params' => $counters,
+                    'lang' => 'painless',
+                ],
+            ]);
         }
         $response = $bulkCommand->execute();
 
