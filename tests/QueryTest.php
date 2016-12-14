@@ -181,6 +181,26 @@ class QueryTest extends TestCase
 
     }
 
+    public function testAndWhere() {
+        $query = new Query;
+        $query->where(1)
+            ->andWhere(2)
+            ->andWhere(3);
+
+        $expected = [ 'and', 1, 2, 3 ];
+        $this->assertEquals($expected, $query->where);
+    }
+
+    public function testOrWhere() {
+        $query = new Query;
+        $query->where(1)
+            ->orWhere(2)
+            ->orWhere(3);
+
+        $expected = [ 'or', 1, 2, 3 ];
+        $this->assertEquals($expected, $query->where);
+    }
+
     public function testFilterWhere()
     {
         // should work with hash format

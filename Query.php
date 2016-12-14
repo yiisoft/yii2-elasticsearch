@@ -696,6 +696,36 @@ class Query extends Component implements QueryInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function andWhere($condition)
+    {
+        if ($this->where === null) {
+            $this->where = $condition;
+        } else if (isset($this->where[0]) && $this->where[0] == 'and') {
+            $this->where[] = $condition;
+        } else {
+            $this->where = ['and', $this->where, $condition];
+        }
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function orWhere($condition)
+    {
+        if ($this->where === null) {
+            $this->where = $condition;
+        } else if (isset($this->where[0]) && $this->where[0] == 'or') {
+            $this->where[] = $condition;
+        } else {
+            $this->where = ['or', $this->where, $condition];
+        }
+        return $this;
+    }
+
+    /**
      * Set the `post_filter` part of the search query.
      * @param string|array $filter
      * @return $this the query object itself
