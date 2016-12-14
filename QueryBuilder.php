@@ -247,7 +247,11 @@ class QueryBuilder extends \yii\base\Object
             $operand = $this->buildCondition($operand);
         }
 
-        return [$operator => $operand];
+        return [
+            'bool' => [
+                'must_not' => $operand,
+            ],
+        ];
     }
 
     private function buildBoolCondition($operator, $operands)
@@ -292,7 +296,7 @@ class QueryBuilder extends \yii\base\Object
         }
         $filter = ['range' => [$column => ['gte' => $value1, 'lte' => $value2]]];
         if ($operator == 'not between') {
-            $filter = ['not' => $filter];
+            $filter = ['bool' => ['must_not'=>$filter]];
         }
 
         return $filter;
@@ -334,30 +338,45 @@ class QueryBuilder extends \yii\base\Object
                 $filter = ['ids' => ['values' => array_values($values)]];
                 if ($canBeNull) {
                     $filter = [
-                        'or' => [
-                            $filter,
-                            ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]
-                        ]
+                        'bool' => [
+                            'should' => [
+                                $filter,
+                                'bool' => ['must_not' => ['exists' => ['field'=>$column]]],
+                            ],
+                        ],
                     ];
                 }
             }
         } else {
             if (empty($values) && $canBeNull) {
-                $filter = ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]];
+                $filter = [
+                    'bool' => [
+                        'must_not' => [
+                            'exists' => [ 'field' => $column ],
+                        ]
+                    ]
+                ];
             } else {
-                $filter = ['in' => [$column => array_values($values)]];
+                $filter = [ 'terms' => [$column => array_values($values)] ];
                 if ($canBeNull) {
                     $filter = [
-                        'or' => [
-                            $filter,
-                            ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]
-                        ]
+                        'bool' => [
+                            'should' => [
+                                $filter,
+                                'bool' => ['must_not' => ['exists' => ['field'=>$column]]],
+                            ],
+                        ],
                     ];
                 }
             }
         }
+
         if ($operator == 'not in') {
-            $filter = ['not' => $filter];
+            $filter = [
+                'bool' => [
+                    'must_not' => $filter,
+                ],
+            ];
         }
 
         return $filter;
