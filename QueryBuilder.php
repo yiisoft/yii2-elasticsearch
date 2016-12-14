@@ -228,12 +228,12 @@ class QueryBuilder extends \yii\base\Object
                 }
             }
         }
-        return [
-            'bool' => [
-                'must' => $parts,
-                'must_not' => $emptyFields,
-            ],
-        ];
+
+        $query = [ 'must' => $parts ];
+        if ($emptyFields) {
+            $query['must_not'] = $emptyFields;
+        }
+        return [ 'bool' => $query ];
     }
 
     private function buildNotCondition($operator, $operands)
@@ -304,8 +304,8 @@ class QueryBuilder extends \yii\base\Object
 
     private function buildInCondition($operator, $operands)
     {
-        if (!isset($operands[0], $operands[1])) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+        if (!isset($operands[0], $operands[1]) || !is_array($operands)) {
+            throw new InvalidParamException("Operator '$operator' requires array of two operands: column and values");
         }
 
         list($column, $values) = $operands;
