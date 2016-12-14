@@ -560,6 +560,7 @@ class Connection extends Component
             CURLOPT_WRITEFUNCTION => null,
             CURLOPT_READFUNCTION => null,
             CURLOPT_PROGRESSFUNCTION => null,
+            CURLOPT_POSTFIELDS => null,
         ];
         curl_setopt_array($this->_curl, $unsetValues);
         if (function_exists('curl_reset')) { // since PHP 5.5.0
