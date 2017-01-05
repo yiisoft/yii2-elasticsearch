@@ -77,6 +77,9 @@ class QueryBuilder extends \yii\base\Object
         if (isset($query->minScore)) {
             $parts['min_score'] = (float)$query->minScore;
         }
+        if (isset($query->explain)) {
+            $parts['explain'] = $query->explain;
+        }
 
         if (empty($query->query)) {
             $parts['query'] = ["match_all" => (object)[]];
