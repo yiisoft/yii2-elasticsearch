@@ -174,6 +174,7 @@ class Query extends Component implements QueryInterface
     /**
      * @var Enables explanation for each hit on how its score was computed.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-explain.html
+     * @since 2.0.5
      */
     public $explain;
 
@@ -699,6 +700,7 @@ class Query extends Component implements QueryInterface
      * @param $explain
      * @return $this
      * @see $explain
+     * @since 2.0.5
      */
     public function explain($explain)
     {

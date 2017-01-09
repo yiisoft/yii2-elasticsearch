@@ -370,4 +370,30 @@ class QueryTest extends TestCase
         $result = $query->search($this->getConnection());
         $this->assertEquals(3, $result['hits']['total']);
     }
+
+    /**
+     * @group explain
+     * @since 2.0.5
+     */
+    public function testExplain()
+    {
+        $query = new Query();
+        $query->from('yiitest', 'user');
+        $query->explain(true);
+        $result = $query->search($this->getConnection());
+        $this->assertTrue(is_array($result['hits']['hits'][0]['_explanation']));
+        $this->assertTrue(array_key_exists('_explanation', $result['hits']['hits'][0]));
+    }
+
+    /**
+     * @group explain
+     * @since 2.0.5
+     */
+    public function testNoExplain()
+    {
+        $query = new Query();
+        $query->from('yiitest', 'user');
+        $result = $query->search($this->getConnection());
+        $this->assertFalse(array_key_exists('_explanation', $result['hits']['hits'][0]));
+    }
 }

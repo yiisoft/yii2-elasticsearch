@@ -194,6 +194,7 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * @return array|null An explanation for each hit on how its score was computed
+     * @since 2.0.5
      */
     public function getExplanation()
     {
