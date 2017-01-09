@@ -58,7 +58,7 @@ class ActiveRecord extends BaseActiveRecord
     private $_score;
     private $_version;
     private $_highlight;
-
+    private $_explanation;
 
     /**
      * Returns the database connection used by this AR class.
@@ -190,6 +190,15 @@ class ActiveRecord extends BaseActiveRecord
     public function getHighlight()
     {
         return $this->_highlight;
+    }
+
+    /**
+     * @return array|null An explanation for each hit on how its score was computed
+     * @since 2.0.5
+     */
+    public function getExplanation()
+    {
+        return $this->_explanation;
     }
 
     /**
@@ -341,6 +350,7 @@ class ActiveRecord extends BaseActiveRecord
         $record->_highlight = isset($row['highlight']) ? $row['highlight'] : null;
         $record->_score = isset($row['_score']) ? $row['_score'] : null;
         $record->_version = isset($row['_version']) ? $row['_version'] : null; // TODO version should always be available...
+        $record->_explanation = isset($row['_explanation']) ? $row['_explanation'] : null;
     }
 
     /**

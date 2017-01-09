@@ -171,6 +171,12 @@ class Query extends Component implements QueryInterface
      * @since 2.0.4
      */
     public $options = [];
+    /**
+     * @var Enables explanation for each hit on how its score was computed.
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-explain.html
+     * @since 2.0.5
+     */
+    public $explain;
 
 
     /**
@@ -686,6 +692,19 @@ class Query extends Component implements QueryInterface
     public function postFilter($filter)
     {
         $this->postFilter = $filter;
+        return $this;
+    }
+
+    /**
+     * Explain for how the score of each document was computer
+     * @param $explain
+     * @return $this
+     * @see $explain
+     * @since 2.0.5
+     */
+    public function explain($explain)
+    {
+        $this->explain = $explain;
         return $this;
     }
 }
