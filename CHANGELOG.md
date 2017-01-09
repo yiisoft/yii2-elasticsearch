@@ -13,6 +13,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #82: Support HTTPS protocol (dor-denis, beowulfenator)
 - Enh #43: Elasticsearch log target (trntv, beowulfenator)
 - Bug: Added accessor method for the default elasticsearch primary key (kyle-mccarthy)
+- Enh: Added support for explanation on query (kyle-mccarthy) 
 
 
 2.0.4 March 17, 2016
