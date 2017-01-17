@@ -56,9 +56,9 @@ class DebugPanel extends Panel
         $queryTime = number_format($queryTime * 1000) . ' ms';
         $url = $this->getUrl();
         $output = <<<EOD
-<div class="yii-debug-toolbar-block yii-debug-toolbar__block">
+<div class="yii-debug-toolbar__block">
     <a href="$url" title="Executed $queryCount elasticsearch queries which took $queryTime.">
-        ES <span class="label yii-debug-toolbar__label yii-debug-toolbar__label_info">$queryCount</span> <span class="label yii-debug-toolbar__label">$queryTime</span>
+        ES <span class="yii-debug-toolbar__label yii-debug-toolbar__ajax_counter yii-debug-toolbar__label_success">$queryCount</span> <span class="yii-debug-toolbar__label yii-debug-toolbar__label_info">$queryTime</span>
     </a>
 </div>
 EOD;
