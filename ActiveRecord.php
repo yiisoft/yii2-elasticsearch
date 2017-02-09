@@ -417,15 +417,14 @@ class ActiveRecord extends BaseActiveRecord
      *
      * - `routing` define shard placement of this record.
      * - `parent` by giving the primaryKey of another record this defines a parent-child relation
-     * - `timestamp` specifies the timestamp to store along with the document. Default is indexing time.
      *
      * Please refer to the [elasticsearch documentation](http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)
      * for more details on these options.
      *
-     * By default the `op_type` is set to `create`.
+     * By default the `op_type` is set to `create` if model primary key is present.
      * @return boolean whether the attributes are valid and the record is inserted successfully.
      */
-    public function insert($runValidation = true, $attributes = null)
+    public function insert($runValidation = true, $attributes = null, $options = [ ])
     {
         if ($runValidation && !$this->validate($attributes)) {
             return false;
@@ -435,7 +434,9 @@ class ActiveRecord extends BaseActiveRecord
         }
         $values = $this->getDirtyAttributes($attributes);
 
-        $options = $this->getPrimaryKey() !== null ? [ 'op_type' => 'create' ] : [ ];
+        if ($this->getPrimaryKey() !== null) {
+            $options['op_type'] = isset($options['op_type']) ? $options['op_type'] : 'create';
+        }
 
         $response = static::getDb()->createCommand()->insert(
             static::index(),
