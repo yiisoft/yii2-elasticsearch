@@ -425,7 +425,7 @@ class ActiveRecord extends BaseActiveRecord
      * By default the `op_type` is set to `create`.
      * @return boolean whether the attributes are valid and the record is inserted successfully.
      */
-    public function insert($runValidation = true, $attributes = null, $options = ['op_type' => 'create'])
+    public function insert($runValidation = true, $attributes = null)
     {
         if ($runValidation && !$this->validate($attributes)) {
             return false;
@@ -434,6 +434,8 @@ class ActiveRecord extends BaseActiveRecord
             return false;
         }
         $values = $this->getDirtyAttributes($attributes);
+
+        $options = $this->getPrimaryKey() !== null ? [ 'op_type' => 'create' ] : [ ];
 
         $response = static::getDb()->createCommand()->insert(
             static::index(),
@@ -670,9 +672,15 @@ class ActiveRecord extends BaseActiveRecord
         foreach ($primaryKeys as $pk) {
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.{$counter} += {$counter};\n";
+                $script .= "ctx._source.{$counter} += params.{$counter};\n";
             }
-            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["script" => $script, "params" => $counters, "lang" => "groovy"]);
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], [
+                'script' => [
+                    'inline' => $script,
+                    'params' => $counters,
+                    'lang' => 'painless',
+                ],
+            ]);
         }
         $response = $bulkCommand->execute();
 

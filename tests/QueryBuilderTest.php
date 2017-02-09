@@ -194,4 +194,73 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(2, $result['hits']['total']);
     }
 
+    public function testNotCondition()
+    {
+        $titles = [
+            'Symfony2 is another framework',
+            'yii test',
+            'nonexistent',
+        ];
+        $result = (new Query)
+            ->from('yiitest', 'article')
+            ->where([ 'not', [ 'in', 'title.keyword', $titles ] ])
+            ->search($this->getConnection());
+        $this->assertEquals(2, $result['hits']['total']);
+    }
+
+    public function testInCondition()
+    {
+        $titles = [
+            'Symfony2 is another framework',
+            'yii test',
+            'nonexistent',
+        ];
+        $result = (new Query)
+            ->from('yiitest', 'article')
+            ->where([ 'in', 'title.keyword', $titles ])
+            ->search($this->getConnection());
+        $this->assertEquals(2, $result['hits']['total']);
+    }
+
+    public function testBuildNotCondition()
+    {
+        $db = $this->getConnection();
+        $qb = new QueryBuilder($db);
+
+        $cond = [ 'title' => 'xyz' ];
+        $operands = [ $cond ];
+
+        $expected = [
+            'bool' => [
+                'must_not' => [
+                    'bool' => [ 'must' => [ ['term'=>['title'=>'xyz']] ] ],
+                ],
+            ]
+        ];
+        $result = $this->invokeMethod($qb, 'buildNotCondition', ['not',$operands]);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testBuildInCondition()
+    {
+        $db = $this->getConnection();
+        $qb = new QueryBuilder($db);
+
+        $expected = [
+            'terms' => ['foo' => ['bar1', 'bar2']],
+        ];
+        $result = $this->invokeMethod($qb, 'buildInCondition', [
+            'in',
+            ['foo',['bar1','bar2']]
+        ]);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function invokeMethod($obj, $methodName, $args)
+    {
+        $reflection = new \ReflectionObject($obj);
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+        return $method->invokeArgs($obj, $args);
+    }
 }
