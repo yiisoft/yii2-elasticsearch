@@ -4,11 +4,18 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.5 under development
 -----------------------
 
+- Bug #120: Fix debug panel markup to be compatible with Yii 2.0.10 (drdim)
 - Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
 - Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
+- Enh #47: Added support for post_filter option in search queries (mxkh)
 - Enh #60: Minor updates to guide (devypt, beowulfenator)
 - Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
 - Enh: Bulk API implemented and used in AR (tibee, beowulfenator)
+- Enh #82: Support HTTPS protocol (dor-denis, beowulfenator)
+- Enh #43: Elasticsearch log target (trntv, beowulfenator)
+- Bug: Added accessor method for the default elasticsearch primary key (kyle-mccarthy)
+- Enh #119: Added support for explanation on query (kyle-mccarthy)
+
 
 2.0.4 March 17, 2016
 --------------------

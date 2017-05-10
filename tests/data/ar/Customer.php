@@ -38,12 +38,16 @@ class Customer extends ActiveRecord
 
     public function getExpensiveOrders()
     {
-        return $this->hasMany(Order::className(), ['customer_id' => 'id'])->filter(['range' => ['total' => ['gte' => 50]]])->orderBy('id');
+        return $this->hasMany(Order::className(), ['customer_id' => 'id'])
+            ->where([ 'gte', 'total', 50 ])
+            ->orderBy('id');
     }
 
     public function getExpensiveOrdersWithNullFK()
     {
-        return $this->hasMany(OrderWithNullFK::className(), ['customer_id' => 'id'])->filter(['range' => ['total' => ['gte' => 50]]])->orderBy('id');
+        return $this->hasMany(OrderWithNullFK::className(), ['customer_id' => 'id'])
+            ->where([ 'gte', 'total', 50 ])
+            ->orderBy('id');
     }
 
     public function getOrdersWithNullFK()
@@ -68,18 +72,15 @@ class Customer extends ActiveRecord
      * @param Command $command
      * @param boolean $statusIsBoolean
      */
-    public static function setUpMapping($command, $statusIsBoolean = false)
+    public static function setUpMapping($command)
     {
-        $command->deleteMapping(static::index(), static::type());
         $command->setMapping(static::index(), static::type(), [
-            static::type() => [
-                "_id" => ["path" => "id", "index" => "not_analyzed", "store" => "yes"],
-                "properties" => [
-                    "name" =>        ["type" => "string", "index" => "not_analyzed"],
-                    "email" =>       ["type" => "string", "index" => "not_analyzed"],
-                    "address" =>     ["type" => "string", "index" => "analyzed"],
-                    "status" => $statusIsBoolean ? ["type" => "boolean"] : ["type" => "integer"],
-                ]
+            "properties" => [
+                "id" => ["type"=>"integer", "store" => true],
+                "name" => ["type" => "keyword", "index" => "not_analyzed", "store" => true],
+                "email" => ["type" => "keyword", "index" => "not_analyzed", "store" => true],
+                "address" => ["type" => "text", "index" => "analyzed"],
+                "status" => ["type" => "integer", "store" => true],
             ]
         ]);
 

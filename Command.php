@@ -482,17 +482,6 @@ class Command extends Component
 
     /**
      * @param $index
-     * @param $type
-     * @return mixed
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
-     */
-    public function deleteMapping($index, $type)
-    {
-        return $this->db->delete([$index, '_mapping', $type]);
-    }
-
-    /**
-     * @param $index
      * @param string $type
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-field-mapping.html

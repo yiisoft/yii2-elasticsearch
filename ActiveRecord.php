@@ -58,7 +58,7 @@ class ActiveRecord extends BaseActiveRecord
     private $_score;
     private $_version;
     private $_highlight;
-
+    private $_explanation;
 
     /**
      * Returns the database connection used by this AR class.
@@ -190,6 +190,15 @@ class ActiveRecord extends BaseActiveRecord
     public function getHighlight()
     {
         return $this->_highlight;
+    }
+
+    /**
+     * @return array|null An explanation for each hit on how its score was computed.
+     * @since 2.0.5
+     */
+    public function getExplanation()
+    {
+        return $this->_explanation;
     }
 
     /**
@@ -341,6 +350,7 @@ class ActiveRecord extends BaseActiveRecord
         $record->_highlight = isset($row['highlight']) ? $row['highlight'] : null;
         $record->_score = isset($row['_score']) ? $row['_score'] : null;
         $record->_version = isset($row['_version']) ? $row['_version'] : null; // TODO version should always be available...
+        $record->_explanation = isset($row['_explanation']) ? $row['_explanation'] : null;
     }
 
     /**
@@ -407,15 +417,14 @@ class ActiveRecord extends BaseActiveRecord
      *
      * - `routing` define shard placement of this record.
      * - `parent` by giving the primaryKey of another record this defines a parent-child relation
-     * - `timestamp` specifies the timestamp to store along with the document. Default is indexing time.
      *
      * Please refer to the [elasticsearch documentation](http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)
      * for more details on these options.
      *
-     * By default the `op_type` is set to `create`.
+     * By default the `op_type` is set to `create` if model primary key is present.
      * @return boolean whether the attributes are valid and the record is inserted successfully.
      */
-    public function insert($runValidation = true, $attributes = null, $options = ['op_type' => 'create'])
+    public function insert($runValidation = true, $attributes = null, $options = [ ])
     {
         if ($runValidation && !$this->validate($attributes)) {
             return false;
@@ -424,6 +433,10 @@ class ActiveRecord extends BaseActiveRecord
             return false;
         }
         $values = $this->getDirtyAttributes($attributes);
+
+        if ($this->getPrimaryKey() !== null) {
+            $options['op_type'] = isset($options['op_type']) ? $options['op_type'] : 'create';
+        }
 
         $response = static::getDb()->createCommand()->insert(
             static::index(),
@@ -497,8 +510,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $attributes attributes to update
      * @param array $options options given in this parameter are passed to elasticsearch
      * as request URI parameters. See [[update()]] for details.
-     * @return integer|boolean the number of rows affected, or false if validation fails
-     * or [[beforeSave()]] stops the updating process.
+     * @return integer|false the number of rows affected, or false if [[beforeSave()]] stops the updating process.
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
      * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
      * @throws Exception in case update failed.
@@ -661,9 +673,15 @@ class ActiveRecord extends BaseActiveRecord
         foreach ($primaryKeys as $pk) {
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.{$counter} += {$counter};\n";
+                $script .= "ctx._source.{$counter} += params.{$counter};\n";
             }
-            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["script" => $script, "params" => $counters, "lang" => "groovy"]);
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], [
+                'script' => [
+                    'inline' => $script,
+                    'params' => $counters,
+                    'lang' => 'painless',
+                ],
+            ]);
         }
         $response = $bulkCommand->execute();
 

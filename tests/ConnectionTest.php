@@ -25,19 +25,20 @@ class ConnectionTest extends TestCase
         $reflectedMethod = new \ReflectionMethod($this->connection, 'createUrl');
         $reflectedMethod->setAccessible(true);
 
+        $protocol = $this->connection->nodes[$this->connection->activeNode]['protocol'];
         $httpAddress = $this->connection->nodes[$this->connection->activeNode]['http_address'];
-        $this->assertEquals([$httpAddress, ''], $reflectedMethod->invoke($this->connection, []));
+        $this->assertEquals([$protocol, $httpAddress, ''], $reflectedMethod->invoke($this->connection, []));
 
-        $this->assertEquals([$httpAddress, '_cat/indices'],
+        $this->assertEquals([$protocol, $httpAddress, '_cat/indices'],
             $reflectedMethod->invoke($this->connection, '_cat/indices'));
 
-        $this->assertEquals([$httpAddress, 'customer'],
+        $this->assertEquals([$protocol, $httpAddress, 'customer'],
             $reflectedMethod->invoke($this->connection, 'customer'));
 
-        $this->assertEquals([$httpAddress, 'customer/external/1'],
+        $this->assertEquals([$protocol, $httpAddress, 'customer/external/1'],
             $reflectedMethod->invoke($this->connection, ['customer', 'external', '1']));
 
-        $this->assertEquals([$httpAddress, 'customer/external/1/_update'],
+        $this->assertEquals([$protocol, $httpAddress, 'customer/external/1/_update'],
             $reflectedMethod->invoke($this->connection, ['customer', 'external', 1, '_update',]));
     }
 }

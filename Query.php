@@ -26,7 +26,7 @@ use yii\db\QueryTrait;
  *
  * ~~~
  * $query = new Query;
- * $query->fields('id, name')
+ * $query->storedFields('id, name')
  *     ->from('myindex', 'users')
  *     ->limit(10);
  * // build and execute the query
@@ -62,13 +62,22 @@ class Query extends Component implements QueryInterface
      * In this case the `_source` field will be returned by default which can be configured using [[source]].
      * Setting this to an empty array will result in no fields being retrieved, which means that only the primaryKey
      * of a record will be available in the result.
+     * > Note: Field values are [always returned as arrays] even if they only have one value.
      *
-     * For each field you may also add an array representing a [script field]. Example:
+     * [always returned as arrays]: http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
+     * [script field]: http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
      *
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-stored-fields.html
+     * @see storedFields()
+     * @see source
+     */
+    public $storedFields;
+
+	/**
+	 * @var array the scripted fields being retrieved from the documents.
+	 * Example:
      * ```php
-     * $query->fields = [
-     *     'id',
-     *     'name',
+     * $query->scriptFields = [
      *     'value_times_two' => [
      *         'script' => "doc['my_field_name'].value * 2",
      *     ],
@@ -80,18 +89,18 @@ class Query extends Component implements QueryInterface
      *     ],
      * ]
      * ```
-     *
+	 *
      * > Note: Field values are [always returned as arrays] even if they only have one value.
-     *
+	 *
      * [always returned as arrays]: http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
      * [script field]: http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
-     *
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-fields.html#search-request-fields
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
-     * @see fields()
+	 *
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     * @see scriptFields()
      * @see source
-     */
-    public $fields;
+	 */
+	public $scriptFields;
+
     /**
      * @var array this option controls how the `_source` field is returned from the documents. For example, `['id', 'name']`
      * means that only the `id` and `name` field should be returned from `_source`.
@@ -133,6 +142,12 @@ class Query extends Component implements QueryInterface
      */
     public $filter;
     /**
+     * @var string|array The `post_filter` part of the search query for differentially filter search results and aggregations.
+     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/_post_filter.html
+     * @since 2.0.5
+     */
+    public $postFilter;
+    /**
      * @var array The highlight part of this search query. This is an array that allows to highlight search results
      * on one or more fields.
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
@@ -165,6 +180,12 @@ class Query extends Component implements QueryInterface
      * @since 2.0.4
      */
     public $options = [];
+    /**
+     * @var bool Enables explanation for each hit on how its score was computed.
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-explain.html
+     * @since 2.0.5
+     */
+    public $explain;
 
 
     /**
@@ -371,7 +392,7 @@ class Query extends Component implements QueryInterface
         // http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_search_requests.html
 
         $options = [];
-        $options['search_type'] = 'count';
+        $options['size'] = 0;
 
         return $this->createCommand($db)->search($options)['hits']['total'];
     }
@@ -412,6 +433,8 @@ class Query extends Component implements QueryInterface
     }
 
     /**
+     * @deprecated since 2.0.5 use addAggragate() instead
+     *
      * Adds an aggregation to this query.
      * @param string $name the name of the aggregation
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
@@ -421,11 +444,12 @@ class Query extends Component implements QueryInterface
      */
     public function addAggregation($name, $type, $options)
     {
-        $this->aggregations[$name] = [$type => $options];
-        return $this;
+        return $this->addAggregate($name, [$type => $options]);
     }
 
     /**
+     * @deprecated since 2.0.5 use addAggragate() instead
+     *
      * Adds an aggregation to this query.
      *
      * This is an alias for [[addAggregation]].
@@ -438,9 +462,22 @@ class Query extends Component implements QueryInterface
      */
     public function addAgg($name, $type, $options)
     {
-        return $this->addAggregation($name, $type, $options);
+        return $this->addAggregate($name, [$type => $options]);
     }
 
+    /**
+     * Adds an aggregation to this query. Supports nested aggregations.
+     * @param string $name the name of the aggregation
+     * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
+     * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
+     * @return $this the query object itself
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.3/search-aggregations.html
+     */
+    public function addAggregate($name, $options)
+    {
+        $this->aggregations[$name] = $options;
+        return $this;
+    }
     /**
      * Adds a suggester to this query.
      * @param string $name the name of the suggester
@@ -535,17 +572,6 @@ class Query extends Component implements QueryInterface
     }
 
     /**
-     * Sets the filter part of this search query.
-     * @param string $filter
-     * @return $this the query object itself
-     */
-    public function filter($filter)
-    {
-        $this->filter = $filter;
-        return $this;
-    }
-
-    /**
      * Sets the index and type to retrieve documents from.
      * @param string|array $index The index to retrieve data from. This can be a string representing a single index
      * or a an array of multiple indexes. If this is `null` it means that all indexes are being queried.
@@ -563,16 +589,37 @@ class Query extends Component implements QueryInterface
 
     /**
      * Sets the fields to retrieve from the documents.
+	 * > Quote from the elasticsearch doc:
+	 * > The stored_fields parameter is about fields that are explicitly marked
+	 * > as stored in the mapping, which is off by default and generally not recommended.
+	 * > Use source filtering instead to select subsets of the original source document to be returned.
+	 * 
      * @param array $fields the fields to be selected.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-fields.html
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-stored-fields.html
      */
-    public function fields($fields)
+    public function storedFields($fields)
     {
         if (is_array($fields) || $fields === null) {
-            $this->fields = $fields;
+            $this->storedFields = $fields;
         } else {
-            $this->fields = func_get_args();
+            $this->storedFields = func_get_args();
+        }
+        return $this;
+    }
+
+    /**
+     * Sets the script fields to retrieve from the documents.
+     * @param array $fields the fields to be selected.
+     * @return $this the query object itself
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     */
+    public function scriptFields($fields)
+    {
+        if (is_array($fields) || $fields === null) {
+            $this->scriptFields = $fields;
+        } else {
+            $this->scriptFields = func_get_args();
         }
         return $this;
     }
@@ -654,4 +701,59 @@ class Query extends Component implements QueryInterface
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function andWhere($condition)
+    {
+        if ($this->where === null) {
+            $this->where = $condition;
+        } else if (isset($this->where[0]) && $this->where[0] == 'and') {
+            $this->where[] = $condition;
+        } else {
+            $this->where = ['and', $this->where, $condition];
+        }
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function orWhere($condition)
+    {
+        if ($this->where === null) {
+            $this->where = $condition;
+        } else if (isset($this->where[0]) && $this->where[0] == 'or') {
+            $this->where[] = $condition;
+        } else {
+            $this->where = ['or', $this->where, $condition];
+        }
+        return $this;
+    }
+
+    /**
+     * Set the `post_filter` part of the search query.
+     * @param string|array $filter
+     * @return $this the query object itself
+     * @see $postFilter
+     * @since 2.0.5
+     */
+    public function postFilter($filter)
+    {
+        $this->postFilter = $filter;
+        return $this;
+    }
+
+    /**
+     * Explain for how the score of each document was computer
+     * @param $explain
+     * @return $this
+     * @see $explain
+     * @since 2.0.5
+     */
+    public function explain($explain)
+    {
+        $this->explain = $explain;
+        return $this;
+    }
 }
