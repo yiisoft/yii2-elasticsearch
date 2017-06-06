@@ -1,3 +1,7 @@
+env:
+  global:
+    secure: "GIqq3E2fLpbwvXFVqv0hdTWvZcPSN1SrxLgXrDXyvkqMnK9Y06bTSPTmPpv8Rt3SscxStB9NjLqOpMsWnCULbjC+cybTBpioeUlZFNJpLafoOL3csQu8GvMAgJe6CiaSTQ9MHzyDnzf8FlZUjdBfBaKb/uWYwcZp7ln8GHM5nc1CxHHS6ZpyC62f1YRFRNVBukO+KhqeCBZe7+TeTdAGOl3nwxu8i9CFcNC2zIBCW4/D3Nvk2A9DA5dXdYNUx/buMVBRkg8dz+nGFRH80uGZIe5Xu76BUD30FyBzk3dgSOPdgsPgZcw5de3alFP3k9BeGgMi5sEKURD0l1vR5CyeGYqbeKoiJYkr+HUVtKFNsQy/DXlqY3EAQzACUgt+geW+v4ekCHe2WUvrzsDXQJCobK0d8HAbVA9z33c+/oYqJXGBP0B/72MtcrFN+wZGPheCIL9DXe6BT8Zasj8xRSwKntoGU+6eX3WebJFLVFs6T8CJi/X0xqiaxjtvMfjxgy6pHr5Npl73YzrXnoTGMdK6l9w13MbYFk2woIcCFZR27YZqf/BDwO11S+0pk0V1mLEQZhkGAnETNGzm6W21vVtR+AQaCVbsGgc0t7xjLcupHqm98bIkUqzQjTjjuvPPeqQY2Ex25u2ycASHEu+llPmDxMxvBHb5pGNBnXifpjsaTH0="
+
 language: php
 
 php:
@@ -5,7 +9,26 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - hhvm
+  - 7.1
+
+matrix:
+  include:
+    - php: hhvm
+      sudo: true
+      dist: trusty
+      group: edge
+      services: elasticsearch
+      cache:
+        directories: $HOME/.composer/cache
+      before_install:
+        - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
+        - wget https://phar.phpunit.de/phpunit-4.5.1.phar
+        - curl -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.deb
+        - sudo dpkg -i --force-confnew elasticsearch-1.7.6.deb
+        - 'echo "script.disable_dynamic: false" | sudo tee -a /etc/elasticsearch/elasticsearch.yml'
+        - sudo service elasticsearch restart
+      script:
+        - php phpunit-4.5.1.phar --verbose $PHPUNIT_FLAGS
 
 services:
   - elasticsearch
