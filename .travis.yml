@@ -1,65 +1,54 @@
 env:
   global:
-    secure: "Vu3BAOG+aViU1MFutJiuFfwB63v9GcnWCw7ln/bO5CI4wlcEkmOaZIY4rnDJCyypkmfnUEp/tn88+w2hDNcn3/UT5OyGvv1dnppWsAoFTdo6kbb5poR2EC8jLtIDiyVq7d0Ao9wBXduIb20aymXtJCfwmZrzYsegNs7Ir6h9gaY="
+    secure: cIGYsPd8OZ3X/ugDZyySmlMl/6gMcMMZQupTgPzHeq24mx+NR7gbVfQmTVnBjmXIpEemQFSe1KwQA2xdvkJ+rhObs8e1tldWFxjXd95Drlf1rKx1oy1LehPmXN4IpbY7PqEbncoSJywb7aLe18u+/2NFA27JsMh83y2xv6YfTQE=
 
 language: php
-
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-
+- 5.4
+- 5.5
+- 5.6
+- 7.0
+- 7.1
 matrix:
   include:
-    - php: hhvm
-      sudo: true
-      dist: trusty
-      group: edge
-      services: elasticsearch
-      cache:
-        directories: $HOME/.composer/cache
-      before_install:
-        - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
-        - wget https://phar.phpunit.de/phpunit-4.5.1.phar
-        - curl -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.deb
-        - sudo dpkg -i --force-confnew elasticsearch-1.7.6.deb
-        - 'echo "script.disable_dynamic: false" | sudo tee -a /etc/elasticsearch/elasticsearch.yml'
-        - sudo service elasticsearch restart
-      script:
-        - php phpunit-4.5.1.phar --verbose $PHPUNIT_FLAGS
-
+  - php: hhvm
+    sudo: true
+    dist: trusty
+    group: edge
+    services: elasticsearch
+    cache:
+      directories: "$HOME/.composer/cache"
+    before_install:
+    - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
+    - wget https://phar.phpunit.de/phpunit-4.5.1.phar
+    - curl -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.deb
+    - sudo dpkg -i --force-confnew elasticsearch-1.7.6.deb
+    - 'echo "script.disable_dynamic: false" | sudo tee -a /etc/elasticsearch/elasticsearch.yml'
+    - sudo service elasticsearch restart
+    script:
+    - php phpunit-4.5.1.phar --verbose $PHPUNIT_FLAGS
 services:
-  - elasticsearch
-
-# faster builds on new travis setup not using sudo
+- elasticsearch
 sudo: false
-
-# cache vendor dirs
 cache:
   directories:
-    - $HOME/.composer/cache
-
+  - "$HOME/.composer/cache"
 install:
-  - travis_retry composer self-update && composer --version
-  - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.1"
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - travis_retry composer install --prefer-dist --no-interaction
-
+- travis_retry composer self-update && composer --version
+- travis_retry composer global require "fxp/composer-asset-plugin:~1.1.1"
+- export PATH="$HOME/.composer/vendor/bin:$PATH"
+- travis_retry composer install --prefer-dist --no-interaction
 before_script:
-  - echo 'elasticsearch version ' && curl http://localhost:9200/
-  - |
-    if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
-      PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
-    fi
-
+- echo 'elasticsearch version ' && curl http://localhost:9200/
+- |
+  if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
+    PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
+  fi
 script:
-  - phpunit --verbose $PHPUNIT_FLAGS
-
+- phpunit --verbose $PHPUNIT_FLAGS
 after_script:
-  - |
-    if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
-      travis_retry wget https://scrutinizer-ci.com/ocular.phar
-      php ocular.phar code-coverage:upload --format=php-clover coverage.clover
-    fi
+- |
+  if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
+    travis_retry wget https://scrutinizer-ci.com/ocular.phar
+    php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  fi
