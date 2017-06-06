@@ -416,6 +416,14 @@ class QueryBuilder extends \yii\base\Object
 
     private function buildLikeCondition($operator, $operands)
     {
-        throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+        if (!isset($operands[0], $operands[1])) {
+            throw new InvalidParamException("Operator '$operator' requires two operands.");
+        }
+
+        if( $operator == 'like') {
+            $like_text = '*' . $operands[1] . '*';
+            $query = ['wildcard' => [$operands[0] => $like_text]];
+        }
+        return $query;
     }
 }
