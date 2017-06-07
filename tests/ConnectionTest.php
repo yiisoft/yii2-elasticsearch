@@ -40,5 +40,9 @@ class ConnectionTest extends TestCase
 
         $this->assertEquals([$protocol, $httpAddress, 'customer/external/1/_update'],
             $reflectedMethod->invoke($this->connection, ['customer', 'external', 1, '_update',]));
+
+        //Actual is 'customer%2Fexternal%2F1/_update'
+        $this->assertEquals([$httpAddress, 'customer/external/1/_update'],
+            $reflectedMethod->invoke($this->connection, ['customer/external/1', '_update',]));
     }
 }
