@@ -88,4 +88,17 @@ class ActiveDataProviderTest extends TestCase
         $models = $provider->getModels();
         $this->assertEquals(1, count($models));
     }
-} 
+
+    public function testNonexistentIndex()
+    {
+        $query = new Query();
+        $query->from('nonexistent', 'nonexistent');
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'db' => $this->getConnection(),
+        ]);
+        $models = $provider->getModels();
+        $this->assertEquals(0, count($models));
+    }
+}
