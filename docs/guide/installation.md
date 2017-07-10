@@ -41,3 +41,13 @@ return [
     ]
 ];
 ```
+
+The connection supports auto detection of the elasticsearch cluster, which is enabled by default.
+You do not need to specify all cluster nodes manually, Yii will detect other cluster nodes and connect to
+a randomly selected node by default. You can disable this feature by setting [[yii\elasticsearch\Connection::$autodetectCluster]]
+to `false`.
+
+Note that for cluster autodetection to work properly, the `GET /_nodes` request to the nodes
+specified in the configuration must return the `http_address` field for each node.
+This is returned by vanilla elasticsearch instanes by default, but has been reported to not be available in environments like AWS.
+In that case you need to disable cluster detection and specify hosts manualy.
