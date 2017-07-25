@@ -1,5 +1,10 @@
-Elasticsearch Query and ActiveRecord for Yii 2
-==============================================
+<p align="center">
+    <a href="https://www.elastic.co/products/elasticsearch" target="_blank" rel="external">
+        <img src="https://static-www.elastic.co/assets/blt45b0886c90beceee/logo-elastic.svg" height="80px">
+    </a>
+    <h1 align="center">Elasticsearch Query and ActiveRecord for Yii 2</h1>
+    <br>
+</p>
 
 This extension provides the [elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the [Yii framework 2.0](http://www.yiiframework.com).
 It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
