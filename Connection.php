@@ -525,8 +525,13 @@ class Connection extends Component
                         'responseBody' => $body,
                     ]);
                 }
-                if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json', 16) || !strncmp($headers['content-type'], 'text/plain', 10))) {
-                    return $raw ? $body : Json::decode($body);
+                if (isset($headers['content-type'])) {
+                    if (!strncmp($headers['content-type'], 'application/json', 16)) {
+                        return $raw ? $body : Json::decode($body);
+                    }
+                    if (!strncmp($headers['content-type'], 'text/plain', 10)) {
+                        return $raw ? $body : array_filter(explode("\n", $body));
+                    }
                 }
                 throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
                     'requestMethod' => $method,
