@@ -302,7 +302,9 @@ class Command extends Component
      */
     public function aliasExists($alias)
     {
-        return !empty($this->getIndexesByAlias($alias));
+        $indexes = $this->getIndexesByAlias($alias);
+
+        return !empty($indexes);
     }
 
     /**
