@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/yii2-elasticsearch",
+    "name": "Tezd/yii2-elasticsearch",
     "description": "Elasticsearch integration and ActiveRecord for the Yii framework",
     "keywords": ["yii2", "elasticsearch", "active-record", "search", "fulltext"],
     "type": "yii2-extension",
