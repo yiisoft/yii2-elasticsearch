@@ -16,6 +16,8 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #43: Elasticsearch log target (trntv, beowulfenator)
 - Bug: Added accessor method for the default elasticsearch primary key (kyle-mccarthy)
 - Enh #119: Added support for explanation on query (kyle-mccarthy)
+- Enh: Deserialization of raw response when text/plain is supported (Tezd)
+- Enh: Added ability to work with aliases through Command class (Tezd)
 
 
 2.0.4 March 17, 2016
