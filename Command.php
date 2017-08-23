@@ -313,7 +313,8 @@ class Command extends Component
      */
     public function getAliasInfo()
     {
-        return $this->db->get(['_alias', '*']);
+        $aliasInfo = $this->db->get(['_alias', '*']);
+        return $aliasInfo ?: [];
     }
 
     /**
@@ -363,35 +364,44 @@ class Command extends Component
      * @param $alias
      * @param array $aliasParameters
      *
-     * @return mixed
+     * @return boolean
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-adding
      */
     public function addAlias($index, $alias, $aliasParameters = [])
     {
-        return $this->db->put([$index, '_alias', $alias], [], json_encode((object)$aliasParameters));
+        return (bool)$this->db->put([$index, '_alias', $alias], [], json_encode((object)$aliasParameters));
     }
 
     /**
      * @param string $index
      * @param string $alias
      *
-     * @return mixed
+     * @return boolean
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#deleting
      */
     public function removeAlias($index, $alias)
     {
-        return $this->db->delete([$index, '_alias', $alias]);
+        return (bool)$this->db->delete([$index, '_alias', $alias]);
     }
 
     /**
+     * Runs alias manipulations.
+     * If you want to add alias1 to index1
+     * and remove alias2 from index2 you can use following commands:
+     * ~~~
+     * $actions = [
+     *      ['add' => ['index' => 'index1', 'alias' => 'alias1']],
+     *      ['remove' => ['index' => 'index2', 'alias' => 'alias2']],
+     * ];
+     * ~~~
      * @param array $actions
      *
-     * @return mixed
+     * @return boolean
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#indices-aliases
      */
     public function aliasActions(array $actions)
     {
-        return $this->db->post(['_aliases'], [], json_encode(['actions' => $actions]));
+        return (bool)$this->db->post(['_aliases'], [], json_encode(['actions' => $actions]));
     }
 
     /**
