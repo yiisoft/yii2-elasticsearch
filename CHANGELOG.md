@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.1.0 under development
 -----------------------
 
-- Enh: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
+- Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
 
 2.0.5 under development
 -----------------------
