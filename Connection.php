@@ -530,7 +530,7 @@ class Connection extends Component
                     ]);
                 }
                 if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json', 16) || !strncmp($headers['content-type'], 'text/plain', 10))) {
-                    return $raw ? $body : Json::decode($body);
+                    return $raw ? $body : $this->jsonDecode($body);
                 }
                 throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
                     'requestMethod' => $method,
@@ -579,13 +579,36 @@ class Connection extends Component
     protected function decodeErrorBody($body)
     {
         try {
-            $decoded = Json::decode($body);
+            $decoded = $this->jsonDecode($body);
             if (isset($decoded['error']) && !is_array($decoded['error'])) {
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;
         } catch(InvalidParamException $e) {
             return $body;
+        }
+    }
+
+    /**
+     * Decode a JSON string.
+     *
+     * This method uses `json_decode()` and passes parameters so that
+     * objects are returned as associative arrays and big integers will
+     * be converted to strings, to avoid overflow errors.
+     *
+     * @param string $json the JSON to decode.
+     * @return mixed the parsed result.
+     * @throws InvalidParamException when the JSON data is invalid.
+     * @since 2.1.0
+     */
+    public function jsonDecode($json)
+    {
+        $result = json_decode((string) $json, true, 512, JSON_BIGINT_AS_STRING);
+        $lastError = json_last_error();
+        if ($lastError === JSON_ERROR_NONE) {
+            return $result;
+        } else {
+            throw new InvalidParamException("Failed to parse elasticsearch JSON response: " . json_last_error_msg() . ". Response body:\n{$json}");
         }
     }
 

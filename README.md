@@ -21,6 +21,8 @@ Dependent on the version of elasticsearch you are using you need a different ver
 - Extension version 2.0.x works with elasticsearch version 1.0 to 4.x.
 - Extension version 2.1.x requires at least elasticsearch version 5.0.
 
+Since version 2.1.0, this extension requires at least PHP 5.5.
+
 Installation
 ------------
 

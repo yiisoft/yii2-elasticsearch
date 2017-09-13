@@ -5,6 +5,7 @@ Yii Framework 2 elasticsearch extension Change Log
 -----------------------
 
 - Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
+- Enh: Convert big integers to string instead of float when decoding JSON (cebe)
 
 2.0.5 under development
 -----------------------
