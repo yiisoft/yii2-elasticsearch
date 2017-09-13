@@ -5,6 +5,7 @@ Yii Framework 2 elasticsearch extension Change Log
 -----------------------
 
 - Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
+- Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
 
 2.0.5 under development
 -----------------------

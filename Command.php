@@ -406,14 +406,23 @@ class Command extends Component
     /**
      * @param $index
      * @return mixed
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-status.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html
      */
-    public function getIndexStatus($index = '_all')
+    public function getIndexStats($index = '_all')
     {
-        return $this->db->get([$index, '_status']);
+        return $this->db->get([$index, '_stats']);
     }
 
-    // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html
+    /**
+     * @param $index
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-recovery.html
+     */
+    public function getIndexRecoveryStats($index = '_all')
+    {
+        return $this->db->get([$index, '_recovery']);
+    }
+
     // http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-segments.html
 
     /**
