@@ -227,6 +227,9 @@ class Query extends Component implements QueryInterface
     public function all($db = null)
     {
         $result = $this->createCommand($db)->search();
+        if ($result === false) {
+            throw new Exception('Elasticsearch search query failed.');
+        }
         if (empty($result['hits']['hits'])) {
             return [];
         }
@@ -271,6 +274,9 @@ class Query extends Component implements QueryInterface
     public function one($db = null)
     {
         $result = $this->createCommand($db)->search(['size' => 1]);
+        if ($result === false) {
+            throw new Exception('Elasticsearch search query failed.');
+        }
         if (empty($result['hits']['hits'])) {
             return false;
         }
@@ -293,6 +299,9 @@ class Query extends Component implements QueryInterface
     public function search($db = null, $options = [])
     {
         $result = $this->createCommand($db)->search($options);
+        if ($result === false) {
+            throw new Exception('Elasticsearch search query failed.');
+        }
         if (!empty($result['hits']['hits']) && $this->indexBy !== null) {
             $rows = [];
             foreach ($result['hits']['hits'] as $key => $row) {
@@ -359,6 +368,9 @@ class Query extends Component implements QueryInterface
         $command = $this->createCommand($db);
         $command->queryParts['_source'] = [$field];
         $result = $command->search();
+        if ($result === false) {
+            throw new Exception('Elasticsearch search query failed.');
+        }
         if (empty($result['hits']['hits'])) {
             return [];
         }
@@ -384,15 +396,13 @@ class Query extends Component implements QueryInterface
      */
     public function count($q = '*', $db = null)
     {
-        // TODO consider sending to _count api instead of _search for performance
-        // only when no facety are registerted.
-        // http://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html
-        // http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_search_requests.html
-
-        $options = [];
-        $options['size'] = 0;
-
-        return $this->createCommand($db)->search($options)['hits']['total'];
+        // performing a query with return size of 0, is equal to getting result stats such as count
+        // https://www.elastic.co/guide/en/elasticsearch/reference/5.6/breaking_50_search_changes.html#_literal_search_type_literal
+        $count = $this->createCommand($db)->search(['size' => 0])['hits']['total'];
+        if ($count === false) {
+            throw new Exception('Elasticsearch count query failed.');
+        }
+        return $count;
     }
 
     /**

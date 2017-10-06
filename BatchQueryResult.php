@@ -160,6 +160,9 @@ class BatchQueryResult extends Object implements \Iterator
                 $cmd = $this->query->createCommand($this->db);
             }
             $result = $cmd->search($options);
+            if ($result === false) {
+                throw new Exception('Elasticsearch search query failed.');
+            }
         } else {
             //subsequent queries - do scroll
             $result = $this->query->createCommand($this->db)->scroll([
