@@ -308,8 +308,6 @@ class Query extends Component implements QueryInterface
         return $result;
     }
 
-    // TODO add scroll/scan http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-type.html#scan
-
     /**
      * Executes the query and deletes all matching documents.
      *
@@ -708,7 +706,7 @@ class Query extends Component implements QueryInterface
     {
         if ($this->where === null) {
             $this->where = $condition;
-        } else if (isset($this->where[0]) && $this->where[0] == 'and') {
+        } else if (isset($this->where[0]) && $this->where[0] === 'and') {
             $this->where[] = $condition;
         } else {
             $this->where = ['and', $this->where, $condition];
@@ -723,7 +721,7 @@ class Query extends Component implements QueryInterface
     {
         if ($this->where === null) {
             $this->where = $condition;
-        } else if (isset($this->where[0]) && $this->where[0] == 'or') {
+        } else if (isset($this->where[0]) && $this->where[0] === 'or') {
             $this->where[] = $condition;
         } else {
             $this->where = ['or', $this->where, $condition];

@@ -516,7 +516,7 @@ class Connection extends Component
         }
 
         if ($responseCode >= 200 && $responseCode < 300) {
-            if ($method == 'HEAD') {
+            if ($method === 'HEAD') {
                 return true;
             } else {
                 if (isset($headers['content-length']) && ($len = mb_strlen($body, '8bit')) < $headers['content-length']) {
