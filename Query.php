@@ -141,12 +141,12 @@ class Query extends Component implements QueryInterface
     /**
      * @var array The highlight part of this search query. This is an array that allows to highlight search results
      * on one or more fields.
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
      */
     public $highlight;
     /**
      * @var array List of aggregations to add to this query.
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public $aggregations = [];
     /**
@@ -431,7 +431,7 @@ class Query extends Component implements QueryInterface
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public function addAggregation($name, $type, $options)
     {
@@ -449,7 +449,7 @@ class Query extends Component implements QueryInterface
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public function addAgg($name, $type, $options)
     {
