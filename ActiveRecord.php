@@ -59,6 +59,7 @@ class ActiveRecord extends BaseActiveRecord
     private $_version;
     private $_highlight;
     private $_explanation;
+    private $_matched_queries;
 
     /**
      * Returns the database connection used by this AR class.
@@ -199,6 +200,14 @@ class ActiveRecord extends BaseActiveRecord
     public function getExplanation()
     {
         return $this->_explanation;
+    }
+
+    /**
+     * @return array|null A list of named queries that resulted in this hit.
+     */
+    public function getMatchedQueries()
+    {
+        return $this->_matched_queries;
     }
 
     /**
@@ -351,6 +360,7 @@ class ActiveRecord extends BaseActiveRecord
         $record->_score = isset($row['_score']) ? $row['_score'] : null;
         $record->_version = isset($row['_version']) ? $row['_version'] : null; // TODO version should always be available...
         $record->_explanation = isset($row['_explanation']) ? $row['_explanation'] : null;
+        $record->_matched_queries = isset($row['matched_queries']) ? $row['matched_queries'] : null;
     }
 
     /**
