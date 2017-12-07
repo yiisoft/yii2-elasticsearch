@@ -423,7 +423,7 @@ class Connection extends Component
             CURLOPT_RETURNTRANSFER => false,
             CURLOPT_HEADER         => false,
             // http://www.php.net/manual/en/function.curl-setopt.php#82418
-            CURLOPT_HTTPHEADER     => ['Expect:'],
+            CURLOPT_HTTPHEADER     => ['Expect:', 'Content-Type: application/json'],
 
             CURLOPT_WRITEFUNCTION  => function ($curl, $data) use (&$body) {
                 $body .= $data;
