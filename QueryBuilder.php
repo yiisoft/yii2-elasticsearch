@@ -7,6 +7,7 @@
 
 namespace yii\elasticsearch;
 
+use yii\base\BaseObject;
 use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
 use yii\helpers\Json;
@@ -17,7 +18,7 @@ use yii\helpers\Json;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class QueryBuilder extends \yii\base\Object
+class QueryBuilder extends BaseObject
 {
     /**
      * @var Connection the database connection.
