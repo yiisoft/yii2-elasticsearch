@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.5 under development
 -----------------------
 
-- Bug #149: Changed `gyii\base\Object` to `yii\base\BaseObject` (dmirogin)
+- Bug #149: Changed `yii\base\Object` to `yii\base\BaseObject` (dmirogin)
 - Bug #134: Fix infinite query loop "ActiveDataProvider" when the index does not exist (eolitich)
 - Bug #120: Fix debug panel markup to be compatible with Yii 2.0.10 (drdim)
 - Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
