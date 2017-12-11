@@ -21,6 +21,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #150: Explicitily send `Content-Type` header in HTTP requests to elasticsearch (lubobill1990)
 - Enh: Deserialization of raw response when text/plain is supported (Tezd)
 - Enh: Added ability to work with aliases through Command class (Tezd)
+- Enh #117: Add support for `QueryInterface::emulateExecution()` (cebe)
 
 
 2.0.4 March 17, 2016

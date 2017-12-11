@@ -217,6 +217,9 @@ class Query extends Component implements QueryInterface
      */
     public function all($db = null)
     {
+        if ($this->emulateExecution) {
+            return [];
+        }
         $result = $this->createCommand($db)->search();
         if (empty($result['hits']['hits'])) {
             return [];
@@ -261,6 +264,9 @@ class Query extends Component implements QueryInterface
      */
     public function one($db = null)
     {
+        if ($this->emulateExecution) {
+            return false;
+        }
         $result = $this->createCommand($db)->search(['size' => 1]);
         if (empty($result['hits']['hits'])) {
             return false;
@@ -283,6 +289,14 @@ class Query extends Component implements QueryInterface
      */
     public function search($db = null, $options = [])
     {
+        if ($this->emulateExecution) {
+            return [
+                'hits' => [
+                    'total' => 0,
+                    'hits' => [],
+                ],
+            ];
+        }
         $result = $this->createCommand($db)->search($options);
         if (!empty($result['hits']['hits']) && $this->indexBy !== null) {
             $rows = [];
@@ -313,6 +327,9 @@ class Query extends Component implements QueryInterface
      */
     public function delete($db = null, $options = [])
     {
+        if ($this->emulateExecution) {
+            return [];
+        }
         return $this->createCommand($db)->deleteByQuery($options);
     }
 
@@ -327,6 +344,9 @@ class Query extends Component implements QueryInterface
      */
     public function scalar($field, $db = null)
     {
+        if ($this->emulateExecution) {
+            return null;
+        }
         $record = self::one($db);
         if ($record !== false) {
             if ($field === '_id') {
@@ -349,6 +369,9 @@ class Query extends Component implements QueryInterface
      */
     public function column($field, $db = null)
     {
+        if ($this->emulateExecution) {
+            return [];
+        }
         $command = $this->createCommand($db);
         $command->queryParts['_source'] = [$field];
         $result = $command->search();
@@ -377,6 +400,9 @@ class Query extends Component implements QueryInterface
      */
     public function count($q = '*', $db = null)
     {
+        if ($this->emulateExecution) {
+            return 0;
+        }
         // TODO consider sending to _count api instead of _search for performance
         // only when no facety are registerted.
         // http://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html
