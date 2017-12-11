@@ -6,6 +6,7 @@ Yii Framework 2 elasticsearch extension Change Log
 
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
 - Bug #227: Fixed `Bad Request (#400): Unable to verify your data submission.` in debug details panel 'run query' (rhertogh)
+- Enh #117: Add support for `QueryInterface::emulateExecution()` (cebe)
 
 
 2.0.5 March 20, 2018
