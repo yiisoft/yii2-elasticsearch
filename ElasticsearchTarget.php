@@ -159,6 +159,8 @@ class ElasticsearchTarget extends Target
             $result['context'] = $this->getContextMessage();
         }
 
+        $result['prefix'] = $this->getMessagePrefix($message);
+
         $message = implode("\n", [
             Json::encode([
                 'index' => new \stdClass()
