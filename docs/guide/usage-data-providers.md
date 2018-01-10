@@ -53,3 +53,28 @@ $models = $provider->getModels();
 $aggregations = $provider->getAggregations();
 $fooAggregation = $provider->getAggregation('foo');
 ```
+
+You can also fetch the results of a Suggestion similarly:
+
+```php
+use yii\elasticsearch\ActiveDataProvider;
+use yii\elasticsearch\Query;
+
+$query = new Query();
+$query->from('yiitest', 'user')
+    ->addSuggestion('foo', [
+        'text' => 'yii2',
+        'term' => [
+            'field' => 'bar'
+        ]
+    ]);
+$provider = new ActiveDataProvider([
+    'query' => $query,
+    'pagination' => [
+        'pageSize' => 10,
+    ]
+]);
+$models = $provider->getModels();
+$suggestions = $provider->getSuggestions();
+$fooSuggestion = $provider->getSuggestion('foo');
+```

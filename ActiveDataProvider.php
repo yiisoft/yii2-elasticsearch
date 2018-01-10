@@ -53,6 +53,30 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
+     * @return array all suggestion results
+     */
+    public function getSuggestions()
+    {
+        $results = $this->getQueryResults();
+        return isset($results['suggest']) ? $results['suggest'] : [];
+    }
+
+    /**
+     * Returns results of the specified suggestion.
+     * @param string $name suggestion name.
+     * @return array suggestion results.
+     * @throws InvalidCallException if requested suggestion is not present in query results.
+     */
+    public function getSuggestion($name)
+    {
+        $suggestions = $this->getSuggestions();
+        if (!isset($suggestions[$name])) {
+            throw new InvalidCallException("Suggestion '{$name}' is not present.");
+        }
+        return $suggestions[$name];
+    }
+
+    /**
      * @return array all aggregations results
      */
     public function getAggregations()
