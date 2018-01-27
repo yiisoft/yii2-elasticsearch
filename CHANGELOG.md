@@ -4,6 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.1.0 under development
 -----------------------
 
+- Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
 - Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
 - Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
 - Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
