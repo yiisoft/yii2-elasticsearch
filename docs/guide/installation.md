@@ -49,5 +49,5 @@ to `false`.
 
 Note that for cluster autodetection to work properly, the `GET /_nodes` request to the nodes
 specified in the configuration must return the `http_address` field for each node.
-This is returned by vanilla elasticsearch instanes by default, but has been reported to not be available in environments like AWS.
-In that case you need to disable cluster detection and specify hosts manualy.
+This is returned by vanilla elasticsearch instances by default, but has been reported to not be available in environments like AWS.
+In that case you need to disable cluster detection and specify hosts manually.
