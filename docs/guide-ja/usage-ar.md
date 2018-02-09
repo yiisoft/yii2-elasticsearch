@@ -89,7 +89,7 @@ $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // art
 $query = Article::find()->query([
     'match' => [
         'title' => [
-            'query' => 'This query will return articles that are similar to this text :-)',
+            'query' => 'このクエリは、このテキストに似た記事を返します :-)',
             'operator' => 'and',
             'fuzziness' => 'AUTO'
         ]
