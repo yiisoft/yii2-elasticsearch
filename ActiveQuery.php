@@ -287,9 +287,15 @@ class ActiveQuery extends Query implements ActiveQueryInterface
      */
     public function search($db = null, $options = [])
     {
-        $result = $this->createCommand($db)->search($options);
+        $command = $this->createCommand($db);
+        $result = $command->search($options);
         if ($result === false) {
-            throw new Exception('Elasticsearch search query failed.');
+            throw new Exception('Elasticsearch search query failed.', [
+                'index' => $command->index,
+                'type' => $command->type,
+                'query' => $command->queryParts,
+                'options' => $command->options,
+            ]);
         }
         // TODO implement with() for asArray
         if (!empty($result['hits']['hits']) && !$this->asArray) {
@@ -311,7 +317,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
      */
     public function column($field, $db = null)
     {
-        if ($field == '_id') {
+        if ($field === '_id') {
             $command = $this->createCommand($db);
             $command->queryParts['fields'] = [];
             $command->queryParts['_source'] = false;
