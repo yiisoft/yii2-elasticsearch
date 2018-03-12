@@ -89,9 +89,9 @@ class Command extends Component
         if ($this->type !== null) {
             $url[] = $this->type;
         }
-        $url[] = '_query';
+        $url[] = '_delete_by_query';
 
-        return $this->db->delete($url, array_merge($this->options, $options), $query);
+        return $this->db->post($url, array_merge($this->options, $options), $query);
     }
 
     /**
