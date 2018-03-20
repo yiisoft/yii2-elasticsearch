@@ -961,4 +961,55 @@ class ActiveRecordTest extends TestCase
     }
 
     // TODO test AR with not mapped PK
+
+
+    public function illegalValuesForFindByCondition()
+    {
+        return [
+            [['id' => ['`id`=`id` and 1' => 1]], ['id' => 1]],
+            [['id' => [
+                'legal' => 1,
+                '`id`=`id` and 1' => 1,
+            ]], ['id' => 1]],
+            [['id' => [
+                'nested_illegal' => [
+                    'false or 1=' => 1
+                ]
+            ]], null],
+
+            [['id' => [
+                'or',
+                '1=1',
+                'id' => 'id',
+            ]], null],
+            [['id' => [
+                'or',
+                '1=1',
+                'id' => '1',
+            ]], ['id' => 1]],
+            [['id' => [
+                'name' => 'Cars',
+                'email' => 'test@example.com',
+            ]], ['id' => 1]],
+        ];
+    }
+
+    /**
+     * @dataProvider illegalValuesForFindByCondition
+     */
+    public function testValueEscapingInFindByCondition($filterWithInjection, $expectedResult)
+    {
+        /* @var $itemClass \yii\db\ActiveRecordInterface */
+        $itemClass = $this->getItemClass();
+
+        $result = $itemClass::findOne($filterWithInjection['id']);
+        if ($expectedResult === null) {
+            $this->assertNull($result);
+        } else {
+            $this->assertNotNull($result);
+            foreach($expectedResult as $col => $value) {
+                $this->assertEquals($value, $result->$col);
+            }
+        }
+    }
 }

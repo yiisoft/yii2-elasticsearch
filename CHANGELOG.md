@@ -4,6 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.5 under development
 -----------------------
 
+- Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug #149: Changed `yii\base\Object` to `yii\base\BaseObject` (dmirogin)
 - Bug #134: Fix infinite query loop "ActiveDataProvider" when the index does not exist (eolitich)
 - Bug #120: Fix debug panel markup to be compatible with Yii 2.0.10 (drdim)
