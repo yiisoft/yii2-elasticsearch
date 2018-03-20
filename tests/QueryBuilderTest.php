@@ -255,12 +255,4 @@ class QueryBuilderTest extends TestCase
         ]);
         $this->assertEquals($expected, $result);
     }
-
-    public function invokeMethod($obj, $methodName, $args)
-    {
-        $reflection = new \ReflectionObject($obj);
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-        return $method->invokeArgs($obj, $args);
-    }
 }

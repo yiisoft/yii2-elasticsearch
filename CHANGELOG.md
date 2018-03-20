@@ -4,6 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.1.0 under development
 -----------------------
 
+- Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
 - Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
 - Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)

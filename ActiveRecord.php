@@ -8,6 +8,7 @@
 namespace yii\elasticsearch;
 
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
@@ -85,12 +86,16 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function findOne($condition)
     {
-        $query = static::find();
-        if (is_array($condition)) {
-            return $query->andWhere($condition)->one();
-        } else {
+        if (!is_array($condition)) {
             return static::get($condition);
         }
+        if (!ArrayHelper::isAssociative($condition)) {
+            $records = static::mget(array_values($condition));
+            return empty($records) ? null : reset($records);
+        }
+
+        $condition = static::filterCondition($condition);
+        return static::find()->andWhere($condition)->one();
     }
 
     /**
@@ -98,12 +103,31 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function findAll($condition)
     {
-        $query = static::find();
-        if (ArrayHelper::isAssociative($condition)) {
-            return $query->andWhere($condition)->all();
-        } else {
-            return static::mget((array) $condition);
+        if (!ArrayHelper::isAssociative($condition)) {
+            return static::mget(is_array($condition) ? array_values($condition) : [$condition]);
         }
+
+        $condition = static::filterCondition($condition);
+        return static::find()->andWhere($condition)->all();
+    }
+
+    /**
+     * Filter out condition parts that are array valued, to prevent building arbitrary conditions.
+     * @param array $condition
+     */
+    private static function filterCondition($condition)
+    {
+        foreach($condition as $k => $v) {
+            if (is_array($v)) {
+                $condition[$k] = array_values($v);
+                foreach($v as $vv) {
+                    if (is_array($vv)) {
+                        throw new InvalidArgumentException('Nested arrays are not allowed in condition for findAll() and findOne().');
+                    }
+                }
+            }
+        }
+        return $condition;
     }
 
     /**
