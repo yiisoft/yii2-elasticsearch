@@ -364,7 +364,7 @@ class Command extends Component
      * @param $alias
      * @param array $aliasParameters
      *
-     * @return boolean
+     * @return bool
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-adding
      */
     public function addAlias($index, $alias, $aliasParameters = [])
@@ -376,7 +376,7 @@ class Command extends Component
      * @param string $index
      * @param string $alias
      *
-     * @return boolean
+     * @return bool
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#deleting
      */
     public function removeAlias($index, $alias)
@@ -396,7 +396,7 @@ class Command extends Component
      * ~~~
      * @param array $actions
      *
-     * @return boolean
+     * @return bool
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#indices-aliases
      */
     public function aliasActions(array $actions)
@@ -627,7 +627,7 @@ class Command extends Component
      * @param $pattern
      * @param $settings
      * @param $mappings
-     * @param integer $order
+     * @param int $order
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
      */
