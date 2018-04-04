@@ -14,11 +14,11 @@ Yii 2.0 elasticsearch エクステンション
 * [データのマッピングとインデクシング](mapping-indexing.md)
 * [クエリを使う](usage-query.md)
 * [アクティブレコードを使う](usage-ar.md)
-* [データプロバイダと連携する](usage-data-providers.md)
+* [データ・プロバイダを扱う](usage-data-providers.md)
 
 追加のトピック
 --------------
 
-* [Elasticsearch DebugPanel を使う](topics-debug.md)
-* プライマリキーが属性に含まれていないレコードとのリレーションの定義
+* [Elasticsearch デバッグ・パネルを使う](topics-debug.md)
+* プライマリ・キーが属性に含まれていないレコードとのリレーションの定義
 * さまざまな index/type からレコードを取得する
