@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/yii2-elasticsearch",
+    "name": "mice-tm/yii2-elasticsearch",
     "description": "Elasticsearch integration and ActiveRecord for the Yii framework",
     "keywords": ["yii2", "elasticsearch", "active-record", "search", "fulltext"],
     "type": "yii2-extension",
@@ -22,7 +22,7 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "psr-4": { "yii\\elasticsearch\\": "" }
+        "psr-4": { "micetm\\elasticsearch\\": "" }
     },
     "extra": {
         "branch-alias": {
