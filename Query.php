@@ -150,12 +150,12 @@ class Query extends Component implements QueryInterface
     /**
      * @var array The highlight part of this search query. This is an array that allows to highlight search results
      * on one or more fields.
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
      */
     public $highlight;
     /**
      * @var array List of aggregations to add to this query.
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public $aggregations = [];
     /**
@@ -268,7 +268,7 @@ class Query extends Component implements QueryInterface
      * Executes the query and returns a single row of result.
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application component will be used.
-     * @return array|boolean the first row (in terms of an array) of the query result. False is returned if the query
+     * @return array|bool the first row (in terms of an array) of the query result. False is returned if the query
      * results in nothing.
      */
     public function one($db = null)
@@ -392,7 +392,7 @@ class Query extends Component implements QueryInterface
      * @param string $q the COUNT expression. This parameter is ignored by this implementation.
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application component will be used.
-     * @return integer number of records
+     * @return int number of records
      */
     public function count($q = '*', $db = null)
     {
@@ -409,7 +409,7 @@ class Query extends Component implements QueryInterface
      * Returns a value indicating whether the query result contains any row of data.
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application component will be used.
-     * @return boolean whether the query result contains any row of data.
+     * @return bool whether the query result contains any row of data.
      */
     public function exists($db = null)
     {
@@ -448,7 +448,7 @@ class Query extends Component implements QueryInterface
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public function addAggregation($name, $type, $options)
     {
@@ -466,7 +466,7 @@ class Query extends Component implements QueryInterface
      * @param string $type the aggregation type. e.g. `terms`, `range`, `histogram`...
      * @param string|array $options the configuration options for this aggregation. Can be an array or a json string.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public function addAgg($name, $type, $options)
     {
@@ -504,8 +504,8 @@ class Query extends Component implements QueryInterface
     // TODO support multi query via static method http://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html
 
     /**
-     * Sets the querypart of this search query.
-     * @param string $query
+     * Sets the query part of this search query.
+     * @param string|array $query
      * @return $this the query object itself
      */
     public function query($query)
@@ -650,7 +650,7 @@ class Query extends Component implements QueryInterface
 
     /**
      * Sets the search timeout.
-     * @param integer $timeout A search timeout, bounding the search request to be executed within the specified time value
+     * @param int $timeout A search timeout, bounding the search request to be executed within the specified time value
      * and bail with the hits accumulated up to that point when expired. Defaults to no timeout.
      * @return $this the query object itself
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5

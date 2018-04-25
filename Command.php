@@ -295,7 +295,114 @@ class Command extends Component
         return $this->db->head([$index, $type]);
     }
 
-    // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
+    /**
+     * @param string $alias
+     *
+     * @return bool
+     */
+    public function aliasExists($alias)
+    {
+        $indexes = $this->getIndexesByAlias($alias);
+
+        return !empty($indexes);
+    }
+
+    /**
+     * @return array
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-retrieving
+     */
+    public function getAliasInfo()
+    {
+        $aliasInfo = $this->db->get(['_alias', '*']);
+        return $aliasInfo ?: [];
+    }
+
+    /**
+     * @param string $alias
+     *
+     * @return array
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-retrieving
+     */
+    public function getIndexInfoByAlias($alias)
+    {
+        $responseData = $this->db->get(['_alias', $alias]);
+        if (empty($responseData)) {
+            return [];
+        }
+
+        return $responseData;
+    }
+
+    /**
+     * @param string $alias
+     *
+     * @return array
+     */
+    public function getIndexesByAlias($alias)
+    {
+        return array_keys($this->getIndexInfoByAlias($alias));
+    }
+
+    /**
+     * @param string $index
+     *
+     * @return array
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-retrieving
+     */
+    public function getIndexAliases($index)
+    {
+        $responseData = $this->db->get([$index, '_alias', '*']);
+        if (empty($responseData)) {
+            return [];
+        }
+
+        return $responseData[$index]['aliases'];
+    }
+
+    /**
+     * @param $index
+     * @param $alias
+     * @param array $aliasParameters
+     *
+     * @return bool
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-adding
+     */
+    public function addAlias($index, $alias, $aliasParameters = [])
+    {
+        return (bool)$this->db->put([$index, '_alias', $alias], [], json_encode((object)$aliasParameters));
+    }
+
+    /**
+     * @param string $index
+     * @param string $alias
+     *
+     * @return bool
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#deleting
+     */
+    public function removeAlias($index, $alias)
+    {
+        return (bool)$this->db->delete([$index, '_alias', $alias]);
+    }
+
+    /**
+     * Runs alias manipulations.
+     * If you want to add alias1 to index1
+     * and remove alias2 from index2 you can use following commands:
+     * ~~~
+     * $actions = [
+     *      ['add' => ['index' => 'index1', 'alias' => 'alias1']],
+     *      ['remove' => ['index' => 'index2', 'alias' => 'alias2']],
+     * ];
+     * ~~~
+     * @param array $actions
+     *
+     * @return bool
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#indices-aliases
+     */
+    public function aliasActions(array $actions)
+    {
+        return (bool)$this->db->post(['_aliases'], [], json_encode(['actions' => $actions]));
+    }
 
     /**
      * Change specific index level settings in real time.
@@ -356,7 +463,7 @@ class Command extends Component
         $this->openIndex($index);
         return $result;
     }
-    
+
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-settings.html
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-warmers.html
@@ -518,7 +625,7 @@ class Command extends Component
      * @param $pattern
      * @param $settings
      * @param $mappings
-     * @param integer $order
+     * @param int $order
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
      */
