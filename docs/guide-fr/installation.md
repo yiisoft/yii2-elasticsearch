@@ -32,7 +32,7 @@ return [
     //....
     'components' => [
         'elasticsearch' => [
-            'class' => 'yii\elasticsearch\Connection',
+            'class' => 'micetm\elasticsearch\Connection',
             'nodes' => [
                 ['http_address' => '127.0.0.1:9200'],
                 // configurez plus de serveurs si vous avez un cluster

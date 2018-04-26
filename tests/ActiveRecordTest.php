@@ -4,7 +4,7 @@ namespace yiiunit\extensions\elasticsearch;
 
 use yii\base\Event;
 use yii\db\BaseActiveRecord;
-use yii\elasticsearch\Connection;
+use micetm\elasticsearch\Connection;
 use yiiunit\framework\ar\ActiveRecordTestTrait;
 use yiiunit\extensions\elasticsearch\data\ar\ActiveRecord;
 use yiiunit\extensions\elasticsearch\data\ar\Customer;
@@ -190,7 +190,7 @@ class ActiveRecordTest extends TestCase
 
         (new Cat())->save(false);
         (new Dog())->save(false);
-        
+
         $db->createCommand()->flushIndex('yiitest');
     }
 

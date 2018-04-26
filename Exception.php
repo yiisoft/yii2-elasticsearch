@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\elasticsearch;
+namespace micetm\elasticsearch;
 
 /**
  * Exception represents an exception that is caused by elasticsearch-related operations.

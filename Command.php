@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\elasticsearch;
+namespace micetm\elasticsearch;
 
 use yii\base\Component;
 use yii\base\InvalidCallException;

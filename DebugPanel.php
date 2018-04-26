@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\elasticsearch;
+namespace micetm\elasticsearch;
 
 use yii\debug\Panel;
 use yii\helpers\ArrayHelper;
@@ -188,7 +188,7 @@ HTML;
     public function save()
     {
         $target = $this->module->logTarget;
-        $messages = $target->filterMessages($target->messages, Logger::LEVEL_PROFILE, ['yii\elasticsearch\Connection::httpRequest']);
+        $messages = $target->filterMessages($target->messages, Logger::LEVEL_PROFILE, ['micetm\elasticsearch\Connection::httpRequest']);
 
         return ['messages' => $messages];
     }

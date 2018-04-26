@@ -5,8 +5,8 @@
 
 namespace yiiunit\extensions\elasticsearch;
 
-use yii\elasticsearch\ElasticsearchTarget;
-use yii\elasticsearch\Query;
+use micetm\elasticsearch\ElasticsearchTarget;
+use micetm\elasticsearch\Query;
 use yii\log\Dispatcher;
 use yii\log\Logger;
 

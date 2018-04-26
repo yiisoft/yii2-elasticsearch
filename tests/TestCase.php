@@ -3,7 +3,7 @@
 namespace yiiunit\extensions\elasticsearch;
 
 use yii\di\Container;
-use yii\elasticsearch\Connection;
+use micetm\elasticsearch\Connection;
 use yii\helpers\ArrayHelper;
 use Yii;
 

@@ -2,7 +2,7 @@
 
 namespace yiiunit\extensions\elasticsearch;
 
-use yii\elasticsearch\Connection;
+use micetm\elasticsearch\Connection;
 
 /**
  * @group elasticsearch

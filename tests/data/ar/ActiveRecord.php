@@ -13,7 +13,7 @@ namespace yiiunit\extensions\elasticsearch\data\ar;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class ActiveRecord extends \yii\elasticsearch\ActiveRecord
+class ActiveRecord extends \micetm\elasticsearch\ActiveRecord
 {
     public static $db;
 

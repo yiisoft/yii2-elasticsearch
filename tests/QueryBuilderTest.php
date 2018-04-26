@@ -2,8 +2,8 @@
 
 namespace yiiunit\extensions\elasticsearch;
 
-use yii\elasticsearch\Query;
-use yii\elasticsearch\QueryBuilder;
+use micetm\elasticsearch\Query;
+use micetm\elasticsearch\QueryBuilder;
 
 /**
  * @group elasticsearch

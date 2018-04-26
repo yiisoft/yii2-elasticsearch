@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\elasticsearch;
+namespace micetm\elasticsearch;
 
 use yii\db\ActiveQueryInterface;
 use yii\db\ActiveQueryTrait;

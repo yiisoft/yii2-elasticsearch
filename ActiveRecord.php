@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\elasticsearch;
+namespace micetm\elasticsearch;
 
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -34,7 +34,7 @@ use yii\helpers\StringHelper;
  * The following is an example model called `Customer`:
  *
  * ```php
- * class Customer extends \yii\elasticsearch\ActiveRecord
+ * class Customer extends \micetm\elasticsearch\ActiveRecord
  * {
  *     public function attributes()
  *     {

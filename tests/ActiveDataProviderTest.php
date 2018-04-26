@@ -2,9 +2,9 @@
 
 namespace yiiunit\extensions\elasticsearch;
 
-use yii\elasticsearch\ActiveDataProvider;
-use yii\elasticsearch\Connection;
-use yii\elasticsearch\Query;
+use micetm\elasticsearch\ActiveDataProvider;
+use micetm\elasticsearch\Connection;
+use micetm\elasticsearch\Query;
 use yiiunit\extensions\elasticsearch\data\ar\ActiveRecord;
 use yiiunit\extensions\elasticsearch\data\ar\Customer;
 

@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\elasticsearch;
+namespace micetm\elasticsearch;
 
 use Yii;
 use yii\base\Component;
@@ -601,7 +601,7 @@ class Query extends Component implements QueryInterface
 	 * > The stored_fields parameter is about fields that are explicitly marked
 	 * > as stored in the mapping, which is off by default and generally not recommended.
 	 * > Use source filtering instead to select subsets of the original source document to be returned.
-	 * 
+	 *
      * @param array $fields the fields to be selected.
      * @return $this the query object itself
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-stored-fields.html
