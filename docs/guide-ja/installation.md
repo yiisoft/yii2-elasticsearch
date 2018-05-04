@@ -15,11 +15,13 @@ Elasticsearch バージョン 1.0 以降が必要です。
 php composer.phar require --prefer-dist yiisoft/yii2-elasticsearch
 ```
 
-または、あなたの `composer.json` ファイルの `require` セクションに、下記を追加してください。
+または、あなたの `composer.json` ファイルの `require` セクションに、
 
 ```json
 "yiisoft/yii2-elasticsearch": "~2.0.0"
 ```
+
+を追加してください。
 
 ## アプリケーションを構成する
 
