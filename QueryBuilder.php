@@ -320,9 +320,10 @@ class QueryBuilder extends BaseObject
             return $operator === 'in' ? ['terms' => ['_uid' => []]] : []; // this condition is equal to WHERE false
         }
 
-        if (count($column) > 1) {
-            return $this->buildCompositeInCondition($operator, $column, $values);
-        } elseif (is_array($column)) {
+        if (is_array($column)) {
+            if (count($column) > 1) {
+                return $this->buildCompositeInCondition($operator, $column, $values);
+            }
             $column = reset($column);
         }
         $canBeNull = false;

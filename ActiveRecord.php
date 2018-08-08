@@ -358,7 +358,7 @@ class ActiveRecord extends BaseActiveRecord
             // reset fields in case it is scalar value
             $arrayAttributes = $record->arrayAttributes();
             foreach($row['fields'] as $key => $value) {
-                if (!isset($arrayAttributes[$key]) && count($value) == 1) {
+                if (!isset($arrayAttributes[$key]) && count($value) === 1) {
                     $row['fields'][$key] = reset($value);
                 }
             }

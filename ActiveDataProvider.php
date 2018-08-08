@@ -138,7 +138,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
             /* @var $class \yii\db\ActiveRecord */
             $class = $this->query->modelClass;
             $pks = $class::primaryKey();
-            if (count($pks) === 1) {
+            if (!is_array($pks) || count($pks) === 1) {
                 foreach ($models as $model) {
                     $keys[] = $model->primaryKey;
                 }
