@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.6 under development
 -----------------------
 
-- no changes in this release.
+- Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
 
 
 2.0.5 March 20, 2018
