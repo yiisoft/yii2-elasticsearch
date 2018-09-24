@@ -43,20 +43,20 @@ class Customer extends \yii\elasticsearch\ActiveRecord
 
 Вы можете переопределить [[yii\elasticsearch\ActiveRecord::index()|index()]] и [[yii\elasticsearch\ActiveRecord::type()|type()]] чтобы определить индекс и тип этой записи.
 
-Общее использование Elasticsearch ActiveRecord очень похоже на базу данных ActiveRecord, как описано в [руководстве](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md).
+Общее использование, `Elasticsearch ActiveRecord` очень похоже на `database ActiveRecord`, описано в [руководстве](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md).
 Он поддерживает тот же интерфейс и функции, за исключением следующих ограничений и дополнений(*!*):
 
 - Посколку Elasticsearch не поддерживает SQL, API запросов не поддреживает `join()`, `groupBy()`, `having()` и `union()`.
   Сортировка, `limit`, `offset` и условия поддерживаются.
 - [[yii\elasticsearch\ActiveQuery::from()|from()]] не выбирает таблицы, но [индекс](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) и [тип](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) запрашивают.
-- `select()` был заменен на [[yii\elasticsearch\ActiveQuery::fields()|fields()]] который, в основном, делает тоже самое но `fields` является более подходящим в терминологии Elasticsearch. Он определяет поля для извлечения из документа.
+- `select()` был заменен на [[yii\elasticsearch\ActiveQuery::fields()|fields()]] который, в основном, делает тоже самое, но `fields` является более подходящим в терминологии Elasticsearch. Он определяет поля для извлечения из документа.
 - [[yii\elasticsearch\ActiveQuery::via()|via]] - отношения не могут быть определены через таблицу, так как в Elasticsearch нет таблиц. Вы можете определять отношения только через другие записи.
 - Поскольку Elasticsearch - это не только хранилище данных, но и поисковая система, была добавлена поддержка для поиска ваших записей. Есть [[yii\elasticsearch\ActiveQuery::query()|query()]], [[yii\elasticsearch\ActiveQuery::filter()|filter()]] и [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] методы, которые позволяют составить запрос в Elasticsearch. См. пример использования ниже, как они работают, и проверьте [Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) о том как составлять части `query` и `filter`.
 - Также можно определить отношения от Elasticsearch ActiveRecords до обычных классов ActiveRecord и наоборот.
 
 > **NOTE:** Elasticsearch ограничивает количество записей, возвращаемых любым запросом, до 10 записей по умолчанию.
 > Если вы ожидаете получить больше записей, вы должны явно указать ограничение в запросе а также определить отношения.
-> Это также важно для отношений, которые используют via(), так что если записи via() ограничены 10-ю, записи отношений также могут быть не более 10-и.
+> Это также важно для отношений, которые используют `via()`, так что если записи `via` ограничены 10-ю, записей отношения также может быть не более 10-и.
 
 Пример использования:
 
@@ -91,8 +91,8 @@ $query->search(); // gives you all the records + stats about the visit_count fie
 
 ## Комплексные запросы
 
-Любой запрос может быть составлен с использованием запроса DSL ElasticSearch и передан методу `ActiveRecord::query()`. Однако DS-запрос известен своей многословностью, и эти негабаритные запросы вскоре становятся неуправляемыми.
-Есть способ сделать запросы более удобными. Начните с определения класса запросов так же, как это делается для базового SQL ActiveRecord.
+Любой запрос может быть составлен с использованием запроса DSL ElasticSearch и передан методу `ActiveRecord::query()`. Однако DS-запрос известен своей многословностью, и эти запросы большего размера вскоре становятся неуправляемыми.
+Есть способ сделать запросы более удобными. Начните с определения класса запросов так же, как это делается для SQL ActiveRecord.
 
 ```php
 class CustomerQuery extends ActiveQuery
@@ -141,7 +141,7 @@ $customers = Customer::find()->filter([
 [Фреймворк агрегирования](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) 
 помогает предоставлять агрегированные данные на основе поискового запроса. Он основан на простых строительных блоках, называемых агрегатами, которые могут быть составлены для создания сложных сводок данных.
 
-Используя ранее определенный класс `Customer`, давайте выясним, сколько клиентов зарегистрировалось каждый день. Для этого мы используем агрегацию `terms`.
+Используя ранее определенный класс `Customer`, давайте выясним, сколько клиентов регистрировалось каждый день. Для этого мы используем агрегацию `terms`.
 
 
 ```php
@@ -153,7 +153,7 @@ $aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
 
 ```                    
 
-В этом примере мы специально запрашиваем только результаты агрегации. Следующий код обрабатывает данные далее.
+В этом примере мы специально запрашиваем только результаты агрегации. Следующий код обрабатывает данные.
 
 ```php
 $customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date']['buckets'], 'key', 'doc_count');
