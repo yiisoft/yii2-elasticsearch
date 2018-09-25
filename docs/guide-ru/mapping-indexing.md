@@ -8,11 +8,11 @@
 ```php
 class Book extends yii\elasticsearch\ActiveRecord
 {
-    // Other class attributes and methods go here
+    //Другие атрибуты и методы класса идут здесь
     // ...
 
     /**
-     * @return array This model's mapping
+     * @return array Сопоставление для этой модели
      */
     public static function mapping()
     {
@@ -31,7 +31,7 @@ class Book extends yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Set (update) mappings for this model
+     * Установка (update) для этой модели
      */
     public static function updateMapping()
     {
@@ -41,7 +41,7 @@ class Book extends yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Create this model's index
+     * Создать индекс этой модели
      */
     public static function createIndex()
     {
@@ -57,7 +57,7 @@ class Book extends yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Delete this model's index
+     * Удалить индекс этой модели
      */
     public static function deleteIndex()
     {

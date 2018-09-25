@@ -15,7 +15,7 @@
 class Customer extends \yii\elasticsearch\ActiveRecord
 {
     /**
-     * @return array the list of attributes for this record
+     * @return array список атрибутов для этой записи
      */
     public function attributes()
     {
@@ -24,7 +24,7 @@ class Customer extends \yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * @return ActiveQuery defines a relation to the Order record (can be in other database, e.g. redis or sql)
+     * @return ActiveQuery определение связи записи Order (может быть в другой базе данных, например redis или sql)
      */
     public function getOrders()
     {
@@ -32,7 +32,7 @@ class Customer extends \yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Defines a scope that modifies the `$query` to return only active(status = 1) customers
+     * Определяет область, изменяющая `$query`, которая вернет только активных (status = 1) клиентов
      */
     public static function active($query)
     {
@@ -62,17 +62,17 @@ class Customer extends \yii\elasticsearch\ActiveRecord
 
 ```php
 $customer = new Customer();
-$customer->primaryKey = 1; // in this case equivalent to $customer->id = 1;
+$customer->primaryKey = 1; // в этом случае эквивалентно $customer->id = 1;
 $customer->attributes = ['name' => 'test'];
 $customer->save();
 
-$customer = Customer::get(1); // get a record by pk
-$customers = Customer::mget([1,2,3]); // get multiple records by pk
-$customer = Customer::find()->where(['name' => 'test'])->one(); // find by query, note that you need to configure mapping for this field in order to find records properly
-$customers = Customer::find()->active()->all(); // find all by query (using the `active` scope)
+$customer = Customer::get(1); // получить запись по первичному ключу
+$customers = Customer::mget([1,2,3]); // получитть множественные записи по первичному ключу
+$customer = Customer::find()->where(['name' => 'test'])->one(); // найти по запросу. Обратите внимание, вам необходимо настроить сопоставление для этого поля, чтобы правильно найти запись
+$customers = Customer::find()->active()->all(); // найти все по запросу (используя область видимости `active`)
 
 // http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
-$result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // articles whose title contains "yii"
+$result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // статьи название которых содержит "yii"
 
 // http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
 $query = Article::find()->query([
@@ -83,10 +83,10 @@ $query = Article::find()->query([
     ]
 ]);
 
-$query->all(); // gives you all the documents
-// you can add facets to your search:
+$query->all(); // вернет все документы
+// вы можете добавить фасеты к вашему поиску:
 $query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
-$query->search(); // gives you all the records + stats about the visit_count field. e.g. mean, sum, min, max etc...
+$query->search(); // вернет все записи + статистику о поле visit_count. Например: среднее, сумма, мин, макс и т.д...
 ```
 
 ## Комплексные запросы
