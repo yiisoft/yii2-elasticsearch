@@ -504,9 +504,9 @@ class Query extends Component implements QueryInterface
     // TODO support multi query via static method http://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html
 
     /**
-     * Sets the querypart of this search query.
-     * @param string $query
-     * @return $this the query object itself
+     * Sets the query part of this search query.
+     * @param string|array $query
+     * @return $this the query object itself.
      */
     public function query($query)
     {
