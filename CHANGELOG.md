@@ -5,6 +5,7 @@ Yii Framework 2 elasticsearch extension Change Log
 -----------------------
 
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
+- Bug #199: Fixed `ActiveRecord::insert()` check if insert was indeed successful (rhertogh)
 
 
 2.0.5 March 20, 2018
