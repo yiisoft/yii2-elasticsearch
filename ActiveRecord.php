@@ -468,6 +468,10 @@ class ActiveRecord extends BaseActiveRecord
             $this->getPrimaryKey(),
             $options
         );
+        
+        if ($response === false) {
+            return false;
+        }
 
         $pk = static::primaryKey()[0];
         $this->$pk = $response['_id'];
