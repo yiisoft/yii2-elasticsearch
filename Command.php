@@ -555,4 +555,98 @@ class Command extends Component
     {
         return $this->db->get(['_template', $name]);
     }
+
+    /**
+     * @param string $alias
+     * @return array
+     * @throws \Exception
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html#alias-retrieving
+     */
+    public function getIndexInfoByAlias($alias)
+    {
+        $responseData = $this->db->createCommand()->db->get([
+            '_alias',
+            $alias
+        ]);
+        if (empty($responseData)) {
+            return [];
+        }
+        return $responseData;
+    }
+
+    /**
+     * Runs alias manipulations.
+     * If you want to add alias1 to index1
+     * and remove alias2 from index2 you can use following commands:
+     * ~~~
+     * $actions = [
+     *      ['add' => ['index' => 'index1', 'alias' => 'alias1']],
+     *      ['remove' => ['index' => 'index2', 'alias' => 'alias2']],
+     * ];
+     * ~~~
+     *
+     * @param array $actions
+     * @return bool
+     * @throws \Exception
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.5/indices-aliases.html
+     */
+    public function aliasActions(array $actions)
+    {
+        return (bool)$this->db->createCommand()->db->post(
+            ['_aliases'],
+            [],
+            json_encode(['actions' => $actions])
+        );
+    }
+
+    /**
+     * Upsert a document into an index
+     * @param string $index
+     * @param string $type
+     * @param string|array $data json строка или массив строк данных, где каждая строка - данные для одной сущности
+     * @param null $id           the documents id. If not specified Id will be automatically chosen
+     * @param array $options
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/bulk.html
+     * @throws \Exception
+     */
+    public function bulkUpsert($index, $type, $data, $id = null, $options = [])
+    {
+        if (empty($data)) {
+            $data = [];
+        } else {
+            $data = is_string($data) ? Json::decode($data) : $data;
+        }
+
+        $body = [];
+        if ($id === null) {
+            $meta = json_encode([
+                "index" => [
+                    "_index" => $index,
+                    "_type"  => $type
+                ]
+            ]);
+            foreach ($data as $row) {
+                $body[] = $meta;
+                $body[] = json_encode($row);
+            }
+        } else {
+            foreach ($data as $row) {
+                $body[] = json_encode([
+                    "index" => [
+                        "_index" => $index,
+                        "_type"  => $type,
+                        "_id"    => $id
+                    ]
+                ]);
+                $body[] = json_encode($row);
+            }
+        }
+
+        return $this->query->createCommand()->db->post(
+            ["_bulk"],
+            $options,
+            implode("\n", $body) . "\n"
+        );
+    }
 }

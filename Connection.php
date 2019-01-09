@@ -155,8 +155,6 @@ class Connection extends Component
             $this->populateNodes();
         }
         $this->selectActiveNode();
-        Yii::trace('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
-            . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
     }
 
@@ -219,8 +217,6 @@ class Connection extends Component
         if ($this->activeNode === null) {
             return;
         }
-        Yii::trace('Closing connection to elasticsearch. Active node was: '
-            . $this->nodes[$this->activeNode]['http']['publish_address'], __CLASS__);
         $this->activeNode = null;
         if ($this->_curl) {
             curl_close($this->_curl);
@@ -485,15 +481,7 @@ class Connection extends Component
                     $host = substr($host, $pos + 1);
                 }
             }
-            $profile = "$method $q#$requestBody";
             $url = "$protocol://$host/$q";
-        } else {
-            $profile = false;
-        }
-
-        Yii::trace("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
-        if ($profile !== false) {
-            Yii::beginProfile($profile, __METHOD__);
         }
 
         $this->resetCurlHandle();
@@ -510,10 +498,6 @@ class Connection extends Component
         }
 
         $responseCode = curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
-
-        if ($profile !== false) {
-            Yii::endProfile($profile, __METHOD__);
-        }
 
         if ($responseCode >= 200 && $responseCode < 300) {
             if ($method === 'HEAD') {
