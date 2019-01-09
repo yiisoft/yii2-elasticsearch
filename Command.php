@@ -564,7 +564,7 @@ class Command extends Component
      */
     public function getIndexInfoByAlias($alias)
     {
-        $responseData = $this->db->createCommand()->db->get([
+        $responseData = $this->db->get([
             '_alias',
             $alias
         ]);
@@ -592,7 +592,7 @@ class Command extends Component
      */
     public function aliasActions(array $actions)
     {
-        return (bool)$this->db->createCommand()->db->post(
+        return (bool)$this->db->post(
             ['_aliases'],
             [],
             json_encode(['actions' => $actions])
@@ -643,7 +643,7 @@ class Command extends Component
             }
         }
 
-        return $this->query->createCommand()->db->post(
+        return $this->db->post(
             ["_bulk"],
             $options,
             implode("\n", $body) . "\n"
