@@ -356,7 +356,7 @@ class Command extends Component
         $this->openIndex($index);
         return $result;
     }
-    
+
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-settings.html
 
     // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-warmers.html
@@ -604,13 +604,13 @@ class Command extends Component
      * @param string $index
      * @param string $type
      * @param string|array $data json строка или массив строк данных, где каждая строка - данные для одной сущности
-     * @param null $id           the documents id. If not specified Id will be automatically chosen
+     * @param null $fieldId поле в котором находится Id записи (используется для обновления). Если не указано, то произойдет вставка данных
      * @param array $options
      * @return mixed
      * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/bulk.html
      * @throws \Exception
      */
-    public function bulkUpsert($index, $type, $data, $id = null, $options = [])
+    public function bulkUpsert($index, $type, $data, $fieldId = null, $options = [])
     {
         if (empty($data)) {
             $data = [];
@@ -619,7 +619,7 @@ class Command extends Component
         }
 
         $body = [];
-        if ($id === null) {
+        if ($fieldId === null) {
             $meta = json_encode([
                 "index" => [
                     "_index" => $index,
@@ -636,7 +636,7 @@ class Command extends Component
                     "index" => [
                         "_index" => $index,
                         "_type"  => $type,
-                        "_id"    => $id
+                        "_id"    => $row[$fieldId]
                     ]
                 ]);
                 $body[] = json_encode($row);
