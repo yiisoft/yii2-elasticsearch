@@ -649,4 +649,25 @@ class Command extends Component
             implode("\n", $body) . "\n"
         );
     }
+
+    /**
+     * Копирование данных из одного индекса в другой
+     * Для правильной работы, $destIndex должен существовать и иметь структуру аналогичную $sourceIndex
+     * @param $sourceIndex
+     * @param $destIndex
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
+     */
+    public function copyIndex($sourceIndex, $destIndex)
+    {
+        $command = [
+            "source" => [
+                "index" => $sourceIndex,
+            ],
+            "dest" => [
+                "index" => $destIndex,
+            ]
+        ];
+        return $this->db->post(['_reindex'], [], json_encode($command));
+    }
 }
