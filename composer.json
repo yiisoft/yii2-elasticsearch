@@ -24,6 +24,12 @@
     "autoload": {
         "psr-4": { "yii\\elasticsearch\\": "" }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
