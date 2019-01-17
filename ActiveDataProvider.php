@@ -86,6 +86,10 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         }
 
         $query = clone $this->query;
+
+        $results = $query->search($this->db);
+        $this->setQueryResults(is_array($results) ? $results : []);
+
         if (($pagination = $this->getPagination()) !== false) {
             // pagination fails to validate page number, because total count is unknown at this stage
             $pagination->validatePage = false;
@@ -95,15 +99,11 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
             $query->addOrderBy($sort->getOrders());
         }
 
-        if (is_array(($results = $query->search($this->db)))) {
-            $this->setQueryResults($results);
-            if ($pagination !== false) {
-                $pagination->totalCount = $this->getTotalCount();
-            }
-            return $results['hits']['hits'];
+        if ($pagination !== false) {
+            $pagination->totalCount = $this->getTotalCount();
         }
-        $this->setQueryResults([]);
-        return [];
+
+        return $results['hits']['hits'];
     }
 
     /**
