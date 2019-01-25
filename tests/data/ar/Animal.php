@@ -43,7 +43,7 @@ class Animal extends ActiveRecord
         $command->deleteMapping(static::index(), static::type());
         $command->setMapping(static::index(), static::type(), [
             static::type() => [
-                "_id" => ["path" => "id", "index" => "not_analyzed", "store" => "yes"],
+//                "_id" => ["path" => "id", "index" => "not_analyzed", "store" => "yes"],
                 "properties" => [
                     "type" => ["type" => "string", "index" => "not_analyzed"]
                 ]
@@ -63,7 +63,7 @@ class Animal extends ActiveRecord
     }
 
     /**
-     * 
+     *
      * @param type $row
      * @return \yiiunit\data\ar\elasticsearch\Animal
      */

@@ -31,7 +31,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function aliasExists_AliasesAreSetButWithDifferentName_returnsFalse()
     {
@@ -50,7 +50,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function aliasExists_AliasIsSetWithSameName_returnsTrue()
     {
@@ -66,7 +66,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getAliasInfo_noAliasSet_returnsEmptyArray()
     {
@@ -77,7 +77,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      * @dataProvider provideDataForGetAliasInfo
      *
      * @param string $index
@@ -222,7 +222,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getIndexInfoByAlias_noAliasesSet_returnsEmptyArray()
     {
@@ -235,7 +235,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getIndexInfoByAlias_oneIndexIsSetToAlias_returnsDataForThatIndex()
     {
@@ -258,7 +258,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getIndexInfoByAlias_twoIndexesAreSetToSameAlias_returnsDataForBothIndexes()
     {
@@ -303,7 +303,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getIndexesByAlias_oneIndexIsSetToAlias_returnsArrayWithNameOfThatIndex()
     {
@@ -320,7 +320,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getIndexesByAlias_twoIndexesAreSetToSameAlias_returnsArrayWithNamesForBothIndexes()
     {
@@ -344,7 +344,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function getIndexAliases_noAliasesSet_returnsEmptyArray()
     {
@@ -357,7 +357,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      * @todo maybe add more test with alias settings
      */
     public function getIndexAliases_SingleAliasIsSet_returnsDataForThatAlias()
@@ -377,7 +377,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      * @todo maybe add more test with alias settings
      */
     public function getIndexAliases_MultipleAliasesAreSet_returnsDataForThoseAliases()
@@ -400,7 +400,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function removeAlias_noAliasIsSetForIndex_returnsFalse()
     {
@@ -415,7 +415,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function removeAlias_aliasWasSetForIndex_returnsTrue()
     {
@@ -431,7 +431,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function addAlias_aliasNonExistingIndex_returnsFalse()
     {
@@ -444,7 +444,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function addAlias_aliasExistingIndex_returnsTrue()
     {
@@ -459,7 +459,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function aliasActions_makingOperationOverNonExistingIndex_returnsFalse()
     {
@@ -475,7 +475,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @test
+     * @turnoff_test
      */
     public function aliasActions_makingOperationOverExistingIndex_returnsTrue()
     {
