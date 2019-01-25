@@ -13,10 +13,20 @@ class CommandTest extends TestCase
     /** @var Command */
     private $command;
 
+    private $index = 'alias_test';
+    private $index1 = 'alias_test1';
+    private $index2 = 'alias_test2';
+
     protected function setUp()
     {
         parent::setUp();
         $this->command = $this->getConnection()->createCommand();
+
+        $testAlias = 'test';
+        $this->command->deleteIndex($this->index);
+        $this->command->deleteIndex($testAlias);
+        $this->command->deleteIndex($this->index1);
+        $this->command->deleteIndex($this->index2);
     }
 
     /**
@@ -31,42 +41,40 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function aliasExists_AliasesAreSetButWithDifferentName_returnsFalse()
     {
-        $index = 'alias_test';
         $testAlias = 'test';
         $fooAlias1 = 'alias';
         $fooAlias2 = 'alias2';
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $fooAlias1);
-        $this->command->addAlias($index, $fooAlias2);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $fooAlias1);
+        $this->command->addAlias($this->index, $fooAlias2);
         $aliasExists = $this->command->aliasExists($testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertFalse($aliasExists);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function aliasExists_AliasIsSetWithSameName_returnsTrue()
     {
-        $index = 'alias_test';
         $testAlias = 'test';
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $testAlias);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $testAlias);
         $aliasExists = $this->command->aliasExists($testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertTrue($aliasExists);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getAliasInfo_noAliasSet_returnsEmptyArray()
     {
@@ -77,7 +85,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @turnoff_test
+     * @test
      * @dataProvider provideDataForGetAliasInfo
      *
      * @param string $index
@@ -106,7 +114,6 @@ class CommandTest extends TestCase
      */
     public function provideDataForGetAliasInfo()
     {
-        $index = 'alias_test';
         $alias = 'test';
         $filter = [
             'filter' => [
@@ -141,11 +148,11 @@ class CommandTest extends TestCase
 
         return [
             [
-                $index,
+                $this->index,
                 null,
                 $alias,
                 [
-                    $index => [
+                    $this->index => [
                         'aliases' => [
                             $alias => [],
                         ],
@@ -154,11 +161,11 @@ class CommandTest extends TestCase
                 [],
             ],
             [
-                $index,
+                $this->index,
                 $mapping,
                 $alias,
                 [
-                    $index => [
+                    $this->index => [
                         'aliases' => [
                             $alias => $filter,
                         ]
@@ -167,11 +174,11 @@ class CommandTest extends TestCase
                 $filter,
             ],
             [
-                $index,
+                $this->index,
                 null,
                 $alias,
                 [
-                    $index => [
+                    $this->index => [
                         'aliases' => [
                             $alias => $singleExpectedRouting,
                         ],
@@ -180,11 +187,11 @@ class CommandTest extends TestCase
                 $singleRouting,
             ],
             [
-                $index,
+                $this->index,
                 null,
                 $alias,
                 [
-                    $index => [
+                    $this->index => [
                         'aliases' => [
                             $alias => $differentRouting,
                         ],
@@ -193,11 +200,11 @@ class CommandTest extends TestCase
                 $differentRouting
             ],
             [
-                $index,
+                $this->index,
                 $mapping,
                 $alias,
                 [
-                    $index => [
+                    $this->index => [
                         'aliases' => [
                             $alias => array_merge($filter, $singleExpectedRouting)
                         ],
@@ -206,11 +213,11 @@ class CommandTest extends TestCase
                 array_merge($filter, $singleRouting),
             ],
             [
-                $index,
+                $this->index,
                 $mapping,
                 $alias,
                 [
-                    $index => [
+                    $this->index => [
                         'aliases' => [
                             $alias => array_merge($filter, $differentRouting)
                         ],
@@ -222,7 +229,7 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getIndexInfoByAlias_noAliasesSet_returnsEmptyArray()
     {
@@ -235,56 +242,53 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getIndexInfoByAlias_oneIndexIsSetToAlias_returnsDataForThatIndex()
     {
-        $index = 'alias_test';
         $testAlias = 'test';
         $expectedResult = [
-            $index => [
+            $this->index => [
                 'aliases' => [
                     $testAlias => [],
                 ],
             ],
         ];
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $testAlias);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $testAlias);
         $actualResult = $this->command->getIndexInfoByAlias($testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getIndexInfoByAlias_twoIndexesAreSetToSameAlias_returnsDataForBothIndexes()
     {
-        $index1 = 'alias_test1';
-        $index2 = 'alias_test2';
         $testAlias = 'test';
         $expectedResult = [
-            $index1 => [
+            $this->index1 => [
                 'aliases' => [
                     $testAlias => [],
                 ],
             ],
-            $index2 => [
+            $this->index2 => [
                 'aliases' => [
                     $testAlias => [],
                 ],
             ],
         ];
 
-        $this->command->createIndex($index1);
-        $this->command->createIndex($index2);
-        $this->command->addAlias($index1, $testAlias);
-        $this->command->addAlias($index2, $testAlias);
+        $this->command->createIndex($this->index1);
+        $this->command->createIndex($this->index2);
+        $this->command->addAlias($this->index1, $testAlias);
+        $this->command->addAlias($this->index2, $testAlias);
         $actualResult = $this->command->getIndexInfoByAlias($testAlias);
-        $this->command->deleteIndex($index1);
-        $this->command->deleteIndex($index2);
+        $this->command->deleteIndex($this->index1);
+        $this->command->deleteIndex($this->index2);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -303,86 +307,80 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getIndexesByAlias_oneIndexIsSetToAlias_returnsArrayWithNameOfThatIndex()
     {
-        $index = 'alias_test';
         $testAlias = 'test';
-        $expectedResult = [$index];
+        $expectedResult = [$this->index];
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $testAlias);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $testAlias);
         $actualResult = $this->command->getIndexesByAlias($testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getIndexesByAlias_twoIndexesAreSetToSameAlias_returnsArrayWithNamesForBothIndexes()
     {
-        $index1 = 'alias_test1';
-        $index2 = 'alias_test2';
         $testAlias = 'test';
         $expectedResult = [
-            $index1,
-            $index2,
+            $this->index1,
+            $this->index2,
         ];
 
-        $this->command->createIndex($index1);
-        $this->command->createIndex($index2);
-        $this->command->addAlias($index1, $testAlias);
-        $this->command->addAlias($index2, $testAlias);
+        $this->command->createIndex($this->index1);
+        $this->command->createIndex($this->index2);
+        $this->command->addAlias($this->index1, $testAlias);
+        $this->command->addAlias($this->index2, $testAlias);
         $actualResult = $this->command->getIndexesByAlias($testAlias);
-        $this->command->deleteIndex($index1);
-        $this->command->deleteIndex($index2);
+        $this->command->deleteIndex($this->index1);
+        $this->command->deleteIndex($this->index2);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function getIndexAliases_noAliasesSet_returnsEmptyArray()
     {
-        $index = 'alias_test';
         $expectedResult = [];
 
-        $actualResult = $this->command->getIndexAliases($index);
+        $actualResult = $this->command->getIndexAliases($this->index);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      * @todo maybe add more test with alias settings
      */
     public function getIndexAliases_SingleAliasIsSet_returnsDataForThatAlias()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
         $expectedResult = [
             $testAlias => [],
         ];
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $testAlias);
-        $actualResult = $this->command->getIndexAliases($index);
-        $this->command->deleteIndex($index);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $testAlias);
+        $actualResult = $this->command->getIndexAliases($this->index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      * @todo maybe add more test with alias settings
      */
     public function getIndexAliases_MultipleAliasesAreSet_returnsDataForThoseAliases()
     {
-        $index = 'alias_test';
         $testAlias1 = 'test_alias1';
         $testAlias2 = 'test_alias2';
         $expectedResult = [
@@ -390,104 +388,98 @@ class CommandTest extends TestCase
             $testAlias2 => [],
         ];
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $testAlias1);
-        $this->command->addAlias($index, $testAlias2);
-        $actualResult = $this->command->getIndexAliases($index);
-        $this->command->deleteIndex($index);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $testAlias1);
+        $this->command->addAlias($this->index, $testAlias2);
+        $actualResult = $this->command->getIndexAliases($this->index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function removeAlias_noAliasIsSetForIndex_returnsFalse()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
 
-        $this->command->createIndex($index);
-        $actualResult = $this->command->removeAlias($index, $testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->createIndex($this->index);
+        $actualResult = $this->command->removeAlias($this->index, $testAlias);
+        $this->command->deleteIndex($this->index);
 
         $this->assertFalse($actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function removeAlias_aliasWasSetForIndex_returnsTrue()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
 
-        $this->command->createIndex($index);
-        $this->command->addAlias($index, $testAlias);
-        $actualResult = $this->command->removeAlias($index, $testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->createIndex($this->index);
+        $this->command->addAlias($this->index, $testAlias);
+        $actualResult = $this->command->removeAlias($this->index, $testAlias);
+        $this->command->deleteIndex($this->index);
 
         $this->assertTrue($actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function addAlias_aliasNonExistingIndex_returnsFalse()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
 
-        $actualResult = $this->command->addAlias($index, $testAlias);
+        $actualResult = $this->command->addAlias($this->index, $testAlias);
 
         $this->assertFalse($actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function addAlias_aliasExistingIndex_returnsTrue()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
 
-        $this->command->createIndex($index);
-        $actualResult = $this->command->addAlias($index, $testAlias);
-        $this->command->deleteIndex($index);
+        $this->command->createIndex($this->index);
+        $actualResult = $this->command->addAlias($this->index, $testAlias);
+        $this->command->deleteIndex($this->index);
 
         $this->assertTrue($actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function aliasActions_makingOperationOverNonExistingIndex_returnsFalse()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
 
         $actualResult = $this->command->aliasActions([
-            ['add' => ['index' => $index, 'alias' => $testAlias]],
-            ['remove' => ['index' => $index, 'alias' => $testAlias]],
+            ['add' => ['index' => $this->index, 'alias' => $testAlias]],
+            ['remove' => ['index' => $this->index, 'alias' => $testAlias]],
         ]);
 
         $this->assertFalse($actualResult);
     }
 
     /**
-     * @turnoff_test
+     * @test
      */
     public function aliasActions_makingOperationOverExistingIndex_returnsTrue()
     {
-        $index = 'alias_test';
         $testAlias = 'test_alias';
 
-        $this->command->createIndex($index);
+        $this->command->createIndex($this->index);
         $actualResult = $this->command->aliasActions([
-            ['add' => ['index' => $index, 'alias' => $testAlias]],
-            ['remove' => ['index' => $index, 'alias' => $testAlias]],
+            ['add' => ['index' => $this->index, 'alias' => $testAlias]],
+            ['remove' => ['index' => $this->index, 'alias' => $testAlias]],
         ]);
-        $this->command->deleteIndex($index);
+        $this->command->deleteIndex($this->index);
 
         $this->assertTrue($actualResult);
     }

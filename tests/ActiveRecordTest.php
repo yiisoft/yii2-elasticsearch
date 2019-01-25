@@ -969,11 +969,11 @@ class ActiveRecordTest extends TestCase
     public function illegalValuesForFindByCondition()
     {
         return [
-            [['id' => ['`id`=`id` and 1' => 1]], ['id' => 1]],
+            [['id' => ['`id`=`id` and 1' => 1]], null],
             [['id' => [
                 'legal' => 1,
                 '`id`=`id` and 1' => 1,
-            ]], ['id' => 1]],
+            ]], null],
             [['id' => [
                 'nested_illegal' => [
                     'false or 1=' => 1
@@ -993,14 +993,14 @@ class ActiveRecordTest extends TestCase
             [['id' => [
                 'name' => 'Cars',
                 'email' => 'test@example.com',
-            ]], ['id' => 1]],
+            ]], null],
         ];
     }
 
     /**
      * @dataProvider illegalValuesForFindByCondition
      */
-    public function turnoff_testValueEscapingInFindByCondition($filterWithInjection, $expectedResult)
+    public function testValueEscapingInFindByCondition($filterWithInjection, $expectedResult)
     {
         /* @var $itemClass \yii\db\ActiveRecordInterface */
         $itemClass = $this->getItemClass();
