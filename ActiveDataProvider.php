@@ -87,21 +87,20 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
         $query = clone $this->query;
 
-        $results = $query->search($this->db);
-        $this->setQueryResults(is_array($results) ? $results : []);
-
         if (($pagination = $this->getPagination()) !== false) {
-            // pagination fails to validate page number, because total count is unknown at this stage
-            $pagination->validatePage = false;
+            $pagination->totalCount = $this->getTotalCount();
+            if ($pagination->totalCount === 0) {
+                return [];
+            }
             $query->limit($pagination->getLimit())->offset($pagination->getOffset());
         }
+
         if (($sort = $this->getSort()) !== false) {
             $query->addOrderBy($sort->getOrders());
         }
 
-        if ($pagination !== false) {
-            $pagination->totalCount = $this->getTotalCount();
-        }
+        $results = $query->search($this->db);
+        $this->setQueryResults(is_array($results) ? $results : []);
 
         return $results['hits']['hits'];
     }
@@ -115,8 +114,8 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
             throw new InvalidConfigException('The "query" property must be an instance "' . Query::className() . '" or its subclasses.');
         }
 
-        $results = $this->getQueryResults();
-        return isset($results['hits']['total']) ? (int)$results['hits']['total'] : 0;
+        $query = clone $this->query;
+        return (int) $query->limit(-1)->offset(-1)->orderBy([])->count('*', $this->db);
     }
 
     /**
