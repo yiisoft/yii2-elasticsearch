@@ -32,6 +32,10 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
      */
     private $_queryResults;
 
+    /**
+     * @var Pagination|false $_pagination
+     */
+    protected $_pagination;
 
     /**
      * @param array $results full query results
@@ -88,13 +92,10 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         $query = clone $this->query;
 
         if (($pagination = $this->getPagination()) !== false) {
-            $pagination->totalCount = $this->getTotalCount();
-            if ($pagination->totalCount === 0) {
-                return [];
-            }
+            // pagination fails to validate page number, because total count is unknown at this stage
+            $pagination->validatePage = false;
             $query->limit($pagination->getLimit())->offset($pagination->getOffset());
         }
-
         if (($sort = $this->getSort()) !== false) {
             $query->addOrderBy($sort->getOrders());
         }
@@ -102,7 +103,27 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         $results = $query->search($this->db);
         $this->setQueryResults(is_array($results) ? $results : []);
 
+        if ($pagination !== false) {
+            $pagination->totalCount = $this->getTotalCount();
+        }
+
         return $results['hits']['hits'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPagination()
+    {
+        if ($this->_pagination === null) {
+            $this->setPagination([]);
+        }
+
+        if (($this->_pagination !== false) && ($this->_pagination->totalCount === null)) {
+            $this->_pagination->totalCount = false;
+        }
+
+        return $this->_pagination;
     }
 
     /**
@@ -110,12 +131,8 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
      */
     protected function prepareTotalCount()
     {
-        if (!$this->query instanceof Query) {
-            throw new InvalidConfigException('The "query" property must be an instance "' . Query::className() . '" or its subclasses.');
-        }
-
-        $query = clone $this->query;
-        return (int) $query->limit(-1)->offset(-1)->orderBy([])->count('*', $this->db);
+        $results = $this->getQueryResults();
+        return isset($results['hits'], $results['hits']['total']) ? (int) $results['hits']['total'] : 0;
     }
 
     /**
