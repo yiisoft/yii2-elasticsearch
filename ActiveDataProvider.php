@@ -32,6 +32,17 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
      */
     private $_queryResults;
 
+    /**
+     * @inheritdoc
+     */
+    public function __construct(array $config = [])
+    {
+        /** `totalCount` is calculated after the request */
+        if (!empty($config['pagination'])) {
+            $config['pagination']['totalCount'] = false;
+        }
+        parent::__construct($config);
+    }
 
     /**
      * @param array $results full query results
@@ -87,17 +98,18 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
         $query = clone $this->query;
 
-        $results = $query->search($this->db);
-        $this->setQueryResults(is_array($results) ? $results : []);
-
         if (($pagination = $this->getPagination()) !== false) {
             // pagination fails to validate page number, because total count is unknown at this stage
             $pagination->validatePage = false;
             $query->limit($pagination->getLimit())->offset($pagination->getOffset());
         }
+
         if (($sort = $this->getSort()) !== false) {
             $query->addOrderBy($sort->getOrders());
         }
+
+        $results = $query->search($this->db);
+        $this->setQueryResults(is_array($results) ? $results : []);
 
         if ($pagination !== false) {
             $pagination->totalCount = $this->getTotalCount();
