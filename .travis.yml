@@ -21,8 +21,8 @@ matrix:
     before_install:
     - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
     - wget https://phar.phpunit.de/phpunit-4.5.1.phar
-    - curl -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.deb
-    - sudo dpkg -i --force-confnew elasticsearch-1.7.6.deb
+    - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.2/elasticsearch-2.4.2.deb
+    - sudo dpkg -i --force-confnew elasticsearch-2.4.2.deb
     - 'echo "script.disable_dynamic: false" | sudo tee -a /etc/elasticsearch/elasticsearch.yml'
     - sudo service elasticsearch restart
     script:
