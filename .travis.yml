@@ -37,7 +37,7 @@ install:
 - travis_retry composer self-update && composer --version
 - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.1"
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
-- travis_retry composer install --prefer-dist --no-interaction
+- travis_retry composer update --prefer-dist --no-interaction
 before_script:
 - echo 'elasticsearch version ' && curl http://localhost:9200/
 - |
