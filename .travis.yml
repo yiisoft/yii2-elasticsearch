@@ -27,8 +27,6 @@ matrix:
     - sudo service elasticsearch restart
     script:
     - php phpunit-4.5.1.phar --verbose $PHPUNIT_FLAGS
-services:
-- elasticsearch
 sudo: false
 cache:
   directories:
