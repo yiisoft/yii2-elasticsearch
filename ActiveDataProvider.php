@@ -37,7 +37,10 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
      */
     public function __construct(array $config = [])
     {
-        /** `totalCount` is calculated after the request */
+        /**
+         * Obtaining `totalCount` value is a cheap operation in ElasticSearch,
+         * that is why we always calculate it during the query
+         */
         if (!empty($config['pagination'])) {
             $config['pagination']['totalCount'] = false;
         }
