@@ -4,6 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.1.0 under development
 -----------------------
 
+- Bug #206: Fixed totalCount obtaining (GHopperMSK)
 - Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
 - Bug #201: Fixed infinite loop (GHopperMSK)
