@@ -21,14 +21,15 @@ matrix:
     before_install:
     - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
     - wget https://phar.phpunit.de/phpunit-4.5.1.phar
-    - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
-    - 'echo "script.disable_dynamic: false" | sudo tee -a /tmp/elasticsearch-2.4.6/config/elasticsearch.yml'
     script:
     - php phpunit-4.5.1.phar --verbose $PHPUNIT_FLAGS
 sudo: false
 cache:
   directories:
   - "$HOME/.composer/cache"
+before_install:
+  - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
+  - 'echo "script.disable_dynamic: false" | sudo tee -a /tmp/elasticsearch-2.4.6/config/elasticsearch.yml'
 install:
 - travis_retry composer self-update && composer --version
 - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.1"
