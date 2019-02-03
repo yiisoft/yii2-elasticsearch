@@ -30,7 +30,7 @@ cache:
 before_install:
 #  - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
   - wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.zip -O /tmp/elasticsearch-1.7.6.zip
-  - unzip elasticsearch-1.7.6.zip -d /tmp/
+  - unzip /tmp/elasticsearch-1.7.6.zip -d /tmp/
   - 'echo "script.disable_dynamic: false" | sudo tee -a /tmp/elasticsearch-1.7.6/config/elasticsearch.yml'
 #  - 'echo "script.inline: on" | sudo tee -a /tmp/elasticsearch-2.4.6/config/elasticsearch.yml'
 #  - 'echo "script.indexed: on" | sudo tee -a /tmp/elasticsearch-2.4.6/config/elasticsearch.yml'
