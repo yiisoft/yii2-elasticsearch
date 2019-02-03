@@ -21,7 +21,7 @@ matrix:
     before_install:
     #- composer config --global github-oauth.github.com "$GITHUB_TOKEN"
     - wget https://phar.phpunit.de/phpunit-4.5.1.phar
-    - curl -s https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.9.tar.gz | tar xz -C /tmp
+    - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
     script:
     - php phpunit-4.5.1.phar --verbose $PHPUNIT_FLAGS
 sudo: false
@@ -34,8 +34,8 @@ install:
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
 - travis_retry composer install --prefer-dist --no-interaction
 before_script:
-- /tmp/elasticsearch-5.6.9/bin/elasticsearch
-- echo '/tmp/elasticsearch-5.6.9/bin/elasticsearch version ' && curl http://localhost:9200/
+- /tmp/elasticsearch-2.4.6/bin/elasticsearch
+- echo '/tmp/elasticsearch-2.4.6/bin/elasticsearch version ' && curl http://localhost:9200/
 - |
   if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
     PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
