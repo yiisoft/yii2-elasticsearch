@@ -7,8 +7,8 @@ php:
 #- 5.4
 #- 5.5
 #- 5.6
-#- 7.0
-- 7.1
+- 7.0
+#- 7.1
 matrix:
   include:
   - php: hhvm
@@ -19,7 +19,7 @@ matrix:
     cache:
       directories: "$HOME/.composer/cache"
     before_install:
-    #- composer config --global github-oauth.github.com "$GITHUB_TOKEN"
+    - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
     - wget https://phar.phpunit.de/phpunit-4.5.1.phar
     - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
     script:
@@ -30,7 +30,7 @@ cache:
   - "$HOME/.composer/cache"
 install:
 - travis_retry composer self-update && composer --version
-- travis_retry composer global require "fxp/composer-asset-plugin:~1.4.4"
+- travis_retry composer global require "fxp/composer-asset-plugin:~1.1.1"
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
 - travis_retry composer install --prefer-dist --no-interaction
 before_script:
