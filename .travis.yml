@@ -19,7 +19,7 @@ matrix:
     cache:
       directories: "$HOME/.composer/cache"
     before_install:
-    - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
+    #- composer config --global github-oauth.github.com "$GITHUB_TOKEN"
     - wget https://phar.phpunit.de/phpunit-4.5.1.phar
     - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
     script:
