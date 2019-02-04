@@ -26,7 +26,7 @@ use yii\db\QueryTrait;
  *
  * ~~~
  * $query = new Query;
- * $query->fields('id, name')
+ * $query->storedFields('id, name')
  *     ->from('myindex', 'users')
  *     ->limit(10);
  * // build and execute the query
@@ -62,13 +62,22 @@ class Query extends Component implements QueryInterface
      * In this case the `_source` field will be returned by default which can be configured using [[source]].
      * Setting this to an empty array will result in no fields being retrieved, which means that only the primaryKey
      * of a record will be available in the result.
+     * > Note: Field values are [always returned as arrays] even if they only have one value.
      *
-     * For each field you may also add an array representing a [script field]. Example:
+     * [always returned as arrays]: http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
+     * [script field]: http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
      *
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-stored-fields.html
+     * @see storedFields()
+     * @see source
+     */
+    public $storedFields;
+
+	/**
+	 * @var array the scripted fields being retrieved from the documents.
+	 * Example:
      * ```php
-     * $query->fields = [
-     *     'id',
-     *     'name',
+     * $query->scriptFields = [
      *     'value_times_two' => [
      *         'script' => "doc['my_field_name'].value * 2",
      *     ],
@@ -80,18 +89,18 @@ class Query extends Component implements QueryInterface
      *     ],
      * ]
      * ```
-     *
+	 *
      * > Note: Field values are [always returned as arrays] even if they only have one value.
-     *
+	 *
      * [always returned as arrays]: http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
      * [script field]: http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
-     *
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-fields.html#search-request-fields
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
-     * @see fields()
+	 *
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     * @see scriptFields()
      * @see source
-     */
-    public $fields;
+	 */
+	public $scriptFields;
+
     /**
      * @var array this option controls how the `_source` field is returned from the documents. For example, `['id', 'name']`
      * means that only the `id` and `name` field should be returned from `_source`.
@@ -177,6 +186,11 @@ class Query extends Component implements QueryInterface
      * @since 2.0.5
      */
     public $explain;
+    /**
+     * @var array Parameter indicating the parameters of pagination with data selection after the specified criteria
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html
+     */
+    public $search_after;
 
 
     /**
@@ -194,9 +208,13 @@ class Query extends Component implements QueryInterface
 
     /**
      * Creates a DB command that can be used to execute this query.
+     *
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application component will be used.
+     *
      * @return Command the created DB command instance.
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\NotSupportedException
      */
     public function createCommand($db = null)
     {
@@ -211,9 +229,13 @@ class Query extends Component implements QueryInterface
 
     /**
      * Executes the query and returns all results as an array.
+     *
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application component will be used.
+     *
      * @return array the query results. If the query results in nothing, an empty array will be returned.
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\NotSupportedException
      */
     public function all($db = null)
     {
@@ -309,7 +331,10 @@ class Query extends Component implements QueryInterface
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application component will be used.
      * @param array $options The options given with this query.
+     *
      * @return array the query results.
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      */
     public function delete($db = null, $options = [])
     {
@@ -383,7 +408,7 @@ class Query extends Component implements QueryInterface
         // http://www.elastic.co/guide/en/elasticsearch/reference/1.x/_search_requests.html
 
         $options = [];
-        $options['search_type'] = 'count';
+        $options['size'] = 0;
 
         return $this->createCommand($db)->search($options)['hits']['total'];
     }
@@ -497,6 +522,12 @@ class Query extends Component implements QueryInterface
         return $this;
     }
 
+    public function searchAfter($id)
+    {
+        $this->search_after = $id;
+        return $this;
+    }
+
     /**
      * Starts a batch query.
      *
@@ -518,8 +549,10 @@ class Query extends Component implements QueryInterface
      * @param string $scrollWindow how long Elasticsearch should keep the search context alive,
      * in [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units)
      * @param Connection $db the database connection. If not set, the `elasticsearch` application component will be used.
+     *
      * @return BatchQueryResult the batch query result. It implements the [[\Iterator]] interface
      * and can be traversed to retrieve the data in batches.
+     * @throws \yii\base\InvalidConfigException
      * @since 2.0.4
      */
     public function batch($scrollWindow = '1m', $db = null)
@@ -591,16 +624,37 @@ class Query extends Component implements QueryInterface
 
     /**
      * Sets the fields to retrieve from the documents.
+	 * > Quote from the elasticsearch doc:
+	 * > The stored_fields parameter is about fields that are explicitly marked
+	 * > as stored in the mapping, which is off by default and generally not recommended.
+	 * > Use source filtering instead to select subsets of the original source document to be returned.
+	 * 
      * @param array $fields the fields to be selected.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-fields.html
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-stored-fields.html
      */
-    public function fields($fields)
+    public function storedFields($fields)
     {
         if (is_array($fields) || $fields === null) {
-            $this->fields = $fields;
+            $this->storedFields = $fields;
         } else {
-            $this->fields = func_get_args();
+            $this->storedFields = func_get_args();
+        }
+        return $this;
+    }
+
+    /**
+     * Sets the script fields to retrieve from the documents.
+     * @param array $fields the fields to be selected.
+     * @return $this the query object itself
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     */
+    public function scriptFields($fields)
+    {
+        if (is_array($fields) || $fields === null) {
+            $this->scriptFields = $fields;
+        } else {
+            $this->scriptFields = func_get_args();
         }
         return $this;
     }
@@ -679,6 +733,36 @@ class Query extends Component implements QueryInterface
         }
 
         $this->options = array_merge($this->options, $options);
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function andWhere($condition)
+    {
+        if ($this->where === null) {
+            $this->where = $condition;
+        } else if (isset($this->where[0]) && $this->where[0] == 'and') {
+            $this->where[] = $condition;
+        } else {
+            $this->where = ['and', $this->where, $condition];
+        }
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function orWhere($condition)
+    {
+        if ($this->where === null) {
+            $this->where = $condition;
+        } else if (isset($this->where[0]) && $this->where[0] == 'or') {
+            $this->where[] = $condition;
+        } else {
+            $this->where = ['or', $this->where, $condition];
+        }
         return $this;
     }
 

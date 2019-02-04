@@ -185,7 +185,11 @@ class Connection extends Component
             // if you're using AWS Elasticsearch service (at least as of Oct., 2015, still the case in July, 2017).
             // it should be there according to the docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html
             if (!isset($node['http_address'])) {
-                unset($nodes[$key]);
+                if ($response['_nodes']['successful'] == 0)
+                    unset($nodes[$key]);
+                else{
+                    $node['http_address'] = $host;
+                }
             }
 
             // Protocol is not a standard ES node property, so we add it manually
@@ -487,7 +491,10 @@ class Connection extends Component
             $profile = false;
         }
 
-        Yii::trace("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
+	if (!YII_ENV_PROD)
+        {
+	    Yii::trace("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
+	}
         if ($profile !== false) {
             Yii::beginProfile($profile, __METHOD__);
         }
@@ -545,7 +552,7 @@ class Connection extends Component
         } elseif ($responseCode == 404) {
             return false;
         } else {
-            throw new Exception("Elasticsearch request failed with code $responseCode.", [
+            throw new Exception("Elasticsearch request failed with code $responseCode. Response body:\n{$body}", [
                 'requestMethod' => $method,
                 'requestUrl' => $url,
                 'requestBody' => $requestBody,
@@ -564,6 +571,7 @@ class Connection extends Component
             CURLOPT_WRITEFUNCTION => null,
             CURLOPT_READFUNCTION => null,
             CURLOPT_PROGRESSFUNCTION => null,
+            CURLOPT_POSTFIELDS => null,
         ];
         curl_setopt_array($this->_curl, $unsetValues);
         if (function_exists('curl_reset')) { // since PHP 5.5.0

@@ -8,7 +8,7 @@
 namespace yii\elasticsearch;
 
 use yii\base\BaseObject;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\NotSupportedException;
 use yii\helpers\Json;
 
@@ -39,33 +39,24 @@ class QueryBuilder extends BaseObject
 
     /**
      * Generates query from a [[Query]] object.
+     *
      * @param Query $query the [[Query]] object from which the query will be generated
+     *
      * @return array the generated SQL statement (the first array element) and the corresponding
      * parameters to be bound to the SQL statement (the second array element).
+     * @throws \yii\base\NotSupportedException
      */
     public function build($query)
     {
         $parts = [];
 
-        if ($query->fields === []) {
-            $parts['fields'] = [];
-        } elseif ($query->fields !== null) {
-            $fields = [];
-            $scriptFields = [];
-            foreach ($query->fields as $key => $field) {
-                if (is_int($key)) {
-                    $fields[] = $field;
-                } else {
-                    $scriptFields[$key] = $field;
-                }
-            }
-            if (!empty($fields)) {
-                $parts['fields'] = $fields;
-            }
-            if (!empty($scriptFields)) {
-                $parts['script_fields'] = $scriptFields;
-            }
+        if ($query->storedFields !== null) {
+            $parts['stored_fields'] = $query->storedFields;
         }
+        if ($query->scriptFields !== null) {
+            $parts['script_fields'] = $query->scriptFields;
+        }
+
         if ($query->source !== null) {
             $parts['_source'] = $query->source;
         }
@@ -82,28 +73,17 @@ class QueryBuilder extends BaseObject
             $parts['explain'] = $query->explain;
         }
 
-        if (empty($query->query)) {
-            $parts['query'] = ["match_all" => (object)[]];
-        } else {
+        $whereQuery = $this->buildQueryFromWhere($query->where);
+        if ($whereQuery) {
+            $parts['query'] = $whereQuery;
+        } else if ($query->query) {
             $parts['query'] = $query->query;
         }
 
-        $whereFilter = $this->buildCondition($query->where);
-        if (is_string($query->filter)) {
-            if (empty($whereFilter)) {
-                $parts['filter'] = $query->filter;
-            } else {
-                $parts['filter'] = '{"and": [' . $query->filter . ', ' . Json::encode($whereFilter) . ']}';
-            }
-        } elseif ($query->filter !== null) {
-            if (empty($whereFilter)) {
-                $parts['filter'] = $query->filter;
-            } else {
-                $parts['filter'] = ['and' => [$query->filter, $whereFilter]];
-            }
-        } elseif (!empty($whereFilter)) {
-            $parts['filter'] = $whereFilter;
-        }
+        if (isset($query->search_after) && !is_array($query->search_after))
+            $parts['search_after'] = [$query->search_after];
+        elseif (isset($query->search_after) && is_array($query->search_after))
+            $parts['search_after'] = $query->search_after;
 
         if (!empty($query->highlight)) {
             $parts['highlight'] = $query->highlight;
@@ -171,6 +151,26 @@ class QueryBuilder extends BaseObject
     }
 
     /**
+     * @param $condition
+     *
+     * @return array|null
+     * @throws \yii\base\NotSupportedException
+     */
+    public function buildQueryFromWhere($condition) {
+        $where = $this->buildCondition($condition);
+        if ($where) {
+            $query = [
+                'constant_score' => [
+                    'filter' => $where,
+                ],
+            ];
+            return $query;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Parses the condition specification and generates the corresponding SQL expression.
      *
      * @param string|array $condition the condition specification. Please refer to [[Query::where()]] on how to specify a condition.
@@ -182,8 +182,8 @@ class QueryBuilder extends BaseObject
     {
         static $builders = [
             'not' => 'buildNotCondition',
-            'and' => 'buildAndCondition',
-            'or' => 'buildAndCondition',
+            'and' => 'buildBoolCondition',
+            'or' => 'buildBoolCondition',
             'between' => 'buildBetweenCondition',
             'not between' => 'buildBetweenCondition',
             'in' => 'buildInCondition',
@@ -200,6 +200,9 @@ class QueryBuilder extends BaseObject
             '>' => 'buildHalfBoundedRangeCondition',
             'gte' => 'buildHalfBoundedRangeCondition',
             '>=' => 'buildHalfBoundedRangeCondition',
+            'match' => 'buildMatchCondition',
+            'prefix' => 'buildPrefixCondition',
+            'script' => 'buildScriptCondition'
         ];
 
         if (empty($condition)) {
@@ -216,7 +219,7 @@ class QueryBuilder extends BaseObject
 
                 return $this->$method($operator, $condition);
             } else {
-                throw new InvalidParamException('Found unknown operator in query: ' . $operator);
+                throw new InvalidArgumentException('Found unknown operator in query: ' . $operator);
             }
         } else { // hash format: 'column1' => 'value1', 'column2' => 'value2', ...
 
@@ -224,9 +227,14 @@ class QueryBuilder extends BaseObject
         }
     }
 
+    /**
+     * @param $condition
+     *
+     * @return array
+     */
     private function buildHashCondition($condition)
     {
-        $parts = [];
+        $parts = $emptyFields = [];
         foreach ($condition as $attribute => $value) {
             if ($attribute == '_id') {
                 if ($value === null) { // there is no null pk
@@ -236,10 +244,10 @@ class QueryBuilder extends BaseObject
                 }
             } else {
                 if (is_array($value)) { // IN condition
-                    $parts[] = ['in' => [$attribute => $value]];
+                    $parts[] = ['terms' => [$attribute => $value]];
                 } else {
                     if ($value === null) {
-                        $parts[] = ['missing' => ['field' => $attribute, 'existence' => true, 'null_value' => true]];
+                        $emptyFields[] = [ 'exists' => [ 'field' => $attribute ] ];
                     } else {
                         $parts[] = ['term' => [$attribute => $value]];
                     }
@@ -247,13 +255,24 @@ class QueryBuilder extends BaseObject
             }
         }
 
-        return count($parts) === 1 ? $parts[0] : ['and' => $parts];
+        $query = [ 'must' => $parts ];
+        if ($emptyFields) {
+            $query['must_not'] = $emptyFields;
+        }
+        return [ 'bool' => $query ];
     }
 
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array
+     * @throws \yii\base\NotSupportedException
+     */
     private function buildNotCondition($operator, $operands)
     {
         if (count($operands) != 1) {
-            throw new InvalidParamException("Operator '$operator' requires exactly one operand.");
+            throw new InvalidArgumentException("Operator '$operator' requires exactly one operand.");
         }
 
         $operand = reset($operands);
@@ -261,12 +280,31 @@ class QueryBuilder extends BaseObject
             $operand = $this->buildCondition($operand);
         }
 
-        return [$operator => $operand];
+        return [
+            'bool' => [
+                'must_not' => $operand,
+            ],
+        ];
     }
 
-    private function buildAndCondition($operator, $operands)
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array|null
+     * @throws \yii\base\NotSupportedException
+     */
+    private function buildBoolCondition($operator, $operands)
     {
         $parts = [];
+        if ($operator == 'and') {
+            $clause = 'must';
+        } else if ($operator == 'or') {
+            $clause = 'should';
+        } else {
+            throw InvalidArgumentException("Operator should be 'or' or 'and'");
+        }
+
         foreach ($operands as $operand) {
             if (is_array($operand)) {
                 $operand = $this->buildCondition($operand);
@@ -275,17 +313,28 @@ class QueryBuilder extends BaseObject
                 $parts[] = $operand;
             }
         }
-        if (!empty($parts)) {
-            return [$operator => $parts];
+        if ($parts) {
+            return [
+                'bool' => [
+                    $clause => $parts,
+                ]
+            ];
         } else {
-            return [];
+            return null;
         }
     }
 
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array
+     * @throws \yii\base\NotSupportedException
+     */
     private function buildBetweenCondition($operator, $operands)
     {
         if (!isset($operands[0], $operands[1], $operands[2])) {
-            throw new InvalidParamException("Operator '$operator' requires three operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires three operands.");
         }
 
         list($column, $value1, $value2) = $operands;
@@ -294,16 +343,23 @@ class QueryBuilder extends BaseObject
         }
         $filter = ['range' => [$column => ['gte' => $value1, 'lte' => $value2]]];
         if ($operator == 'not between') {
-            $filter = ['not' => $filter];
+            $filter = ['bool' => ['must_not'=>$filter]];
         }
 
         return $filter;
     }
 
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array|void
+     * @throws \yii\base\NotSupportedException
+     */
     private function buildInCondition($operator, $operands)
     {
-        if (!isset($operands[0], $operands[1])) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+        if (!isset($operands[0], $operands[1]) || !is_array($operands)) {
+            throw new InvalidArgumentException("Operator '$operator' requires array of two operands: column and values");
         }
 
         list($column, $values) = $operands;
@@ -314,10 +370,9 @@ class QueryBuilder extends BaseObject
             return $operator === 'in' ? ['terms' => ['_uid' => []]] : []; // this condition is equal to WHERE false
         }
 
-        if (is_array($column)) {
-            if (count($column) > 1) {
-                return $this->buildCompositeInCondition($operator, $column, $values);
-            }
+        if (count($column) > 1) {
+            return $this->buildCompositeInCondition($operator, $column, $values);
+        } elseif (is_array($column)) {
             $column = reset($column);
         }
         $canBeNull = false;
@@ -337,30 +392,45 @@ class QueryBuilder extends BaseObject
                 $filter = ['ids' => ['values' => array_values($values)]];
                 if ($canBeNull) {
                     $filter = [
-                        'or' => [
-                            $filter,
-                            ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]
-                        ]
+                        'bool' => [
+                            'should' => [
+                                $filter,
+                                'bool' => ['must_not' => ['exists' => ['field'=>$column]]],
+                            ],
+                        ],
                     ];
                 }
             }
         } else {
             if (empty($values) && $canBeNull) {
-                $filter = ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]];
+                $filter = [
+                    'bool' => [
+                        'must_not' => [
+                            'exists' => [ 'field' => $column ],
+                        ]
+                    ]
+                ];
             } else {
-                $filter = ['in' => [$column => array_values($values)]];
+                $filter = [ 'terms' => [$column => array_values($values)] ];
                 if ($canBeNull) {
                     $filter = [
-                        'or' => [
-                            $filter,
-                            ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]]
-                        ]
+                        'bool' => [
+                            'should' => [
+                                $filter,
+                                'bool' => ['must_not' => ['exists' => ['field'=>$column]]],
+                            ],
+                        ],
                     ];
                 }
             }
         }
+
         if ($operator == 'not in') {
-            $filter = ['not' => $filter];
+            $filter = [
+                'bool' => [
+                    'must_not' => $filter,
+                ],
+            ];
         }
 
         return $filter;
@@ -376,7 +446,7 @@ class QueryBuilder extends BaseObject
     private function buildHalfBoundedRangeCondition($operator, $operands)
     {
         if (!isset($operands[0], $operands[1])) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
         }
 
         list($column, $value) = $operands;
@@ -397,7 +467,7 @@ class QueryBuilder extends BaseObject
         }
 
         if ($range_operator === null) {
-            throw new InvalidParamException("Operator '$operator' is not implemented.");
+            throw new InvalidArgumentException("Operator '$operator' is not implemented.");
         }
 
         $filter = [
@@ -411,13 +481,114 @@ class QueryBuilder extends BaseObject
         return $filter;
     }
 
+    /**
+     * @param $operator
+     * @param $columns
+     * @param $values
+     *
+     * @throws \yii\base\NotSupportedException
+     */
     protected function buildCompositeInCondition($operator, $columns, $values)
     {
         throw new NotSupportedException('composite in is not supported by elasticsearch.');
     }
 
-    private function buildLikeCondition($operator, $operands)
+    /*private function buildLikeCondition($operator, $operands)
     {
         throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+    }*/
+
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array
+     */
+    private function buildLikeCondition($operator, $operands)
+    {
+        if (!isset($operands[0], $operands[1])) {
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
+        }
+
+        if( $operator == 'like') {
+
+            $text = $operands[1];
+            $text = preg_replace('/[^\p{L}0-9 -]/iu', '', $text);
+            //$text = str_replace(' ', ' AND ', trim($text));
+
+            //$like_text = "*" . $text . "*";
+            $query = ['query_string' => ["default_field" => $operands[0], "query" => $text, "default_operator" => 'AND']];
+        }
+
+        return $query;
+//         throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+    }
+
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array
+     */
+    private function buildMatchCondition($operator, $operands)
+    {
+        if (!isset($operands[0], $operands[1])) {
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
+        }
+
+        if( $operator == 'match') {
+            $like_text = $operands[1];
+            $query = ['match' => [$operands[0]=>$like_text]];
+        }
+
+        return $query;
+//         throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+    }
+
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array
+     */
+    private function buildPrefixCondition($operator, $operands)
+    {
+        if (!isset($operands[0], $operands[1])) {
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
+        }
+
+        if( $operator == 'prefix') {
+            $like_text = $operands[1];
+            $query = ['prefix' => [$operands[0]=>$like_text]];
+        }
+
+        return $query;
+//         throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+    }
+
+    /**
+     * @param $operator
+     * @param $operands
+     *
+     * @return array
+     */
+    private function buildScriptCondition($operator, $operands)
+    {
+        if (!isset($operands[0], $operands[1])) {
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
+        }
+
+
+        $query = [
+            'script' => [
+                'script' => [
+                    'source' => $operands[0],
+                    'lang' => 'painless',
+                    'params' => $operands[1]
+                ]
+            ]
+        ];
+
+        return $query;
     }
 }

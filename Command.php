@@ -70,8 +70,12 @@ class Command extends Component
 
     /**
      * Sends a request to the delete by query
+     *
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      */
     public function deleteByQuery($options = [])
     {
@@ -96,9 +100,13 @@ class Command extends Component
 
     /**
      * Sends a request to the _suggest API and returns the result
+     *
      * @param string|array $suggester the suggester body
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      */
     public function suggest($suggester, $options = [])
@@ -119,12 +127,16 @@ class Command extends Component
 
     /**
      * Inserts a document into an index
+     *
      * @param string $index
      * @param string $type
      * @param string|array $data json string or array of data to store
      * @param null $id the documents id. If not specified Id will be automatically chosen
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html
      */
     public function insert($index, $type, $data, $id = null, $options = [])
@@ -144,11 +156,15 @@ class Command extends Component
 
     /**
      * gets a document from the index
+     *
      * @param $index
      * @param $type
      * @param $id
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html
      */
     public function get($index, $type, $id, $options = [])
@@ -160,11 +176,15 @@ class Command extends Component
      * gets multiple documents from the index
      *
      * TODO allow specifying type and index + fields
+     *
      * @param $index
      * @param $type
      * @param $ids
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html
      */
     public function mget($index, $type, $ids, $options = [])
@@ -176,10 +196,14 @@ class Command extends Component
 
     /**
      * gets a documents _source from the index (>=v0.90.1)
+     *
      * @param $index
      * @param $type
      * @param $id
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html#_source
      */
     public function getSource($index, $type, $id)
@@ -189,10 +213,14 @@ class Command extends Component
 
     /**
      * gets a document from the index
+     *
      * @param $index
      * @param $type
      * @param $id
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html
      */
     public function exists($index, $type, $id)
@@ -202,11 +230,15 @@ class Command extends Component
 
     /**
      * deletes a document from the index
+     *
      * @param $index
      * @param $type
      * @param $id
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html
      */
     public function delete($index, $type, $id, $options = [])
@@ -216,11 +248,16 @@ class Command extends Component
 
     /**
      * updates a document
+     *
      * @param $index
      * @param $type
      * @param $id
+     * @param $data
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html
      */
     public function update($index, $type, $id, $data, $options = [])
@@ -240,9 +277,13 @@ class Command extends Component
 
     /**
      * creates an index
+     *
      * @param $index
      * @param array $configuration
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
      */
     public function createIndex($index, $configuration = null)
@@ -254,8 +295,12 @@ class Command extends Component
 
     /**
      * deletes an index
+     *
      * @param $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
      */
     public function deleteIndex($index)
@@ -266,6 +311,8 @@ class Command extends Component
     /**
      * deletes all indexes
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
      */
     public function deleteAllIndexes()
@@ -275,8 +322,12 @@ class Command extends Component
 
     /**
      * checks whether an index exists
+     *
      * @param $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-exists.html
      */
     public function indexExists($index)
@@ -287,7 +338,10 @@ class Command extends Component
     /**
      * @param $index
      * @param $type
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-types-exists.html
      */
     public function typeExists($index, $type)
@@ -299,6 +353,8 @@ class Command extends Component
      * @param string $alias
      *
      * @return bool
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      */
     public function aliasExists($alias)
     {
@@ -309,6 +365,8 @@ class Command extends Component
 
     /**
      * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-retrieving
      */
     public function getAliasInfo()
@@ -321,6 +379,8 @@ class Command extends Component
      * @param string $alias
      *
      * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-retrieving
      */
     public function getIndexInfoByAlias($alias)
@@ -337,6 +397,8 @@ class Command extends Component
      * @param string $alias
      *
      * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      */
     public function getIndexesByAlias($alias)
     {
@@ -347,6 +409,8 @@ class Command extends Component
      * @param string $index
      *
      * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-retrieving
      */
     public function getIndexAliases($index)
@@ -364,7 +428,9 @@ class Command extends Component
      * @param $alias
      * @param array $aliasParameters
      *
-     * @return bool
+     * @return boolean
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#alias-adding
      */
     public function addAlias($index, $alias, $aliasParameters = [])
@@ -376,7 +442,9 @@ class Command extends Component
      * @param string $index
      * @param string $alias
      *
-     * @return bool
+     * @return boolean
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#deleting
      */
     public function removeAlias($index, $alias)
@@ -394,9 +462,12 @@ class Command extends Component
      *      ['remove' => ['index' => 'index2', 'alias' => 'alias2']],
      * ];
      * ~~~
+     *
      * @param array $actions
      *
-     * @return bool
+     * @return boolean
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/2.0/indices-aliases.html#indices-aliases
      */
     public function aliasActions(array $actions)
@@ -412,7 +483,10 @@ class Command extends Component
      * @param string $index
      * @param string|array $setting
      * @param array $options URL options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
      * @since 2.0.4
      */
@@ -452,7 +526,10 @@ class Command extends Component
      * @param string $index
      * @param string|array $setting
      * @param array $options URL options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html#update-settings-analysis
      * @since 2.0.4
      */
@@ -470,7 +547,10 @@ class Command extends Component
 
     /**
      * @param $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-open-close.html
      */
     public function openIndex($index)
@@ -480,7 +560,10 @@ class Command extends Component
 
     /**
      * @param $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-open-close.html
      */
     public function closeIndex($index)
@@ -492,6 +575,9 @@ class Command extends Component
      * @param array $options
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @since 2.0.4
      */
     public function scroll($options = [])
@@ -503,6 +589,9 @@ class Command extends Component
      * @param array $options
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @since 2.0.4
      */
     public function clearScroll($options = [])
@@ -511,8 +600,11 @@ class Command extends Component
     }
 
     /**
-     * @param $index
+     * @param string $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-status.html
      */
     public function getIndexStatus($index = '_all')
@@ -525,7 +617,10 @@ class Command extends Component
 
     /**
      * @param $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-clearcache.html
      */
     public function clearIndexCache($index)
@@ -534,8 +629,11 @@ class Command extends Component
     }
 
     /**
-     * @param $index
+     * @param string $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-flush.html
      */
     public function flushIndex($index = '_all')
@@ -545,7 +643,10 @@ class Command extends Component
 
     /**
      * @param $index
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html
      */
     public function refreshIndex($index)
@@ -562,7 +663,10 @@ class Command extends Component
      * @param string $type
      * @param string|array $mapping
      * @param array $options
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
      */
     public function setMapping($index, $type, $mapping, $options = [])
@@ -575,7 +679,10 @@ class Command extends Component
     /**
      * @param string $index
      * @param string $type
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-mapping.html
      */
     public function getMapping($index = '_all', $type = null)
@@ -590,7 +697,10 @@ class Command extends Component
     /**
      * @param $index
      * @param $type
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
      */
     public function deleteMapping($index, $type)
@@ -627,8 +737,11 @@ class Command extends Component
      * @param $pattern
      * @param $settings
      * @param $mappings
-     * @param int $order
+     * @param integer $order
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
      */
     public function createTemplate($name, $pattern, $settings, $mappings, $order = 0)
@@ -646,7 +759,10 @@ class Command extends Component
 
     /**
      * @param $name
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
      */
     public function deleteTemplate($name)
@@ -657,7 +773,10 @@ class Command extends Component
 
     /**
      * @param $name
+     *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\elasticsearch\Exception
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
      */
     public function getTemplate($name)
