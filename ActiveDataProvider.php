@@ -87,9 +87,6 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
         $query = clone $this->query;
 
-        $results = $query->search($this->db);
-        $this->setQueryResults(is_array($results) ? $results : []);
-
         if (($pagination = $this->getPagination()) !== false) {
             // pagination fails to validate page number, because total count is unknown at this stage
             $pagination->validatePage = false;
@@ -102,6 +99,9 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         if ($pagination !== false) {
             $pagination->totalCount = $this->getTotalCount();
         }
+
+        $results = $query->search($this->db);
+        $this->setQueryResults(is_array($results) ? $results : []);
 
         return $results['hits']['hits'];
     }
