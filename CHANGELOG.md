@@ -4,7 +4,6 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.6 under development
 -----------------------
 
-- Bug #201: Fixed infinite loop (GHopperMSK)
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
 
 
