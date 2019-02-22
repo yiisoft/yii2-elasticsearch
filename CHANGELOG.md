@@ -6,7 +6,6 @@ Yii Framework 2 elasticsearch extension Change Log
 
 - Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
-- Bug #201: Fixed infinite loop (GHopperMSK)
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
 - Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
 - Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
