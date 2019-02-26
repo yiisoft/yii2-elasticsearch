@@ -70,12 +70,7 @@ class QueryBuilder extends BaseObject
             $parts['explain'] = $query->explain;
         }
 
-        $whereQuery = $this->buildQueryFromWhere($query->where);
-        if ($whereQuery) {
-            $parts['query'] = $whereQuery;
-        } else if ($query->query) {
-            $parts['query'] = $query->query;
-        }
+        $parts['query'] = $this->buildQuery($query);
 
         if (!empty($query->highlight)) {
             $parts['highlight'] = $query->highlight;
@@ -111,6 +106,39 @@ class QueryBuilder extends BaseObject
         ];
     }
 
+    protected function buildQuery($query)
+    {
+        $result = null;
+
+        if ($query->query) {
+            $result = $this->buildQueryFromQuery($query->query);
+        }
+
+        $whereQuery = $this->buildQueryFromWhere($query->where);
+        if ($whereQuery) {
+            $result = $this->appendQueryFilter($result, $whereQuery);
+        }
+
+        if ($result)
+        {
+            $result = [
+                'bool' => $result
+            ];
+        }
+
+        if ($query->compoundQuery)
+        {
+            $result = $this->compoundQuery($result, $query->compoundQuery, $query->compoundOptions);
+        }
+
+        if (!$result)
+        {
+            $result = ["match_all" => (object)[]];
+        }
+
+        return $result;
+    }
+
     /**
      * adds order by condition to the query
      */
@@ -142,18 +170,60 @@ class QueryBuilder extends BaseObject
         return $orders;
     }
 
-    public function buildQueryFromWhere($condition) {
-        $where = $this->buildCondition($condition);
-        if ($where) {
-            $query = [
-                'constant_score' => [
-                    'filter' => $where,
-                ],
-            ];
-            return $query;
-        } else {
+    protected function compoundQuery($query, $compound, $options)
+    {
+        if (empty($query))
+        {
             return null;
         }
+        $query = [
+            'query' => $query
+        ];
+        if (!empty($options))
+        {
+            $query = array_merge($query, $options);
+        }
+        return [
+            $compound => $query
+        ];
+    }
+    protected function appendQueryFilter($query, $where)
+    {
+        if (!empty($query))
+        {
+            $query = array_merge($query, $where);
+        }
+        else
+        {
+            $query = $where;
+        }
+        return $query;
+    }
+    protected function buildQueryFromQuery($query) {
+        if (!is_array($query))
+        {
+            $query = [
+                'should' => [
+                    'query_string' => [
+                        'query' => $query
+                    ]
+                ]
+            ];
+        }
+
+        return $query;
+    }
+
+    public function buildQueryFromWhere($condition) {
+        $where = $this->buildCondition($condition);
+        if ($where)
+        {
+            return [
+                'filter' => $where
+            ];
+        }
+
+        return null;
     }
 
     /**

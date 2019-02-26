@@ -187,6 +187,13 @@ class Query extends Component implements QueryInterface
      */
     public $explain;
 
+    /**
+     * @var string
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
+     */
+    public $compoundQuery = '';
+    public $compoundOptions = [];
+
 
     /**
      * @inheritdoc
@@ -670,6 +677,22 @@ class Query extends Component implements QueryInterface
     public function minScore($minScore)
     {
         $this->minScore = $minScore;
+        return $this;
+    }
+
+    /**
+     * @param string $type name of compound type
+     * @param array $options
+     * @return static the query object itself
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
+     */
+    public function compoundQuery(string $type, array $options = [])
+    {
+        if (!empty($type)) {
+            $this->compoundQuery = $type;
+        }
+
+        $this->compoundOptions = $options;
         return $this;
     }
 
