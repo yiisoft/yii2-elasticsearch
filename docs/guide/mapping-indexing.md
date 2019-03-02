@@ -48,7 +48,7 @@ class Book extends yii\elasticsearch\ActiveRecord
         $db = static::getDb();
         $command = $db->createCommand();
         $command->createIndex(static::index(), [
-            'settings' => [ /* ... */ ],
+            //'settings' => [ /* ... */ ],
             'mappings' => static::mapping(),
             //'warmers' => [ /* ... */ ],
             //'aliases' => [ /* ... */ ],
