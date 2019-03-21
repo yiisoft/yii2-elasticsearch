@@ -92,6 +92,9 @@ class QueryBuilder extends BaseObject
         if (!empty($query->postFilter)) {
             $parts['post_filter'] = $query->postFilter;
         }
+        if (!empty($query->collapse)) {
+            $parts['collapse'] = $query->collapse;
+        }
 
         $sort = $this->buildOrderBy($query->orderBy);
         if (!empty($sort)) {

@@ -169,6 +169,11 @@ class Query extends Component implements QueryInterface
      */
     public $suggest = [];
     /**
+     * @var array list of collapse to add to this query.
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
+     */
+    public $collapse = [];
+    /**
      * @var float Exclude documents which have a _score less than the minimum specified in min_score
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-min-score.html
      * @since 2.0.4
@@ -496,6 +501,18 @@ class Query extends Component implements QueryInterface
     public function addSuggester($name, $definition)
     {
         $this->suggest[$name] = $definition;
+        return $this;
+    }
+
+    /**
+     * Adds a collapse to this query.
+     * @param array $collapse the configuration options for collapse.
+     * @return $this the query object itself
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.3/search-request-collapse.html#search-request-collapse
+     */
+    public function addCollapse($collapse)
+    {
+        $this->collapse = $collapse;
         return $this;
     }
 
