@@ -509,6 +509,7 @@ class Query extends Component implements QueryInterface
      * @param array $collapse the configuration options for collapse.
      * @return $this the query object itself
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.3/search-request-collapse.html#search-request-collapse
+     * @since 2.1.0
      */
     public function addCollapse($collapse)
     {
