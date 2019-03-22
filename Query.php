@@ -171,6 +171,7 @@ class Query extends Component implements QueryInterface
     /**
      * @var array list of collapse to add to this query.
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
+     * @since 2.1.0
      */
     public $collapse = [];
     /**
