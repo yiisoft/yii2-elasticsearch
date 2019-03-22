@@ -185,7 +185,12 @@ class Connection extends Component
             // if you're using AWS Elasticsearch service (at least as of Oct., 2015, still the case in July, 2017).
             // it should be there according to the docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html
             if (!isset($node['http_address'])) {
-                unset($nodes[$key]);
+                // Compatible Es 6.x
+                if (isset($node['http']['publish_address'])) {
+                    $node['http_address'] = $node['http']['publish_address'];
+                } else {
+                    unset($nodes[$key]);
+                }
             }
 
             // Protocol is not a standard ES node property, so we add it manually
