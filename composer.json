@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/yii2-elasticsearch",
+    "name": "yiiplus/yii2-elasticsearch",
     "description": "Elasticsearch integration and ActiveRecord for the Yii framework",
     "keywords": ["yii2", "elasticsearch", "active-record", "search", "fulltext"],
     "type": "yii2-extension",
@@ -15,6 +15,10 @@
         {
             "name": "Carsten Brandt",
             "email": "mail@cebe.cc"
+        },
+        {
+            "name": "gengxiankun",
+            "email": "gengxiankun@126.com"
         }
     ],
     "require": {
