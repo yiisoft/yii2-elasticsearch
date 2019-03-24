@@ -10,6 +10,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
 - Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
 - Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
+- Enh #222: Added collapse support (walkskyer)
 
 2.0.5 under development
 -----------------------
