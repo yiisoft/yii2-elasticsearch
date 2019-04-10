@@ -60,6 +60,7 @@ class ActiveRecord extends BaseActiveRecord
     private $_version;
     private $_highlight;
     private $_explanation;
+    private $_innerHits;
 
     /**
      * Returns the database connection used by this AR class.
@@ -226,6 +227,28 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
+     * @return array|null An array of inner_hits for this record
+     */
+    public function getInnerHits()
+    {
+        return $this->_innerHits;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws \yii\base\InvalidCallException when inner hit with provided name does not exist
+     */
+    public function getInnerHit($name)
+    {
+        $innerHits = $this->getInnerHits();
+        if (!isset($innerHits[$name])) {
+            throw new InvalidCallException("Inner Hit '{$name}' is not present.");
+        }
+        return $innerHits[$name];
+    }
+
+    /**
      * Sets the primary key
      * @param mixed $value
      * @throws \yii\base\InvalidCallException when record is not new
@@ -375,6 +398,21 @@ class ActiveRecord extends BaseActiveRecord
         $record->_score = isset($row['_score']) ? $row['_score'] : null;
         $record->_version = isset($row['_version']) ? $row['_version'] : null; // TODO version should always be available...
         $record->_explanation = isset($row['_explanation']) ? $row['_explanation'] : null;
+
+        if (isset($row['inner_hits']) && !empty($row['inner_hits'])) {
+            $record->_innerHits = [];
+            $innerHitKeys = array_keys($row['inner_hits']);
+
+            foreach ($innerHitKeys as $innerHitKey) {
+                $record->_innerHits[$innerHitKey] = [];
+                foreach ($row['inner_hits'][$innerHitKey]['hits']['hits'] as $innerHit) {
+                    $model = self::instantiate($innerHit);
+                    $modelClass = get_class($model);
+                    $modelClass::populateRecord($model, $innerHit);
+                    $record->_innerHits[$innerHitKey][] = $model;
+                }
+            }
+        }
     }
 
     /**
