@@ -11,6 +11,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
 - Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
 - Enh #222: Added collapse support (walkskyer)
+- Enh: Added support to retrieve inner_hits (mabentley85)
 
 2.0.5 under development
 -----------------------
