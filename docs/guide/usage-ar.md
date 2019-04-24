@@ -104,8 +104,8 @@ $query = Article::find()->query([
 ]);
 
 $query->all(); // gives you all the documents
-// you can add facets to your search:
-$query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
+// you can add aggregates to your search
+$query->addAggregate('click_stats', ['terms' => ['field' => 'visit_count']]);
 $query->search(); // gives you all the records + stats about the visit_count field. e.g. mean, sum, min, max etc...
 ```
 
@@ -164,13 +164,15 @@ Using the previously defined `Customer` class, let's find out how many customers
 
 
 ```php
-$aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
-    'field' => 'registration_date',
-    'order' => ['_count' => 'desc'],
-    'size' => 10, //top 10 registration dates
+$aggData = Customer::find()->addAggregate('customers_by_date', [
+    'terms' => [
+        'field' => 'registration_date',
+        'order' => ['_count' => 'desc'],
+        'size' => 10, //top 10 registration dates
+    ],
 ])->search(null, ['search_type' => 'count']);
 
-```                    
+```
 
 In this example we are specifically requesting aggregation results only. The following code further process the data.
 
