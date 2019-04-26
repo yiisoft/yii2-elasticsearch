@@ -339,7 +339,9 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function type()
     {
-        return Inflector::camel2id(StringHelper::basename(get_called_class()), '-');
+        // return Inflector::camel2id(StringHelper::basename(get_called_class()), '-');
+        // 指定type为_doc，以此兼容Es7.0版本
+        return '_doc';
     }
 
     /**
