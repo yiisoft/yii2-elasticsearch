@@ -450,7 +450,7 @@ class ActiveRecord extends BaseActiveRecord
      * By default the `op_type` is set to `create`.
      * @return bool whether the attributes are valid and the record is inserted successfully.
      */
-    public function insert($runValidation = true, $attributes = null, $options = ['op_type' => 'create'])
+    public function insert($runValidation = true, $attributes = null, $options = [])
     {
         if ($runValidation && !$this->validate($attributes)) {
             return false;

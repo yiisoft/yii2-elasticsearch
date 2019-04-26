@@ -82,9 +82,7 @@ class QueryBuilder extends BaseObject
             $parts['explain'] = $query->explain;
         }
 
-        if (empty($query->query)) {
-            $parts['query'] = ["match_all" => (object)[]];
-        } else {
+        if (!empty($query->query)) {
             $parts['query'] = $query->query;
         }
 
@@ -102,7 +100,7 @@ class QueryBuilder extends BaseObject
                 $parts['filter'] = ['and' => [$query->filter, $whereFilter]];
             }
         } elseif (!empty($whereFilter)) {
-            $parts['filter'] = $whereFilter;
+            $parts['query'] = $whereFilter;
         }
 
         if (!empty($query->highlight)) {
@@ -205,9 +203,11 @@ class QueryBuilder extends BaseObject
         if (empty($condition)) {
             return [];
         }
+
         if (!is_array($condition)) {
             throw new NotSupportedException('String conditions in where() are not supported by elasticsearch.');
         }
+
         if (isset($condition[0])) { // operator format: operator, operand 1, operand 2, ...
             $operator = strtolower($condition[0]);
             if (isset($builders[$operator])) {
@@ -239,7 +239,7 @@ class QueryBuilder extends BaseObject
                     $parts[] = ['in' => [$attribute => $value]];
                 } else {
                     if ($value === null) {
-                        $parts[] = ['missing' => ['field' => $attribute, 'existence' => true, 'null_value' => true]];
+                        $parts[] =['bool' => ['must_not' => [['exists' => ['field' => $attribute]]]]];
                     } else {
                         $parts[] = ['term' => [$attribute => $value]];
                     }
@@ -247,7 +247,7 @@ class QueryBuilder extends BaseObject
             }
         }
 
-        return count($parts) === 1 ? $parts[0] : ['and' => $parts];
+        return count($parts) === 1 ? $parts[0] : ['bool' => ['must' => $parts]];
     }
 
     private function buildNotCondition($operator, $operands)
@@ -276,7 +276,7 @@ class QueryBuilder extends BaseObject
             }
         }
         if (!empty($parts)) {
-            return [$operator => $parts];
+            return ['bool' => ['must' => $parts]];
         } else {
             return [];
         }

@@ -152,19 +152,8 @@ class BatchQueryResult extends BaseObject implements \Iterator
         if (null === $this->_lastScrollId) {
             //first query - do search
             $options = ['scroll' => $this->scrollWindow];
-            if(!$this->query->orderBy) {
-                $options['search_type'] = 'scan';
-            }
-            $result = $this->query->createCommand($this->db)->search($options);
 
-            //if using "scan" mode, make another request immediately
-            //(search request returned 0 results)
-            if(!$this->query->orderBy) {
-                $result = $this->query->createCommand($this->db)->scroll([
-                    'scroll_id' => $result['_scroll_id'],
-                    'scroll' => $this->scrollWindow,
-                ]);
-            }
+            $result = $this->query->createCommand($this->db)->search($options);
         } else {
             //subsequent queries - do scroll
             $result = $this->query->createCommand($this->db)->scroll([
@@ -172,7 +161,6 @@ class BatchQueryResult extends BaseObject implements \Iterator
                 'scroll' => $this->scrollWindow,
             ]);
         }
-
         //get last scroll id
         $this->_lastScrollId = $result['_scroll_id'];
 
