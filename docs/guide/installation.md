@@ -3,25 +3,19 @@ Installation
 
 ## Requirements
 
-Elasticsearch version 1.0 or higher is required.
+Elasticsearch versions from 1.6.0 to 1.7.6. The following should be added to `config/elasticsearch.yml`:
+
+```
+script.disable_dynamic: false
+```
 
 ## Getting Composer package
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
-
-Either run
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
 
 ```
-php composer.phar require --prefer-dist yiisoft/yii2-elasticsearch
+composer require --prefer-dist yiisoft/yii2-elasticsearch
 ```
-
-or add
-
-```json
-"yiisoft/yii2-elasticsearch": "~2.0.0"
-```
-
-to the require section of your composer.json.
 
 ## Configuring application
 
