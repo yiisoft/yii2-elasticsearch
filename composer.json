@@ -24,15 +24,15 @@
     "require-dev": {
         "phpunit/phpunit": "4.8.27|~5.7.21|^6.2"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ],
     "autoload": {
         "psr-4": { "yii\\elasticsearch\\": "" }
     },
+    "repositories": [
+       {
+           "type": "composer",
+           "url": "https://asset-packagist.org"
+       }
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
