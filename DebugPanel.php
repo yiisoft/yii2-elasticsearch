@@ -71,6 +71,9 @@ EOD;
      */
     public function getDetail()
     {
+        //Register YiiAsset in order to inject csrf token in ajax requests
+        YiiAsset::register(\Yii::$app->view);
+        
         $timings = $this->calculateTimings();
         ArrayHelper::multisort($timings, 3, SORT_DESC);
         $rows = [];

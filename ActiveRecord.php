@@ -61,6 +61,7 @@ class ActiveRecord extends BaseActiveRecord
     private $_highlight;
     private $_explanation;
 
+
     /**
      * Returns the database connection used by this AR class.
      * By default, the "elasticsearch" application component is used as the database connection.
@@ -432,7 +433,7 @@ class ActiveRecord extends BaseActiveRecord
      * $customer->insert();
      * ~~~
      *
-     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param bool $runValidation whether to perform validation before saving the record.
      * If the validation fails, the record will not be inserted into the database.
      * @param array $attributes list of attributes that need to be saved. Defaults to null,
      * meaning all attributes will be saved.
@@ -446,7 +447,7 @@ class ActiveRecord extends BaseActiveRecord
      * for more details on these options.
      *
      * By default the `op_type` is set to `create` if model primary key is present.
-     * @return boolean whether the attributes are valid and the record is inserted successfully.
+     * @return bool whether the attributes are valid and the record is inserted successfully.
      */
     public function insert($runValidation = true, $attributes = null, $options = [ ])
     {
@@ -488,7 +489,7 @@ class ActiveRecord extends BaseActiveRecord
     /**
      * @inheritdoc
      *
-     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param bool $runValidation whether to perform validation before saving the record.
      * If the validation fails, the record will not be inserted into the database.
      * @param array $attributeNames list of attribute names that need to be saved. Defaults to null,
      * meaning all attributes that are loaded from DB will be saved.
@@ -515,7 +516,7 @@ class ActiveRecord extends BaseActiveRecord
      *   Make sure the record has been fetched with a [[version]] before. This is only the case
      *   for records fetched via [[get()]] and [[mget()]] by default. For normal queries, the `_version` field has to be fetched explicitly.
      *
-     * @return integer|boolean the number of rows affected, or false if validation fails
+     * @return int|bool the number of rows affected, or false if validation fails
      * or [[beforeSave()]] stops the updating process.
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
      * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
@@ -534,7 +535,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $attributes attributes to update
      * @param array $options options given in this parameter are passed to elasticsearch
      * as request URI parameters. See [[update()]] for details.
-     * @return integer|false the number of rows affected, or false if [[beforeSave()]] stops the updating process.
+     * @return int|false the number of rows affected, or false if [[beforeSave()]] stops the updating process.
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
      * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
      * @throws Exception in case update failed.
@@ -632,7 +633,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
      * @see [[ActiveRecord::primaryKeysByCondition()]]
-     * @return integer the number of rows updated
+     * @return int the number of rows updated
      * @throws Exception on error.
      */
     public static function updateAll($attributes, $condition = [])
@@ -680,7 +681,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
      * @see [[ActiveRecord::primaryKeysByCondition()]]
-     * @return integer the number of rows updated
+     * @return int the number of rows updated
      * @throws Exception on error.
      */
     public static function updateAllCounters($counters, $condition = [])
@@ -750,7 +751,7 @@ class ActiveRecord extends BaseActiveRecord
      *   Make sure the record has been fetched with a [[version]] before. This is only the case
      *   for records fetched via [[get()]] and [[mget()]] by default. For normal queries, the `_version` field has to be fetched explicitly.
      *
-     * @return integer|boolean the number of rows deleted, or false if the deletion is unsuccessful for some reason.
+     * @return int|bool the number of rows deleted, or false if the deletion is unsuccessful for some reason.
      * Note that it is possible the number of rows deleted is 0, even though the deletion execution is successful.
      * @throws StaleObjectException if optimistic locking is enabled and the data being deleted is outdated.
      * @throws Exception in case delete failed.
@@ -808,7 +809,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
      * @see [[ActiveRecord::primaryKeysByCondition()]]
-     * @return integer the number of rows deleted
+     * @return int the number of rows deleted
      * @throws Exception on error.
      */
     public static function deleteAll($condition = [])

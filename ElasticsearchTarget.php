@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
 
 namespace yii\elasticsearch;
 
@@ -49,6 +54,7 @@ class ElasticsearchTarget extends Target
      * @var boolean If true, context message will cached once it's been created. Makes sense to use with [[includeContext]].
      */
     public $cacheContext = false;
+
     /**
      * @var string Context message cache (can be used multiple times if context is appended to every message)
      */
@@ -97,7 +103,7 @@ class ElasticsearchTarget extends Target
      * Depending on the [[includeContext]] attribute, a context message will be either created or ignored.
      * @param array $messages log messages to be processed. See [[Logger::messages]] for the structure
      * of each message.
-     * @param boolean $final whether this method is called at the end of the current application
+     * @param bool $final whether this method is called at the end of the current application
      */
     public function collect($messages, $final)
     {

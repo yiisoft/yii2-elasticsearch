@@ -3,9 +3,7 @@
 
 ## インデックスとマッピングを生成する
 
-ElasticSearch のマッピングを漸進的に更新することは常に可能であるとは限りません。
-ですから、あなたのモデルの中に、インデックスの生成と更新を扱ういくつかの静的なメソッドを作っておくというのは、良いアイデアです。
-どのようにすればそれが出来るかの一例を次に示します。
+ElasticSearch のマッピングを漸進的に更新することは常に可能であるとは限りません。ですから、あなたのモデルの中に、インデックスの生成と更新を扱ういくつかの静的なメソッドを作っておくというのは、良いアイデアです。どのようにすればそれが出来るかの一例を次に示します。
 
 ```php
 Class Book extends yii\elasticsearch\ActiveRecord
@@ -50,7 +48,7 @@ Class Book extends yii\elasticsearch\ActiveRecord
         $db = static::getDb();
         $command = $db->createCommand();
         $command->createIndex(static::index(), [
-            'settings' => [ /* ... */ ],
+            //'settings' => [ /* ... */ ],
             'mappings' => static::mapping(),
             //'warmers' => [ /* ... */ ],
             //'aliases' => [ /* ... */ ],
@@ -70,11 +68,9 @@ Class Book extends yii\elasticsearch\ActiveRecord
 }
 ```
 
-適切なマッピングでインデックスを生成するためには、`Book::createIndex()` を呼びます。
-マッピングの更新を許すような仕方でマッピングを変更した場合 (例えば、新しいプロパティを作成した場合など) は、`Book::updateMapping()` を呼びます。
+適切なマッピングでインデックスを生成するためには、`Book::createIndex()` を呼びます。マッピングの更新を許すような仕方でマッピングを変更した場合 (例えば、新しいプロパティを作成した場合など) は、`Book::updateMapping()` を呼びます。
 
-しかし、プロパティを変更した場合 (例えば、`string` から `date` に変えた場合など) は、ElasticSearch はマッピングを更新することが出来ません。
-この場合は、インデックスを削除し (`Book::deleteIndex()` を呼びます)、更新されたマッピングでインデックスを新規に作成し (`Book::createIndex()` を呼びます)、そして、データを投入しなければなりません。
+しかし、プロパティを変更した場合 (例えば、`string` から `date` に変えた場合など) は、ElasticSearch はマッピングを更新することが出来ません。この場合は、インデックスを削除し (`Book::deleteIndex()` を呼びます)、更新されたマッピングでインデックスを新規に作成し (`Book::createIndex()` を呼びます)、そして、データを投入しなければなりません。
 
 ## インデクシング
 TBD

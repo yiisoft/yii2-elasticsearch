@@ -222,7 +222,7 @@ class ActiveRecordTest extends TestCase
     {
         $customers = Customer::find()->search()['hits'];
         $this->assertEquals(3, $customers['total']);
-        $this->assertEquals(3, count($customers['hits']));
+        $this->assertCount(3, $customers['hits']);
         $this->assertTrue($customers['hits'][0] instanceof Customer);
         $this->assertTrue($customers['hits'][1] instanceof Customer);
         $this->assertTrue($customers['hits'][2] instanceof Customer);
@@ -230,13 +230,13 @@ class ActiveRecordTest extends TestCase
         // limit vs. totalcount
         $customers = Customer::find()->limit(2)->search()['hits'];
         $this->assertEquals(3, $customers['total']);
-        $this->assertEquals(2, count($customers['hits']));
+        $this->assertCount(2, $customers['hits']);
 
         // asArray
         $result = Customer::find()->asArray()->search()['hits'];
         $this->assertEquals(3, $result['total']);
         $customers = $result['hits'];
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers[0]['_source']);
         $this->assertArrayHasKey('name', $customers[0]['_source']);
         $this->assertArrayHasKey('email', $customers[0]['_source']);
@@ -291,14 +291,14 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals([], Customer::mget([]));
 
         $records = Customer::mget([1]);
-        $this->assertEquals(1, count($records));
+        $this->assertCount(1, $records);
         $this->assertInstanceOf(Customer::className(), reset($records));
 
         $records = Customer::mget([5]);
-        $this->assertEquals(0, count($records));
+        $this->assertCount(0, $records);
 
         $records = Customer::mget([1, 3, 5]);
-        $this->assertEquals(2, count($records));
+        $this->assertCount(2, $records);
         $this->assertInstanceOf(Customer::className(), $records[0]);
         $this->assertInstanceOf(Customer::className(), $records[1]);
     }
@@ -308,21 +308,21 @@ class ActiveRecordTest extends TestCase
         /* @var $customer Customer */
         $customer = Customer::findOne(2);
         $orders = $customer->orders;
-        $this->assertEquals(2, count($orders));
+        $this->assertCount(2, $orders);
 
         $orders = $customer->getOrders()->where(['between', 'created_at', 1325334000, 1325400000])->all();
-        $this->assertEquals(1, count($orders));
+        $this->assertCount(1, $orders);
         $this->assertEquals(2, $orders[0]->id);
     }
 
     public function testFindEagerViaRelation()
     {
         $orders = Order::find()->with('items')->orderBy('created_at')->all();
-        $this->assertEquals(3, count($orders));
+        $this->assertCount(3, $orders);
         $order = $orders[0];
         $this->assertEquals(1, $order->id);
         $this->assertTrue($order->isRelationPopulated('items'));
-        $this->assertEquals(2, count($order->items));
+        $this->assertCount(2, $order->items);
         $this->assertEquals(1, $order->items[0]->id);
         $this->assertEquals(2, $order->items[1]->id);
     }
@@ -456,7 +456,7 @@ class ActiveRecordTest extends TestCase
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
         $customers = Customer::find()->asArray()->source(['id', 'name'])->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers[0]['_source']);
         $this->assertArrayHasKey('name', $customers[0]['_source']);
         $this->assertArrayNotHasKey('email', $customers[0]['_source']);
@@ -480,7 +480,7 @@ class ActiveRecordTest extends TestCase
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
         $customers = Customer::find()->indexBy('name')->source('id', 'name')->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertTrue($customers['user1'] instanceof $customerClass);
         $this->assertTrue($customers['user2'] instanceof $customerClass);
         $this->assertTrue($customers['user3'] instanceof $customerClass);
@@ -504,7 +504,7 @@ class ActiveRecordTest extends TestCase
         $customers = Customer::find()->indexBy(function ($customer) {
                     return $customer->id . '-' . $customer->name;
                 })->storedFields('id', 'name')->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertTrue($customers['1-user1'] instanceof $customerClass);
         $this->assertTrue($customers['2-user2'] instanceof $customerClass);
         $this->assertTrue($customers['3-user3'] instanceof $customerClass);
@@ -530,7 +530,7 @@ class ActiveRecordTest extends TestCase
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
         $customers = Customer::find()->indexBy('name')->asArray()->storedFields('id', 'name')->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['user1']['fields']);
         $this->assertArrayHasKey('name', $customers['user1']['fields']);
         $this->assertArrayNotHasKey('email', $customers['user1']['fields']);
@@ -551,7 +551,7 @@ class ActiveRecordTest extends TestCase
         $customers = Customer::find()->indexBy(function ($customer) {
                     return reset($customer['fields']['id']) . '-' . reset($customer['fields']['name']);
                 })->asArray()->storedFields('id', 'name')->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['1-user1']['fields']);
         $this->assertArrayHasKey('name', $customers['1-user1']['fields']);
         $this->assertArrayNotHasKey('email', $customers['1-user1']['fields']);
@@ -577,7 +577,7 @@ class ActiveRecordTest extends TestCase
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
         $customers = $customerClass::find()->asArray()->indexBy('name')->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['user1']['_source']);
         $this->assertArrayHasKey('name', $customers['user1']['_source']);
         $this->assertArrayHasKey('email', $customers['user1']['_source']);
@@ -598,7 +598,7 @@ class ActiveRecordTest extends TestCase
         $customers = $customerClass::find()->indexBy(function ($customer) {
                     return $customer['_source']['id'] . '-' . $customer['_source']['name'];
                 })->asArray()->all();
-        $this->assertEquals(3, count($customers));
+        $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['1-user1']['_source']);
         $this->assertArrayHasKey('name', $customers['1-user1']['_source']);
         $this->assertArrayHasKey('email', $customers['1-user1']['_source']);
@@ -655,22 +655,22 @@ class ActiveRecordTest extends TestCase
         $this->afterSave();
 
         $orderItems = $orderItemClass::find()->where(['_id' => [$orderItem->getPrimaryKey()]])->all();
-        $this->assertEquals(1, count($orderItems));
+        $this->assertCount(1, $orderItems);
 
         $orderItems = $orderItemClass::find()->where(['_id' => []])->all();
-        $this->assertEquals(0, count($orderItems));
+        $this->assertCount(0, $orderItems);
 
         $orderItems = $orderItemClass::find()->where(['_id' => null])->all();
-        $this->assertEquals(0, count($orderItems));
+        $this->assertCount(0, $orderItems);
 
         $orderItems = $orderItemClass::find()->where(['IN', '_id', [$orderItem->getPrimaryKey()]])->all();
-        $this->assertEquals(1, count($orderItems));
+        $this->assertCount(1, $orderItems);
 
         $orderItems = $orderItemClass::find()->where(['IN', '_id', []])->all();
-        $this->assertEquals(0, count($orderItems));
+        $this->assertCount(0, $orderItems);
 
         $orderItems = $orderItemClass::find()->where(['IN', '_id', [null]])->all();
-        $this->assertEquals(0, count($orderItems));
+        $this->assertCount(0, $orderItems);
     }
 
     public function testArrayAttributes()
@@ -684,7 +684,7 @@ class ActiveRecordTest extends TestCase
     {
         $order = Order::findOne(1);
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(2, count($items));
+        $this->assertCount(2, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
         $this->assertTrue($items[1] instanceof Item);
@@ -692,7 +692,7 @@ class ActiveRecordTest extends TestCase
 
         $order = Order::findOne(2);
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(3, count($items));
+        $this->assertCount(3, $items);
         $this->assertTrue(isset($items[3]));
         $this->assertTrue(isset($items[4]));
         $this->assertTrue(isset($items[5]));
@@ -707,7 +707,7 @@ class ActiveRecordTest extends TestCase
         $order = Order::find()->with('itemsByArrayValue')->where(['id' => 1])->one();
         $this->assertTrue($order->isRelationPopulated('itemsByArrayValue'));
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(2, count($items));
+        $this->assertCount(2, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
         $this->assertTrue($items[1] instanceof Item);
@@ -717,7 +717,7 @@ class ActiveRecordTest extends TestCase
         $order = Order::find()->with('itemsByArrayValue')->where(['id' => 2])->one();
         $this->assertTrue($order->isRelationPopulated('itemsByArrayValue'));
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(3, count($items));
+        $this->assertCount(3, $items);
         $this->assertTrue(isset($items[3]));
         $this->assertTrue(isset($items[4]));
         $this->assertTrue(isset($items[5]));
@@ -731,7 +731,7 @@ class ActiveRecordTest extends TestCase
         /* @var $order Order */
         $order = Order::find()->where(['id' => 1])->one();
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(2, count($items));
+        $this->assertCount(2, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
 
@@ -740,7 +740,7 @@ class ActiveRecordTest extends TestCase
         $this->afterSave();
 
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(3, count($items));
+        $this->assertCount(3, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
         $this->assertTrue(isset($items[5]));
@@ -748,7 +748,7 @@ class ActiveRecordTest extends TestCase
         // check also after refresh
         $this->assertTrue($order->refresh());
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(3, count($items));
+        $this->assertCount(3, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
         $this->assertTrue(isset($items[5]));
@@ -759,7 +759,7 @@ class ActiveRecordTest extends TestCase
         /* @var $order Order */
         $order = Order::find()->where(['id' => 1])->one();
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(2, count($items));
+        $this->assertCount(2, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
 
@@ -768,14 +768,14 @@ class ActiveRecordTest extends TestCase
         $this->afterSave();
 
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(1, count($items));
+        $this->assertCount(1, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertFalse(isset($items[2]));
 
         // check also after refresh
         $this->assertTrue($order->refresh());
         $items = $order->itemsByArrayValue;
-        $this->assertEquals(1, count($items));
+        $this->assertCount(1, $items);
         $this->assertTrue(isset($items[1]));
         $this->assertFalse(isset($items[2]));
     }

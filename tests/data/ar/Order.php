@@ -2,6 +2,7 @@
 
 namespace yiiunit\extensions\elasticsearch\data\ar;
 
+use yii\elasticsearch\ActiveQuery;
 use yii\elasticsearch\Command;
 
 /**
@@ -11,6 +12,10 @@ use yii\elasticsearch\Command;
  * @property integer $customer_id
  * @property integer $created_at
  * @property string $total
+ * @property array $itemsArray
+ *
+ * @property-read Item[] $expensiveItemsUsingViaWithCallable
+ * @property-read Item[] $cheapItemsUsingViaWithCallable
  */
 class Order extends ActiveRecord
 {
@@ -46,6 +51,22 @@ class Order extends ActiveRecord
     {
         return $this->hasMany(Item::className(), ['id' => 'item_id'])
             ->via('orderItems')->orderBy('id');
+    }
+
+    public function getExpensiveItemsUsingViaWithCallable()
+    {
+        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+            ->via('orderItems', function (ActiveQuery $q) {
+                $q->where(['>=', 'subtotal', 10]);
+            });
+    }
+
+    public function getCheapItemsUsingViaWithCallable()
+    {
+        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+            ->via('orderItems', function (ActiveQuery $q) {
+                $q->where(['<', 'subtotal', 10]);
+            });
     }
 
     public function getItemsIndexed()
@@ -95,16 +116,6 @@ class Order extends ActiveRecord
             ->where(['category_id' => 1]);
     }
 
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-//			$this->created_at = time();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /**
      * sets up the index for this record
      * @param Command $command
@@ -113,10 +124,10 @@ class Order extends ActiveRecord
     {
         $command->setMapping(static::index(), static::type(), [
             static::type() => [
-                "properties" => [
-                    "customer_id" => ["type" => "integer"],
+                'properties' => [
+                    'customer_id' => ['type' => 'integer'],
 //					"created_at" => ["type" => "string", "index" => "not_analyzed"],
-                    "total" => ["type" => "integer"],
+                    'total' => ['type' => 'integer'],
                 ]
             ]
         ]);

@@ -6,7 +6,7 @@ Mapping & Indexing
 Since it is not always possible to update ElasticSearch mappings incrementally, it is a good idea to create several static methods in your model that deal with index creation and updates. Here is one example of how this can be done.
 
 ```php
-Class Book extends yii\elasticsearch\ActiveRecord
+class Book extends yii\elasticsearch\ActiveRecord
 {
     // Other class attributes and methods go here
     // ...
@@ -48,7 +48,7 @@ Class Book extends yii\elasticsearch\ActiveRecord
         $db = static::getDb();
         $command = $db->createCommand();
         $command->createIndex(static::index(), [
-            'settings' => [ /* ... */ ],
+            //'settings' => [ /* ... */ ],
             'mappings' => static::mapping(),
             //'warmers' => [ /* ... */ ],
             //'aliases' => [ /* ... */ ],

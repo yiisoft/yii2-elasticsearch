@@ -168,15 +168,15 @@ class Query extends Component implements QueryInterface
     public $postFilter;
 
     /**
-     * @var array The highlight part of this search query. This is an array
-     * that allows to highlight search results on one or more fields.
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-request-highlighting.html
+     * @var array The highlight part of this search query. This is an array that allows to highlight search results
+     * on one or more fields.
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
      */
     public $highlight;
 
     /**
      * @var array List of aggregations to add to this query.
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public $aggregations = [];
 
@@ -259,6 +259,9 @@ class Query extends Component implements QueryInterface
      */
     public function all($db = null)
     {
+        if ($this->emulateExecution) {
+            return [];
+        }
         $result = $this->createCommand($db)->search();
         if ($result === false) {
             throw new Exception('Elasticsearch search query failed.');
@@ -303,11 +306,14 @@ class Query extends Component implements QueryInterface
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application
      * component will be used.
-     * @return array|boolean the first row (in terms of an array) of the query
+     * @return array|bool the first row (in terms of an array) of the query
      * result. False is returned if the query results in nothing.
      */
     public function one($db = null)
     {
+        if ($this->emulateExecution) {
+            return false;
+        }
         $result = $this->createCommand($db)->search(['size' => 1]);
         if ($result === false) {
             throw new Exception('Elasticsearch search query failed.');
@@ -336,6 +342,14 @@ class Query extends Component implements QueryInterface
      */
     public function search($db = null, $options = [])
     {
+        if ($this->emulateExecution) {
+            return [
+                'hits' => [
+                    'total' => 0,
+                    'hits' => [],
+                ],
+            ];
+        }
         $result = $this->createCommand($db)->search($options);
         if ($result === false) {
             throw new Exception('Elasticsearch search query failed.');
@@ -369,6 +383,9 @@ class Query extends Component implements QueryInterface
      */
     public function delete($db = null, $options = [])
     {
+        if ($this->emulateExecution) {
+            return [];
+        }
         return $this->createCommand($db)->deleteByQuery($options);
     }
 
@@ -385,6 +402,9 @@ class Query extends Component implements QueryInterface
      */
     public function scalar($field, $db = null)
     {
+        if ($this->emulateExecution) {
+            return null;
+        }
         $record = self::one($db);
         if ($record !== false) {
             if ($field === '_id') {
@@ -409,6 +429,9 @@ class Query extends Component implements QueryInterface
      */
     public function column($field, $db = null)
     {
+        if ($this->emulateExecution) {
+            return [];
+        }
         $command = $this->createCommand($db);
         $command->queryParts['_source'] = [$field];
         $result = $command->search();
@@ -437,10 +460,13 @@ class Query extends Component implements QueryInterface
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application
      * component will be used.
-     * @return integer number of records
+     * @return int number of records
      */
     public function count($q = '*', $db = null)
     {
+        if ($this->emulateExecution) {
+            return 0;
+        }
         // performing a query with return size of 0, is equal to getting result stats such as count
         // https://www.elastic.co/guide/en/elasticsearch/reference/5.6/breaking_50_search_changes.html#_literal_search_type_literal
         $count = $this->createCommand($db)->search(['size' => 0])['hits']['total'];
@@ -456,7 +482,7 @@ class Query extends Component implements QueryInterface
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application
      * component will be used.
-     * @return boolean whether the query result contains any row of data.
+     * @return bool whether the query result contains any row of data.
      */
     public function exists($db = null)
     {
@@ -497,7 +523,7 @@ class Query extends Component implements QueryInterface
      * @param string|array $options the configuration options for this
      * aggregation. Can be an array or a json string.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public function addAggregation($name, $type, $options)
     {
@@ -516,7 +542,7 @@ class Query extends Component implements QueryInterface
      * @param string|array $options the configuration options for this
      * aggregation. Can be an array or a json string.
      * @return $this the query object itself
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/1.x/search-aggregations.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public function addAgg($name, $type, $options)
     {
@@ -571,7 +597,7 @@ class Query extends Component implements QueryInterface
     /**
      * Sets the query part of this search query.
      * @param string|array $query
-     * @return $this the query object itself.
+     * @return $this the query object itself
      */
     public function query($query)
     {
@@ -729,7 +755,7 @@ class Query extends Component implements QueryInterface
 
     /**
      * Sets the search timeout.
-     * @param integer $timeout A search timeout, bounding the search request to
+     * @param int $timeout A search timeout, bounding the search request to
      * be executed within the specified time value and bail with the hits
      * accumulated up to that point when expired. Defaults to no timeout.
      * @return $this the query object itself
