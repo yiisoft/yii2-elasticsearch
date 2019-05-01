@@ -13,19 +13,35 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #222: Added collapse support (walkskyer)
 
 2.0.5 under development
+2.0.6 under development
 -----------------------
 
+- Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
+- Bug #227: Fixed `Bad Request (#400): Unable to verify your data submission.` in debug details panel 'run query' (rhertogh)
+- Enh #117: Add support for `QueryInterface::emulateExecution()` (cebe)
+
+
+2.0.5 March 20, 2018
+--------------------
+
 - Bug #120: Fix debug panel markup to be compatible with Yii 2.0.10 (drdim)
+- Bug #125: Fixed `ActiveDataProvider::refresh()` to also reset `$queryResults` data (sizeg)
+- Bug #134: Fix infinite query loop "ActiveDataProvider" when the index does not exist (eolitich)
+- Bug #149: Changed `yii\base\Object` to `yii\base\BaseObject` (dmirogin)
+- Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
+- Bug: Added accessor method for the default elasticsearch primary key (kyle-mccarthy)
 - Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
+- Enh #43: Elasticsearch log target (trntv, beowulfenator)
 - Enh #47: Added support for post_filter option in search queries (mxkh)
 - Enh #60: Minor updates to guide (devypt, beowulfenator)
-- Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
-- Enh: Bulk API implemented and used in AR (tibee, beowulfenator)
 - Enh #82: Support HTTPS protocol (dor-denis, beowulfenator)
-- Enh #43: Elasticsearch log target (trntv, beowulfenator)
-- Bug: Added accessor method for the default elasticsearch primary key (kyle-mccarthy)
+- Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
 - Enh #119: Added support for explanation on query (kyle-mccarthy)
+- Enh #150: Explicitily send `Content-Type` header in HTTP requests to elasticsearch (lubobill1990)
+- Enh: Bulk API implemented and used in AR (tibee, beowulfenator)
+- Enh: Deserialization of raw response when text/plain is supported (Tezd)
+- Enh: Added ability to work with aliases through Command class (Tezd)
 
 
 2.0.4 March 17, 2016

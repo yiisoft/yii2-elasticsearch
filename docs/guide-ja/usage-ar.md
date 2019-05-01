@@ -3,13 +3,15 @@
 
 Yii のアクティブレコードの使用方法に関する一般的な情報については、[ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide-ja/db-active-record.md) を参照してください。
 
-Elasticsearch のアクティブレコードを定義するためには、あなたのレコードクラスを [[yii\elasticsearch\ActiveRecord]] から拡張して、最低限、レコードの属性を定義するための [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] メソッドを実装する必要があります。
-Elasticsearch ではプライマリキーの扱いが通常と異なります。
-というのは、プライマリキー (elasticsearch の用語では `_id` フィールド) が、デフォルトでは属性のうちに入らないからです。
-ただし、`_id` フィールドを属性に含めるための [パスマッピング](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を定義することは出来ます。
-パスマッピングの定義の仕方については、[elasticsearch のドキュメント](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を参照してください。
-document または record の `_id` フィールドは、[[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] および [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]] を使ってアクセスすることが出来ます。
-パスマッピングが定義されている場合は、[[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] メソッドを使って属性の名前を定義することが出来ます。
+Elasticsearch のアクティブレコードを定義するためには、あなたのレコード・クラスを [[yii\elasticsearch\ActiveRecord]] から拡張して、
+最低限、レコードの属性を定義するための [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] メソッドを実装する必要があります。
+Elasticsearch ではプライマリ・キーの扱いが通常と異なります。
+というのは、プライマリ・キー (elasticsearch の用語では `_id` フィールド) が、デフォルトでは属性のうちに入らないからです。
+ただし、`_id` フィールドを属性に含めるための [パス・マッピング](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を定義することは出来ます。
+パス・マッピングの定義の仕方については、[elasticsearch のドキュメント](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を参照してください。
+document または record の `_id` フィールドは、[[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]]
+および [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]] を使ってアクセスすることが出来ます。
+パス・マッピングが定義されている場合は、[[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] メソッドを使って属性の名前を定義することが出来ます。
 
 以下は `Customer` と呼ばれるモデルの例です。
 
@@ -21,13 +23,12 @@ class Customer extends \yii\elasticsearch\ActiveRecord
      */
     public function attributes()
     {
-        // '_id' に対するパスマッピングis setup to field 'id'
+        // '_id' に対するパス・マッピングは 'id' フィールドに設定される
         return ['id', 'name', 'address', 'registration_date'];
     }
 
     /**
-     * @return ActiveQuery Order レコード へのリレーションを定義
-     * (Order は他のデータベース、例えば、redis や通常の SQLDB にあっても良い)
+     * @return ActiveQuery Order レコード へのリレーションを定義 (Order は他のデータベース、例えば、redis や通常の SQLDB にあっても良い)
      */
     public function getOrders()
     {
@@ -44,24 +45,30 @@ class Customer extends \yii\elasticsearch\ActiveRecord
 }
 ```
 
-[[yii\elasticsearch\ActiveRecord::index()|index()]] と [[yii\elasticsearch\ActiveRecord::type()|type()]] をオーバーライドして、このレコードが表すインデックスとタイプを定義することが出来ます。
+[[yii\elasticsearch\ActiveRecord::index()|index()]] と [[yii\elasticsearch\ActiveRecord::type()|type()]] をオーバーライドして、
+このレコードが表すインデックスとタイプを定義することが出来ます。
 
-elasticsearch のアクティブレコードの一般的な使用方法は、[ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide-ja/active-record.md) で説明されたデータベースのアクティブレコードの場合と非常によく似ています。
-以下の制限と拡張 (*!*) があることを除けば、同じインターフェイスと機能をサポートしています。
+elasticsearch のアクティブレコードの一般的な使用方法は、[ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide-ja/active-record.md)
+で説明されたデータベースのアクティブレコードの場合と非常によく似ています。
+以下の制限と拡張 (*!*) があることを除けば、同じインタフェイスと機能をサポートしています。
 
 - elasticsearch は SQL をサポートしていないため、クエリの API は `join()`、`groupBy()`、`having()` および `union()` をサポートしません。
   並べ替え、リミット、オフセット、条件付き WHERE は、すべてサポートされています。
 - [[yii\elasticsearch\ActiveQuery::from()|from()]] はテーブルを選択しません。
-  そうではなく、クエリ対象の [インデックス](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) と [タイプ](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) を選択します。
+  そうではなく、クエリ対象の [インデックス](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) と
+  [タイプ](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) を選択します。
 - `select()` は [[yii\elasticsearch\ActiveQuery::fields()|fields()]] に置き換えられています。
   基本的には同じことをするものですが、`fields` の方が elasticsearch の用語として相応しいでしょう。
   ドキュメントから取得するフィールドを定義します。
 - Elasticsearch にはテーブルがありませんので、テーブルを通じての [[yii\elasticsearch\ActiveQuery::via()|via]] リレーションは定義することが出来ません。
-- Elasticsearch はデータストレージであると同時に検索エンジンでもありますので、当然ながら、レコードの検索に対するサポートが追加されています。
-  Elasticsearch のクエリを構成するための [[yii\elasticsearch\ActiveQuery::query()|query()]]、[[yii\elasticsearch\ActiveQuery::filter()|filter()]] そして [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] というメソッドがあります。
+- Elasticsearch はデータ・ストレージであると同時に検索エンジンでもありますので、当然ながら、レコードの検索に対するサポートが追加されています。
+  Elasticsearch のクエリを構成するための [[yii\elasticsearch\ActiveQuery::query()|query()]]、
+  [[yii\elasticsearch\ActiveQuery::filter()|filter()]] そして 
+  [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] というメソッドがあります。
   これらがどのように働くかについて、下の使用例を見てください。
-  また、`query` と `filter` の部分を構成する方法については、[クエリ DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) を参照してください。
-- Elasticsearch のアクティブレコードから通常のアクティブレコードクラスへのリレーションを定義することも可能です。また、その逆も可能です。
+  また、`query` と `filter` の部分を構成する方法については、[クエリ DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
+  を参照してください。
+- Elasticsearch のアクティブレコードから通常のアクティブレコード・クラスへのリレーションを定義することも可能です。また、その逆も可能です。
 
 > Note: デフォルトでは、elasticsearch は、どんなクエリでも、返されるレコードの数を 10 に限定しています。
 > もっと多くのレコードを取得することを期待する場合は、リレーションの定義で上限を明示的に指定しなければなりません。
@@ -104,11 +111,8 @@ $query->search(); // 全てのレコード、および、visit_count フィー�
 
 ## 複雑なクエリ
 
-どのようなクエリでも、ElasticSearch のクエリ DSL を使って作成して `ActiveRecord::query()` メソッドに渡すことが出来ます。
-しかし、ES のクエリ DSL は冗長さで悪名高いものです。
-長すぎるクエリは、すぐに管理できないものになってしまいます。
-クエリをもっと保守しやすくする方法があります。
-SQL ベースの `ActiveRecord` のために定義されているようなクエリクラスを定義することから始めましょう。
+どのようなクエリでも、ElasticSearch のクエリ DSL を使って作成して `ActiveRecord::query()` メソッドに渡すことが出来ます。しかし、ES のクエリ DSL は冗長さで悪名高いものです。長すぎるクエリは、すぐに管理できないものになってしまいます。
+クエリをもっと保守しやすくする方法があります。SQL ベースの `ActiveRecord` のために定義されているようなクエリクラスを定義することから始めましょう。
 
 ```php
 class CustomerQuery extends ActiveQuery
@@ -134,7 +138,7 @@ class CustomerQuery extends ActiveQuery
 
 ```
 
-こうすれば、これらのクエリコンポーネントを、結果となるクエリやフィルタを組み上げるために使用することが出来ます。
+こうすれば、これらのクエリ・コンポーネントを、結果となるクエリやフィルタを組み上げるために使用することが出来ます。
 
 ```php
 $customers = Customer::find()->filter([
@@ -154,11 +158,9 @@ $customers = Customer::find()->filter([
 
 ## 集合 (Aggregations)
 
-[集合フレームワーク](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) が、検索クエリに基づいた集合データを提供するのを助けてくれます。
-これは集合 (aggregation) と呼ばれる単純な構成要素に基づくもので、複雑なデータの要約を構築するために作成することが出来るものです。
+[集合フレームワーク](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) が、検索クエリに基づいた集合データを提供するのを助けてくれます。これは集合 (aggregation) と呼ばれる単純な構成要素に基づくもので、複雑なデータの要約を構築するために作成することが出来るものです。
 
-以前に定義された `Customer` クラスを使って、毎日何人の顧客が登録されているかを検索しましょう。
-そうするために `terms` 集合を使います。
+以前に定義された `Customer` クラスを使って、毎日何人の顧客が登録されているかを検索しましょう。そうするために `terms` 集合を使います。
 
 
 ```php
@@ -170,8 +172,7 @@ $aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
 
 ```                    
 
-この例では、集合の結果だけを特にリクエストしています。
-データを更に処理するために次のコードを使います。
+この例では、集合の結果だけを特にリクエストしています。データを更に処理するために次のコードを使います。
 
 ```php
 $customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date']['buckets'], 'key', 'doc_count');

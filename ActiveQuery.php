@@ -287,6 +287,15 @@ class ActiveQuery extends Query implements ActiveQueryInterface
      */
     public function search($db = null, $options = [])
     {
+        if ($this->emulateExecution) {
+            return [
+                'hits' => [
+                    'total' => 0,
+                    'hits' => [],
+                ],
+            ];
+        }
+
         $command = $this->createCommand($db);
         $result = $command->search($options);
         if ($result === false) {

@@ -17,7 +17,7 @@ use yii\helpers\Json;
  * elasticsearch Connection is used to connect to an elasticsearch cluster version 0.20 or higher
  *
  * @property string $driverName Name of the DB driver. This property is read-only.
- * @property boolean $isActive Whether the DB connection is established. This property is read-only.
+ * @property bool $isActive Whether the DB connection is established. This property is read-only.
  * @property QueryBuilder $queryBuilder This property is read-only.
  *
  * @author Carsten Brandt <mail@cebe.cc>
@@ -130,7 +130,7 @@ class Connection extends Component
 
     /**
      * Returns a value indicating whether the DB connection is established.
-     * @return boolean whether the DB connection is established
+     * @return bool whether the DB connection is established
      */
     public function getIsActive()
     {
@@ -189,7 +189,7 @@ class Connection extends Component
             }
             $node['http_address'] = $node['http']['publish_address'];
 
-            //Protocol is not a standard ES node property, so we add it manually
+            // Protocol is not a standard ES node property, so we add it manually
             $node['protocol'] = $this->defaultProtocol;
         }
 
@@ -197,7 +197,7 @@ class Connection extends Component
             $this->nodes = array_values($nodes);
         } else {
             curl_close($this->_curl);
-            throw new Exception('Cluster autodetection did not find any active nodes.');
+            throw new Exception('Cluster autodetection did not find any active node. Make sure a GET /_nodes reguest on the hosts defined in the config returns the "http_address" field for each node.');
         }
     }
 
@@ -291,7 +291,7 @@ class Connection extends Component
      * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
-     * @param boolean $raw if response body contains JSON and should be decoded
+     * @param bool $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
      * @throws InvalidConfigException
@@ -324,7 +324,7 @@ class Connection extends Component
      * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
-     * @param boolean $raw if response body contains JSON and should be decoded
+     * @param bool $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
      * @throws InvalidConfigException
@@ -341,7 +341,7 @@ class Connection extends Component
      * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
-     * @param boolean $raw if response body contains JSON and should be decoded
+     * @param bool $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
      * @throws InvalidConfigException
@@ -358,7 +358,7 @@ class Connection extends Component
      * @param string|array $url URL
      * @param array $options URL options
      * @param string $body request body
-     * @param boolean $raw if response body contains JSON and should be decoded
+     * @param bool $raw if response body contains JSON and should be decoded
      * @return mixed response
      * @throws Exception
      * @throws InvalidConfigException
@@ -405,7 +405,7 @@ class Connection extends Component
      * @param string $method method name
      * @param string $url URL
      * @param string $requestBody request body
-     * @param boolean $raw if response body contains JSON and should be decoded
+     * @param bool $raw if response body contains JSON and should be decoded
      * @return mixed if request failed
      * @throws Exception if request failed
      * @throws InvalidConfigException
@@ -529,8 +529,13 @@ class Connection extends Component
                         'responseBody' => $body,
                     ]);
                 }
-                if (isset($headers['content-type']) && (!strncmp($headers['content-type'], 'application/json', 16) || !strncmp($headers['content-type'], 'text/plain', 10))) {
-                    return $raw ? $body : Json::decode($body);
+                if (isset($headers['content-type'])) {
+                    if (!strncmp($headers['content-type'], 'application/json', 16)) {
+                        return $raw ? $body : Json::decode($body);
+                    }
+                    if (!strncmp($headers['content-type'], 'text/plain', 10)) {
+                        return $raw ? $body : array_filter(explode("\n", $body));
+                    }
                 }
                 throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
                     'requestMethod' => $method,
