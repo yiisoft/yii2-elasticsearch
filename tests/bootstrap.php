@@ -14,6 +14,8 @@ require_once(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 Yii::setAlias('@yiiunit/extensions/elasticsearch', __DIR__);
 Yii::setAlias('@yii/elasticsearch', dirname(__DIR__));
 
+require_once(__DIR__ . '/compatibility.php');
+
 if (!class_exists('\yiiunit\framework\ar\ActiveRecordTestTrait')) {
     if (is_file(__DIR__ . '/../../../tests/framework/ar/ActiveRecordTestTrait.php')) {
         require_once(__DIR__ . '/../../../tests/framework/ar/ActiveRecordTestTrait.php');
