@@ -42,7 +42,7 @@ before_script:
     fi
 
 script:
-  - phpunit --verbose $PHPUNIT_FLAGS
+  - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
 
 after_script:
   - |
