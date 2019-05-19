@@ -3,25 +3,19 @@
 
 ## 必要条件
 
-Elasticsearch バージョン 1.0 以降が必要です。
+Elasticsearch のバージョン 1.6.0 以上 1.7.6 以下が必要です。以下を `config/elasticsearch.yml` に追加しなければなりません。
+
+```
+script.disable_dynamic: false
+```
 
 ## Composer パッケージを取得する
 
 このエクステンションをインストールするのに推奨される方法は [composer](http://getcomposer.org/download/) によるものです。
 
-下記のコマンドを実行してください。
-
 ```
-php composer.phar require --prefer-dist yiisoft/yii2-elasticsearch
+composer require --prefer-dist yiisoft/yii2-elasticsearch
 ```
-
-または、あなたの `composer.json` ファイルの `require` セクションに、
-
-```json
-"yiisoft/yii2-elasticsearch": "~2.0.0"
-```
-
-を追加してください。
 
 ## アプリケーションを構成する
 
