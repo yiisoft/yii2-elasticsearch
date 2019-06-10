@@ -198,6 +198,7 @@ class QueryBuilder extends BaseObject
             '>' => 'buildHalfBoundedRangeCondition',
             'gte' => 'buildHalfBoundedRangeCondition',
             '>=' => 'buildHalfBoundedRangeCondition',
+            'exists' => 'buildExistsCondition',
         ];
 
         if (empty($condition)) {
@@ -419,5 +420,16 @@ class QueryBuilder extends BaseObject
     private function buildLikeCondition($operator, $operands)
     {
         throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+    }
+
+    private function buildExistsCondition($operator, $operands)
+    {
+        $parts = [];
+        $values = $operands[0];
+        foreach ($values as $value) {
+            $parts['bool']['must'][] = ['exists' => ['field' => $value]];
+        }
+
+        return $parts;
     }
 }
