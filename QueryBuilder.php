@@ -25,7 +25,6 @@ class QueryBuilder extends BaseObject
      */
     public $db;
 
-
     /**
      * Constructor.
      * @param Connection $connection the database connection.
@@ -349,7 +348,9 @@ class QueryBuilder extends BaseObject
             if (empty($values) && $canBeNull) {
                 $filter = ['missing' => ['field' => $column, 'existence' => true, 'null_value' => true]];
             } else {
-                $filter = ['in' => [$column => array_values($values)]];
+                foreach ($values as $value) {
+                    $filter['bool']['should'][] = ['match' => [$column => $value]];
+                }
                 if ($canBeNull) {
                     $filter = [
                         'or' => [
