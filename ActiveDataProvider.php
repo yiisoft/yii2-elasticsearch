@@ -115,8 +115,12 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
             throw new InvalidConfigException('The "query" property must be an instance "' . Query::className() . '" or its subclasses.');
         }
 
-        $results = $this->getQueryResults();
-        return isset($results['hits']['total']) ? (int)$results['hits']['total'] : 0;
+        if (is_array($this->_queryResults)) {
+            return isset($results['hits']['total']) ? (int) $results['hits']['total'] : 0;
+        }
+
+        $query = clone $this->query;
+        return (int) $query->limit(-1)->offset(-1)->orderBy([])->count('*', $this->db);
     }
 
     /**
