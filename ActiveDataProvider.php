@@ -116,7 +116,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         }
 
         if (is_array($this->_queryResults)) {
-            return isset($results['hits']['total']) ? (int) $results['hits']['total'] : 0;
+            return isset($this->_queryResults['hits']['total']) ? (int) $this->_queryResults['hits']['total'] : 0;
         }
 
         $query = clone $this->query;
