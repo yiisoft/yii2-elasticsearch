@@ -49,14 +49,14 @@ class CommandTest extends TestCase
             $cmd->createIndex($index);
         }
 
-        $cmd->insert($index, '_doc', [
+        $cmd->insert($index, 'doc', [
             'field1' => 'value1.1',
             'field2' => 'value2.1',
             'intField' => 133,
             'id' => 1,
         ], 1);
 
-        $cmd->insert($index, '_doc', [
+        $cmd->insert($index, 'doc', [
             'field1' => 'value1.2',
             'field2' => 'value2.2',
             'intField' => 233,
@@ -78,23 +78,23 @@ class CommandTest extends TestCase
             ],
         ];
 
-        $cmd->bulkUpsert($index, '_doc', $data, 'id');
+        $cmd->bulkUpsert($index, 'doc', $data, 'id');
 
-        $data = $cmd->get($index, '_doc', 1);
+        $data = $cmd->get($index, 'doc', 1);
         $this->assertNotEmpty($data['_source']);
         $data = $data['_source'];
         $this->assertEquals('value1.1new', $data['field1']);
         $this->assertEquals('value2.1new', $data['field2']);
         $this->assertEquals(1331, $data['intField']);
 
-        $data = $cmd->get($index, '_doc', 2);
+        $data = $cmd->get($index, 'doc', 2);
         $this->assertNotEmpty($data['_source']);
         $data = $data['_source'];
         $this->assertEquals('value1.2', $data['field1']);
         $this->assertEquals('value2.2', $data['field2']);
         $this->assertEquals(233, $data['intField']);
 
-        $data = $cmd->get($index, '_doc', 3);
+        $data = $cmd->get($index, 'doc', 3);
         $this->assertNotEmpty($data['_source']);
         $data = $data['_source'];
         $this->assertEquals('value1.3', $data['field1']);
@@ -112,7 +112,7 @@ class CommandTest extends TestCase
 
         $mapping = [
             'mappings' => [
-                '_doc' => [
+                'doc' => [
                     'properties' => [
                         'field1' => ['type' => 'keyword'],
                         'field2' => ['type' => 'keyword'],
@@ -129,12 +129,12 @@ class CommandTest extends TestCase
             $cmd->createIndex($index2, $mapping);
         }
 
-        $cmd->insert($index1, '_doc', [
+        $cmd->insert($index1, 'doc', [
             'field1' => 'value1.1',
             'field2' => 'value2.1',
         ], 1);
 
-        $cmd->insert($index1, '_doc', [
+        $cmd->insert($index1, 'doc', [
             'field1' => 'value1.2',
             'field2' => 'value2.2',
         ], 2);
@@ -143,13 +143,13 @@ class CommandTest extends TestCase
         $cmd->copyIndex($index1, $index2);
         $cmd->refreshIndex($index2);
 
-        $data = $cmd->get($index2, '_doc', 1);
+        $data = $cmd->get($index2, 'doc', 1);
         $this->assertNotEmpty($data['_source']);
         $data = $data['_source'];
         $this->assertEquals('value1.1', $data['field1']);
         $this->assertEquals('value2.1', $data['field2']);
 
-        $data = $cmd->get($index2, '_doc', 2);
+        $data = $cmd->get($index2, 'doc', 2);
         $this->assertNotEmpty($data['_source']);
         $data = $data['_source'];
         $this->assertEquals('value1.2', $data['field1']);
