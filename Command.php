@@ -662,4 +662,79 @@ class Command extends Component
     {
         return $this->db->get(['_template', $name]);
     }
+
+    /**
+     * Upsert a document into an index
+     *
+     * @param string $index
+     * @param string $type
+     * @param string|array $data json string or data array, where each row is one object data.
+     * @param string|null $idField name of id field (used for update). If not set - insert will be performed.
+     * @param array $options
+     *
+     * @return mixed
+     * @throws \Exception
+     *@see https://www.elastic.co/guide/en/elasticsearch/guide/current/bulk.html
+     */
+    public function bulkUpsert($index, $type, $data, $idField = null, $options = [])
+    {
+        if (empty($data)) {
+            $data = [];
+        } else {
+            $data = is_string($data) ? Json::decode($data) : $data;
+        }
+
+        $body = [];
+        if ($idField === null) {
+            $meta = json_encode([
+                "index" => [
+                    "_index" => $index,
+                    "_type"  => $type
+                ]
+            ]);
+            foreach ($data as $row) {
+                $body[] = $meta;
+                $body[] = json_encode($row);
+            }
+        } else {
+            foreach ($data as $row) {
+                $body[] = json_encode([
+                    "index" => [
+                        "_index" => $index,
+                        "_type"  => $type,
+                        "_id" => $row[$idField]
+                    ]
+                ]);
+                $body[] = json_encode($row);
+            }
+        }
+
+        return $this->db->post(
+            ["_bulk"],
+            $options,
+            implode("\n", $body) . "\n"
+        );
+    }
+
+    /**
+     * Copy data from $sourceIndex to $destIndex.
+     * $destIndex must exist and must have the same structure as $sourceIndex
+     *
+     * @param $sourceIndex
+     * @param $destIndex
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
+     */
+    public function copyIndex($sourceIndex, $destIndex)
+    {
+        $command = [
+            "source" => [
+                "index" => $sourceIndex,
+            ],
+            "dest" => [
+                "index" => $destIndex,
+            ]
+        ];
+        return $this->db->post(['_reindex'], [], json_encode($command));
+    }
 }

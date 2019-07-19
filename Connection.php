@@ -155,7 +155,7 @@ class Connection extends Component
             $this->populateNodes();
         }
         $this->selectActiveNode();
-        Yii::trace('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
+        Yii::debug('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
             . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
     }
@@ -219,7 +219,7 @@ class Connection extends Component
         if ($this->activeNode === null) {
             return;
         }
-        Yii::trace('Closing connection to elasticsearch. Active node was: '
+        Yii::debug('Closing connection to elasticsearch. Active node was: '
             . $this->nodes[$this->activeNode]['http']['publish_address'], __CLASS__);
         $this->activeNode = null;
         if ($this->_curl) {
@@ -491,7 +491,7 @@ class Connection extends Component
             $profile = false;
         }
 
-        Yii::trace("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
+        Yii::debug("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
         if ($profile !== false) {
             Yii::beginProfile($profile, __METHOD__);
         }
