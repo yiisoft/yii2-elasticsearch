@@ -13,6 +13,7 @@ use yii\helpers\Url;
 use yii\log\Logger;
 use yii\helpers\Html;
 use yii\web\View;
+use yii\web\YiiAsset;
 
 /**
  * Debugger panel that collects and displays elasticsearch queries performed.
