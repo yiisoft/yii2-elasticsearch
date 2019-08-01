@@ -214,6 +214,11 @@ class Query extends Component implements QueryInterface
      * @since 2.0.4
      */
     public $options = [];
+    /**
+     * @var array list of options that will passed to parts created by this query and will be placed to json part of query.
+     * @see Command::$parts
+     */
+    public $jsonOptions = [];
 
     /**
      * @var bool Enables explanation for each hit on how its score was computed.
@@ -813,6 +818,24 @@ class Query extends Component implements QueryInterface
         }
 
         $this->options = array_merge($this->options, $options);
+        return $this;
+    }
+
+    /**
+     * Adds more options, overwriting existing options.
+     * @param array $options the options to be added.
+     * @return $this the query object itself
+     * @throws InvalidParamException if $options is not an array
+     * @see options()
+     * @since 2.0.4
+     */
+    public function addOptionsToJson($options)
+    {
+        if (!is_array($options)) {
+            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+        }
+
+        $this->jsonOptions = array_merge($this->jsonOptions, $options);
         return $this;
     }
 
