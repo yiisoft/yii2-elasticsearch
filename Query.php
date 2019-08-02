@@ -478,6 +478,10 @@ class Query extends Component implements QueryInterface
         if ($count === false) {
             throw new Exception('Elasticsearch count query failed.');
         }
+        
+        if (is_array($count)) {
+            $count = (int)$count['value'];
+        }
         return $count;
     }
 
