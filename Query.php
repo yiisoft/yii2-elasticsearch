@@ -802,6 +802,22 @@ class Query extends Component implements QueryInterface
         $this->options = $options;
         return $this;
     }
+    /**
+     * Sets the options to be passed to the command created by this query (json part)
+     * @param array $options the options to be set.
+     * @return $this the query object itself
+     * @throws InvalidParamException if $options is not an array
+     * @see Command::$parts
+     */
+    public function jsonOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+        }
+
+        $this->jsonOptions = $options;
+        return $this;
+    }
 
     /**
      * Adds more options, overwriting existing options.
@@ -826,10 +842,9 @@ class Query extends Component implements QueryInterface
      * @param array $options the options to be added.
      * @return $this the query object itself
      * @throws InvalidParamException if $options is not an array
-     * @see options()
-     * @since 2.0.4
+     * @see jsonOptions()
      */
-    public function addOptionsToJson($options)
+    public function addJsonOptions($options)
     {
         if (!is_array($options)) {
             throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
