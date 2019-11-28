@@ -95,7 +95,11 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
             $query->addOrderBy($sort->getOrders());
         }
 
-        if (is_array(($results = $query->search($this->db)))) {
+        $options = [];
+        if ($pagination !== false) {
+            $options = ['track_total_hits' => 'true'];
+        }
+        if (is_array(($results = $query->search($this->db, $options)))) {
             $this->setQueryResults($results);
             if ($pagination !== false) {
                 $pagination->totalCount = $this->getTotalCount();
@@ -116,7 +120,15 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         }
 
         $results = $this->getQueryResults();
-        return isset($results['hits']['total']) ? (int)$results['hits']['total'] : 0;
+        $totalValue = 0;
+        if(isset($results['hits']['total'])){
+            if(is_array($results['hits']['total']) && isset($results['hits']['total']['value'])) {
+                $totalValue = (int)$results['hits']['total']['value'];
+            } else {
+                $totalValue = (int)$results['hits']['total'];
+            }
+        }
+        return $totalValue;
     }
 
     /**
