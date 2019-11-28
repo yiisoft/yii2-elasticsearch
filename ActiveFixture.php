@@ -90,7 +90,7 @@ class ActiveFixture extends BaseActiveFixture
         $this->resetIndex();
         $this->data = [];
 
-        $mapping = $this->db->createCommand()->getMapping($this->index, $this->type);
+        $mapping = $this->db->createCommand()->getMapping($this->index);
         if (isset($mapping[$this->index]['mappings'][$this->type]['_id']['path'])) {
             $idField = $mapping[$this->index]['mappings'][$this->type]['_id']['path'];
         } else {

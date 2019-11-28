@@ -593,6 +593,72 @@ class ActiveRecord extends BaseActiveRecord
         }
     }
 
+    public function replace($runValidation = true, $attributeNames = null, $options = [])
+    {
+        if ($runValidation && !$this->validate($attributeNames)) {
+            return false;
+        }
+        return $this->replaceInternal($attributeNames, $options);
+    }
+
+    /**
+     * Rewrite full document on save
+     * @param array $attributes attributes to update
+     * @param array $options options given in this parameter are passed to elasticsearch
+     * as request URI parameters. See [[update()]] for details.
+     * @return integer|false the number of rows affected, or false if [[beforeSave()]] stops the updating process.
+     * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
+     * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
+     * @throws Exception in case update failed.
+     */
+    protected function replaceInternal($attributes = null, $options = [])
+    {
+        if (!$this->beforeSave(false)) {
+            return false;
+        }
+        $values = $this->getAttributes($attributes);
+        if (empty($values)) {
+            $this->afterSave(false, $values);
+            return 0;
+        }
+        if (isset($options['optimistic_locking']) && $options['optimistic_locking']) {
+            if ($this->_version === null) {
+                throw new InvalidParamException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::update() for details.');
+            }
+            $options['version'] = $this->_version;
+            unset($options['optimistic_locking']);
+        }
+        try {
+            $result = static::getDb()->createCommand()->insert(
+                static::index(),
+                static::type(),
+                $values,
+                $this->getOldPrimaryKey(false),
+                $options
+            );
+        } catch(Exception $e) {
+            // HTTP 409 is the response in case of failed optimistic locking
+            // http://www.elastic.co/guide/en/elasticsearch/guide/current/optimistic-concurrency-control.html
+            if (isset($e->errorInfo['responseCode']) && $e->errorInfo['responseCode'] == 409) {
+                throw new StaleObjectException('The object being updated is outdated.', $e->errorInfo, $e->getCode(), $e);
+            }
+            throw $e;
+        }
+
+        if (is_array($result) && isset($result['_version'])) {
+            $this->_version = $result['_version'];
+        }
+
+        $changedAttributes = [];
+        foreach ($values as $name => $value) {
+            $changedAttributes[$name] = $this->getOldAttribute($name);
+            $this->setOldAttribute($name, $value);
+        }
+        $this->afterSave(false, $changedAttributes);
+
+        return $result === false ? false : true;
+    }
+
     /**
      * Performs a quick and highly efficient scroll/scan query to get the list of primary keys that
      * satisfy the given condition. If condition is a list of primary keys

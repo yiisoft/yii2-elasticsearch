@@ -568,31 +568,26 @@ class Command extends Component
 
     /**
      * @param string $index
-     * @param string $type
      * @param string|array $mapping
      * @param array $options
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
      */
-    public function setMapping($index, $type, $mapping, $options = [])
+    public function setMapping($index, $mapping, $options = [])
     {
         $body = $mapping !== null ? (is_string($mapping) ? $mapping : Json::encode($mapping)) : null;
 
-        return $this->db->put([$index, '_mapping', $type], $options, $body);
+        return $this->db->put([$index, '_mapping'], $options, $body);
     }
 
     /**
      * @param string $index
-     * @param string $type
      * @return mixed
      * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-mapping.html
      */
-    public function getMapping($index = '_all', $type = null)
+    public function getMapping($index = '_all')
     {
         $url = [$index, '_mapping'];
-        if ($type !== null) {
-            $url[] = $type;
-        }
         return $this->db->get($url);
     }
 
@@ -662,4 +657,19 @@ class Command extends Component
     {
         return $this->db->get(['_template', $name]);
     }
+
+    /**
+     * @param $index
+     * @param $mapping
+     * @param array $options
+     * @return mixed
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function updateMapping($index, $mapping, $options = [])
+    {
+        $body = $mapping !== null ? (is_string($mapping) ? $mapping : Json::encode($mapping)) : null;
+        return $this->db->put([$index, '_mapping'], $options, $body);
+    }
+
 }
