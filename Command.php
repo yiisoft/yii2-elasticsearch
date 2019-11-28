@@ -111,7 +111,7 @@ class Command extends Component
         }
         $url = [
             $this->index !== null ? $this->index : '_all',
-            '_suggest'
+            '_search'
         ];
 
         return $this->db->post($url, array_merge($this->options, $options), $suggester);
