@@ -51,7 +51,7 @@ class ElasticsearchTargetTest extends TestCase
             'logger' => $this->logger,
             'targets' => [
                 [
-                    'class' => ElasticsearchTarget::class,
+                    'class' => ElasticsearchTarget::className(),
                     'db' => $this->getConnection(),
                     'index' => $this->index,
                     'type' => $this->type,

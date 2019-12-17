@@ -28,32 +28,32 @@ class ActiveRecordTest extends TestCase
 
     public function getCustomerClass()
     {
-        return Customer::class;
+        return Customer::className();
     }
 
     public function getItemClass()
     {
-        return Item::class;
+        return Item::className();
     }
 
     public function getOrderClass()
     {
-        return Order::class;
+        return Order::className();
     }
 
     public function getOrderItemClass()
     {
-        return OrderItem::class;
+        return OrderItem::className();
     }
 
     public function getOrderWithNullFKClass()
     {
-        return OrderWithNullFK::class;
+        return OrderWithNullFK::className();
     }
 
     public function getOrderItemWithNullFKmClass()
     {
-        return OrderItemWithNullFK::class;
+        return OrderItemWithNullFK::className();
     }
 
     /**
@@ -89,13 +89,13 @@ class ActiveRecordTest extends TestCase
 
         $db->createCommand()->flushIndex('yiitest');
 
-        Record::insertMany(Customer::class, [
+        Record::insertMany(Customer::className(), [
             ['id' => 1, 'email' => 'user1@example.com', 'name' => 'user1', 'address' => 'address1', 'status' => 1],
             ['id' => 2, 'email' => 'user2@example.com', 'name' => 'user2', 'address' => 'address2', 'status' => 1],
             ['id' => 3, 'email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 2],
         ]);
 
-        Record::insertMany(Item::class, [
+        Record::insertMany(Item::className(), [
             ['id' => 1, 'name' => 'Agile Web Application Development with Yii1.1 and PHP5', 'category_id' => 1],
             ['id' => 2, 'name' => 'Yii 1.1 Application Development Cookbook', 'category_id' => 1],
             ['id' => 3, 'name' => 'Ice Age', 'category_id' => 2],
@@ -103,13 +103,13 @@ class ActiveRecordTest extends TestCase
             ['id' => 5, 'name' => 'Cars', 'category_id' => 2],
         ]);
 
-        Record::insertMany(Order::class, [
+        Record::insertMany(Order::className(), [
             ['id' => 1, 'customer_id' => 1, 'created_at' => 1325282384, 'total' => 110.0, 'itemsArray' => [1, 2]],
             ['id' => 2, 'customer_id' => 2, 'created_at' => 1325334482, 'total' => 33.0, 'itemsArray' => [4, 5, 3]],
             ['id' => 3, 'customer_id' => 2, 'created_at' => 1325502201, 'total' => 40.0, 'itemsArray' => [2]],
         ]);
 
-        Record::insertMany(OrderItem::class, [
+        Record::insertMany(OrderItem::className(), [
             ['order_id' => 1, 'item_id' => 1, 'quantity' => 1, 'subtotal' => 30.0],
             ['order_id' => 1, 'item_id' => 2, 'quantity' => 2, 'subtotal' => 40.0],
             ['order_id' => 2, 'item_id' => 4, 'quantity' => 1, 'subtotal' => 10.0],
@@ -118,13 +118,13 @@ class ActiveRecordTest extends TestCase
             ['order_id' => 3, 'item_id' => 2, 'quantity' => 1, 'subtotal' => 40.0]
         ]);
 
-        Record::insertMany(OrderWithNullFK::class, [
+        Record::insertMany(OrderWithNullFK::className(), [
             ['id' => 1, 'customer_id' => 1, 'created_at' => 1325282384, 'total' => 110.0],
             ['id' => 2, 'customer_id' => 2, 'created_at' => 1325334482, 'total' => 33.0],
             ['id' => 3, 'customer_id' => 2, 'created_at' => 1325502201, 'total' => 40.0],
         ]);
 
-        Record::insertMany(OrderItemWithNullFK::class, [
+        Record::insertMany(OrderItemWithNullFK::className(), [
             ['order_id' => 1, 'item_id' => 1, 'quantity' => 1, 'subtotal' => 30.0],
             ['order_id' => 1, 'item_id' => 2, 'quantity' => 2, 'subtotal' => 40.0],
             ['order_id' => 2, 'item_id' => 4, 'quantity' => 1, 'subtotal' => 10.0],
@@ -133,8 +133,8 @@ class ActiveRecordTest extends TestCase
             ['order_id' => 3, 'item_id' => 2, 'quantity' => 1, 'subtotal' => 40.0],
         ]);
 
-        Record::insert(Cat::class, []);
-        Record::insert(Dog::class, []);
+        Record::insert(Cat::className(), []);
+        Record::insert(Dog::className(), []);
 
         $db->createCommand()->flushIndex('yiitest');
     }
@@ -223,13 +223,13 @@ class ActiveRecordTest extends TestCase
 
     public function testGetDb()
     {
-        $this->mockApplication(['components' => ['elasticsearch' => Connection::class]]);
-        $this->assertInstanceOf(Connection::class, ActiveRecord::getDb());
+        $this->mockApplication(['components' => ['elasticsearch' => Connection::className()]]);
+        $this->assertInstanceOf(Connection::className(), ActiveRecord::getDb());
     }
 
     public function testGet()
     {
-        $this->assertInstanceOf(Customer::class, Customer::get(1));
+        $this->assertInstanceOf(Customer::className(), Customer::get(1));
         $this->assertNull(Customer::get(5));
     }
 
@@ -239,15 +239,15 @@ class ActiveRecordTest extends TestCase
 
         $records = Customer::mget([1]);
         $this->assertCount(1, $records);
-        $this->assertInstanceOf(Customer::class, reset($records));
+        $this->assertInstanceOf(Customer::className(), reset($records));
 
         $records = Customer::mget([5]);
         $this->assertCount(0, $records);
 
         $records = Customer::mget([1, 3, 5]);
         $this->assertCount(2, $records);
-        $this->assertInstanceOf(Customer::class, $records[0]);
-        $this->assertInstanceOf(Customer::class, $records[1]);
+        $this->assertInstanceOf(Customer::className(), $records[0]);
+        $this->assertInstanceOf(Customer::className(), $records[1]);
     }
 
     public function testFindLazy()
@@ -607,7 +607,7 @@ class ActiveRecordTest extends TestCase
         $customerClass = $this->getCustomerClass();
 
         $afterFindCalls = [];
-        Event::on(BaseActiveRecord::class, BaseActiveRecord::EVENT_AFTER_FIND, function ($event) use (&$afterFindCalls) {
+        Event::on(BaseActiveRecord::className(), BaseActiveRecord::EVENT_AFTER_FIND, function ($event) use (&$afterFindCalls) {
             /* @var $ar BaseActiveRecord */
             $ar = $event->sender;
             $afterFindCalls[] = [get_class($ar), $ar->getIsNewRecord(), $ar->getPrimaryKey(), $ar->isRelationPopulated('orders')];
@@ -626,7 +626,7 @@ class ActiveRecordTest extends TestCase
         ], $afterFindCalls);
         $afterFindCalls = [];
 
-        Event::off(BaseActiveRecord::class, BaseActiveRecord::EVENT_AFTER_FIND);
+        Event::off(BaseActiveRecord::className(), BaseActiveRecord::EVENT_AFTER_FIND);
     }
 
     public function testFindEmptyPkCondition()
@@ -721,7 +721,7 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue(isset($items[2]));
 
         $item = Item::get(5);
-        $this->expectException(InvalidCallException::class);
+        $this->expectException(InvalidCallException::className());
         $order->link('itemsByArrayValue', $item);
     }
 
@@ -850,10 +850,10 @@ class ActiveRecordTest extends TestCase
 
     public function testPopulateRecordCallWhenQueryingOnParentClass()
     {
-        $animal = Animal::find()->where(['type' => Dog::class])->one();
+        $animal = Animal::find()->where(['type' => Dog::className()])->one();
         $this->assertEquals('bark', $animal->getDoes());
 
-        $animal = Animal::find()->where(['type' => Cat::class])->one();
+        $animal = Animal::find()->where(['type' => Cat::className()])->one();
         $this->assertEquals('meow', $animal->getDoes());
     }
 
