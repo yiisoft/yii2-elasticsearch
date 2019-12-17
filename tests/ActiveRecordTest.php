@@ -7,7 +7,6 @@ use yii\base\InvalidCallException;
 use yii\db\BaseActiveRecord;
 use yii\elasticsearch\Connection;
 use yii\elasticsearch\tests\helpers\Record;
-use yiiunit\framework\ar\ActiveRecordTestTrait;
 use yiiunit\extensions\elasticsearch\data\ar\ActiveRecord;
 use yiiunit\extensions\elasticsearch\data\ar\Customer;
 use yiiunit\extensions\elasticsearch\data\ar\OrderItem;
