@@ -800,12 +800,6 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals(0, count($items));
     }
 
-    public function testUnlinkAll()
-    {
-        // not supported by elasticsearch
-        $this->assertTrue(true);
-    }
-
     /**
      * @expectedException \yii\base\NotSupportedException
      */
