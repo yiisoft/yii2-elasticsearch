@@ -5,13 +5,18 @@ env:
 language: php
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
   - 7.0
   - 7.1
   - 7.2
   - 7.3
+
+jobs:
+  include:
+  - php: 5.4
+    dist: trusty
+  - php: 5.5
+    dist: trusty
 
 # faster builds on new travis setup not using sudo
 sudo: false
