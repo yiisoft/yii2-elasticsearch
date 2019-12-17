@@ -780,72 +780,19 @@ class ActiveRecordTest extends TestCase
         $this->assertFalse(isset($items[$removeId]));
     }
 
-    public function testArrayAttributeRelationUnLinkAll()
+    public function testUnlinkAllNotSupported()
     {
-        /* @var $order Order */
-        $order = Order::find()->where(['id' => 1])->one();
-        $items = $order->itemsByArrayValue;
-        $this->assertEquals(2, count($items));
-        $this->assertTrue(isset($items[1]));
-        $this->assertTrue(isset($items[2]));
-
         try {
+            /* @var $order Order */
+            $order = Order::find()->where(['id' => 1])->one();
+            $items = $order->itemsByArrayValue;
+            $this->assertEquals(2, count($items));
+            $this->assertTrue(isset($items[1]));
+            $this->assertTrue(isset($items[2]));
             $order->unlinkAll('itemsByArrayValue');
-            $this->afterSave();
-
-
-            $items = $order->itemsByArrayValue;
-            $this->assertEquals(0, count($items));
-
-            // check also after refresh
-            $this->assertTrue($order->refresh());
-            $items = $order->itemsByArrayValue;
-            $this->assertEquals(0, count($items));
         } catch (\yii\base\NotSupportedException $e) {
             $this->assertEquals($e->getMessage(), 'unlinkAll() is not supported by elasticsearch, use unlink() instead.');
         }
-    }
-
-    /**
-     * @expectedException \yii\base\NotSupportedException
-     */
-    public function testUnlinkAllAndConditionSetNull()
-    {
-        /* @var $customerClass \yii\db\BaseActiveRecord */
-        $customerClass = $this->getCustomerClass();
-        /* @var $orderClass \yii\db\BaseActiveRecord */
-        $orderClass = $this->getOrderWithNullFKClass();
-
-        // in this test all orders are owned by customer 1
-        $orderClass::updateAll(['customer_id' => 1]);
-        $this->afterSave();
-
-        $customer = $customerClass::findOne(1);
-        $this->assertEquals(3, count($customer->ordersWithNullFK));
-        $this->assertEquals(1, count($customer->expensiveOrdersWithNullFK));
-        $this->assertEquals(3, $orderClass::find()->count());
-        $customer->unlinkAll('expensiveOrdersWithNullFK');
-    }
-
-    /**
-     * @expectedException \yii\base\NotSupportedException
-     */
-    public function testUnlinkAllAndConditionDelete()
-    {
-        /* @var $customerClass \yii\db\BaseActiveRecord */
-        $customerClass = $this->getCustomerClass();
-        /* @var $orderClass \yii\db\BaseActiveRecord */
-        $orderClass = $this->getOrderWithNullFKClass();
-
-        // in this test all orders are owned by customer 1
-        $orderClass::updateAll(['customer_id' => 1]);
-        $this->afterSave();
-
-        $customer = $customerClass::findOne(1);
-        $this->assertEquals(3, count($customer->ordersWithNullFK));
-        $this->assertEquals(1, count($customer->expensiveOrdersWithNullFK));
-        $this->assertEquals(3, $orderClass::find()->count());
-        $customer->unlinkAll('expensiveOrdersWithNullFK', true);
     }
 
     public function testPopulateRecordCallWhenQueryingOnParentClass()
