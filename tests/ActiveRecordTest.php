@@ -3,6 +3,7 @@
 namespace yiiunit\extensions\elasticsearch;
 
 use yii\base\Event;
+use yii\base\InvalidCallException;
 use yii\db\BaseActiveRecord;
 use yii\elasticsearch\Connection;
 use yii\elasticsearch\tests\helpers\Record;
@@ -328,7 +329,6 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals(2, $orderItem->oldPrimaryKey);
         $this->assertEquals(2, $orderItem->$pkName);
 
-//		$this->setExpectedException('yii\base\InvalidCallException');
         $orderItem->$pkName = 13;
         $this->assertEquals(13, $orderItem->primaryKey);
         $this->assertEquals(2, $orderItem->oldPrimaryKey);
@@ -720,8 +720,13 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue(isset($items[2]));
 
         $item = Item::get(5);
-        $this->expectException('\yii\base\InvalidCallException');
-        $order->link('itemsByArrayValue', $item);
+
+        try {
+            $order->link('itemsByArrayValue', $item);
+        } catch (InvalidCallException $e) {
+            $this->assertEquals($e->getMessage(), 'Unable to link models: foreign model cannot be linked if it\'s property is an array.');
+        }
+
     }
 
     public function testArrayAttributeRelationUnLink()
