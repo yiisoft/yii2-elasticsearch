@@ -19,8 +19,8 @@ jobs:
     dist: trusty
 
 # faster builds on new travis setup not using sudo
-sudo: false
-dist: trusty
+# sudo: false
+os: linux
 
 # cache vendor dirs
 cache:
