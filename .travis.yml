@@ -15,6 +15,7 @@ php:
 
 # faster builds on new travis setup not using sudo
 sudo: false
+dist: trusty
 
 # cache vendor dirs
 cache:
