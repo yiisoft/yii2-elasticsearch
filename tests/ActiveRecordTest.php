@@ -780,9 +780,6 @@ class ActiveRecordTest extends TestCase
         $this->assertFalse(isset($items[$removeId]));
     }
 
-    /**
-     * @expectedException \yii\base\NotSupportedException
-     */
     public function testArrayAttributeRelationUnLinkAll()
     {
         /* @var $order Order */
@@ -792,16 +789,21 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue(isset($items[1]));
         $this->assertTrue(isset($items[2]));
 
-        $order->unlinkAll('itemsByArrayValue');
-        $this->afterSave();
+        try {
+            $order->unlinkAll('itemsByArrayValue');
+            $this->afterSave();
 
-        $items = $order->itemsByArrayValue;
-        $this->assertEquals(0, count($items));
 
-        // check also after refresh
-        $this->assertTrue($order->refresh());
-        $items = $order->itemsByArrayValue;
-        $this->assertEquals(0, count($items));
+            $items = $order->itemsByArrayValue;
+            $this->assertEquals(0, count($items));
+
+            // check also after refresh
+            $this->assertTrue($order->refresh());
+            $items = $order->itemsByArrayValue;
+            $this->assertEquals(0, count($items));
+        } catch (\yii\base\NotSupportedException $e) {
+            $this->assertEquals($e->getMessage(), 'unlinkAll() is not supported by elasticsearch, use unlink() instead.');
+        }
     }
 
     /**
