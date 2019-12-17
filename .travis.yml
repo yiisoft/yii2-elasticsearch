@@ -41,7 +41,7 @@ install:
 before_script:
   # - /tmp/elasticsearch-2.4.6/bin/elasticsearch -d
   - /tmp/elasticsearch-1.7.6/bin/elasticsearch -d -p /tmp/elasticsearch.pid
-  - echo 'elasticsearch version ' && curl --retry 5 --retry-connrefused http://localhost:9200
+  - echo 'elasticsearch version ' && curl --retry 5 http://localhost:9200
   - |
     if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
       PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
