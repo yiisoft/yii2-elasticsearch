@@ -551,7 +551,7 @@ class Query extends Component implements QueryInterface
     public function batch($scrollWindow = '1m', $db = null)
     {
         return Yii::createObject([
-            'class' => BatchQueryResult::class,
+            'class' => BatchQueryResult::className(),
             'query' => $this,
             'scrollWindow' => $scrollWindow,
             'db' => $db,
@@ -580,7 +580,7 @@ class Query extends Component implements QueryInterface
     public function each($scrollWindow = '1m', $db = null)
     {
         return Yii::createObject([
-            'class' => BatchQueryResult::class,
+            'class' => BatchQueryResult::className(),
             'query' => $this,
             'scrollWindow' => $scrollWindow,
             'db' => $db,
