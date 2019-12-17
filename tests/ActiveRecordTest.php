@@ -3,7 +3,6 @@
 namespace yiiunit\extensions\elasticsearch;
 
 use yii\base\Event;
-use yii\base\InvalidCallException;
 use yii\db\BaseActiveRecord;
 use yii\elasticsearch\Connection;
 use yii\elasticsearch\tests\helpers\Record;
@@ -721,7 +720,7 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue(isset($items[2]));
 
         $item = Item::get(5);
-        $this->expectException(InvalidCallException::class);
+        $this->expectException('\yii\base\InvalidCallException');
         $order->link('itemsByArrayValue', $item);
     }
 
