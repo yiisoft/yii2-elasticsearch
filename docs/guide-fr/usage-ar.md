@@ -30,7 +30,7 @@ class Customer extends \yii\elasticsearch\ActiveRecord
      */
     public function getOrders()
     {
-        return $this->hasMany(Order::className(), ['customer_id' => 'id'])->orderBy('id');
+        return $this->hasMany(Order::class, ['customer_id' => 'id'])->orderBy('id');
     }
 
     /**

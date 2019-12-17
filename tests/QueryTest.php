@@ -269,6 +269,8 @@ class QueryTest extends TestCase
 
     public function testUnion()
     {
+        // Not supported by elasticsearch.
+        $this->assertTrue(true);
     }
 
     /**

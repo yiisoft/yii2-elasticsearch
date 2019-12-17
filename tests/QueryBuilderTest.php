@@ -34,6 +34,14 @@ class QueryBuilderTest extends TestCase
     private function prepareDbData()
     {
         $command = $this->getConnection()->createCommand();
+        $command->setMapping('yiitest', 'article', [
+            '_id' => ['path' => 'id', 'index' => 'not_analyzed', 'store' => 'yes'],
+            'properties' => [
+                'title' => ["type" => "string", "index" => "not_analyzed"],
+                'created_at' => ["type" => "string", "index" => "not_analyzed"],
+                'weight' => ["type" => "integer"],
+            ]
+        ]);
         $command->insert('yiitest', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'], 1);
         $command->insert('yiitest', 'article', ['title' => 'Symfony2 is another framework', 'weight' => 2, 'created_at' => '2010-01-15'], 2);
         $command->insert('yiitest', 'article', ['title' => 'Yii2 out now!', 'weight' => 3, 'created_at' => '2010-01-20'], 3);
@@ -197,29 +205,33 @@ class QueryBuilderTest extends TestCase
     public function testNotCondition()
     {
         $titles = [
-            'Symfony2 is another framework',
-            'yii test',
-            'nonexistent',
+            'yii',
+            'test'
         ];
-        $result = (new Query)
+
+        $query = (new Query)
             ->from('yiitest', 'article')
-            ->where([ 'not', [ 'in', 'title.keyword', $titles ] ])
-            ->search($this->getConnection());
+            ->where(['not in', 'title', $titles]);
+
+        $result = $query->search($this->getConnection());
+
         $this->assertEquals(2, $result['hits']['total']);
     }
 
     public function testInCondition()
     {
         $titles = [
-            'Symfony2 is another framework',
-            'yii test',
+            'yii',
+            'out',
             'nonexistent',
         ];
-        $result = (new Query)
+
+        $query =  (new Query)
             ->from('yiitest', 'article')
-            ->where([ 'in', 'title.keyword', $titles ])
-            ->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+            ->where(['in', 'title', $titles]);
+
+        $result = $query->search($this->getConnection());
+        $this->assertEquals(3, $result['hits']['total']);
     }
 
     public function testBuildNotCondition()
@@ -227,17 +239,18 @@ class QueryBuilderTest extends TestCase
         $db = $this->getConnection();
         $qb = new QueryBuilder($db);
 
-        $cond = [ 'title' => 'xyz' ];
-        $operands = [ $cond ];
+        $cond = ['title' => 'xyz'];
+        $operands = [$cond];
 
         $expected = [
-            'bool' => [
-                'must_not' => [
-                    'bool' => [ 'must' => [ ['term'=>['title'=>'xyz']] ] ],
+            'not' => [
+                'term' => [
+                    'title' => 'xyz',
                 ],
             ]
         ];
-        $result = $this->invokeMethod($qb, 'buildNotCondition', ['not',$operands]);
+        $result = $this->invokeMethod($qb, 'buildNotCondition', ['not', $operands]);
+
         $this->assertEquals($expected, $result);
     }
 
@@ -247,12 +260,13 @@ class QueryBuilderTest extends TestCase
         $qb = new QueryBuilder($db);
 
         $expected = [
-            'terms' => ['foo' => ['bar1', 'bar2']],
+            'in' => ['foo' => ['bar1', 'bar2']],
         ];
         $result = $this->invokeMethod($qb, 'buildInCondition', [
             'in',
-            ['foo',['bar1','bar2']]
+            ['foo', ['bar1', 'bar2']]
         ]);
+
         $this->assertEquals($expected, $result);
     }
 }

@@ -13,11 +13,12 @@ use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
+use yii\db\ActiveQueryInterface;
+use yii\db\ActiveRecordInterface;
 use yii\db\BaseActiveRecord;
 use yii\db\StaleObjectException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
-use yii\helpers\Json;
 use yii\helpers\StringHelper;
 
 /**
@@ -79,7 +80,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
+        return Yii::createObject(ActiveQuery::class, [get_called_class()]);
     }
 
     /**
@@ -118,10 +119,10 @@ class ActiveRecord extends BaseActiveRecord
      */
     private static function filterCondition($condition)
     {
-        foreach($condition as $k => $v) {
+        foreach ($condition as $k => $v) {
             if (is_array($v)) {
                 $condition[$k] = array_values($v);
-                foreach($v as $vv) {
+                foreach ($v as $vv) {
                     if (is_array($vv)) {
                         throw new InvalidArgumentException('Nested arrays are not allowed in condition for findAll() and findOne().');
                     }
@@ -358,7 +359,7 @@ class ActiveRecord extends BaseActiveRecord
         if (isset($row['fields'])) {
             // reset fields in case it is scalar value
             $arrayAttributes = $record->arrayAttributes();
-            foreach($row['fields'] as $key => $value) {
+            foreach ($row['fields'] as $key => $value) {
                 if (!isset($arrayAttributes[$key]) && count($value) === 1) {
                     $row['fields'][$key] = reset($value);
                 }
@@ -528,7 +529,6 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
-     * @see update()
      * @param array $attributes attributes to update
      * @param array $options options given in this parameter are passed to elasticsearch
      * as request URI parameters. See [[update()]] for details.
@@ -536,6 +536,7 @@ class ActiveRecord extends BaseActiveRecord
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
      * @throws InvalidParamException if no [[version]] is available and optimistic locking is enabled.
      * @throws Exception in case update failed.
+     * @see update()
      */
     protected function updateInternal($attributes = null, $options = [])
     {
@@ -564,7 +565,7 @@ class ActiveRecord extends BaseActiveRecord
                 $values,
                 $options
             );
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             // HTTP 409 is the response in case of failed optimistic locking
             // http://www.elastic.co/guide/en/elasticsearch/guide/current/optimistic-concurrency-control.html
             if (isset($e->errorInfo['responseCode']) && $e->errorInfo['responseCode'] == 409) {
@@ -629,9 +630,9 @@ class ActiveRecord extends BaseActiveRecord
      * @param array $attributes attribute values (name-value pairs) to be saved into the table
      * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
-     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return int the number of rows updated
      * @throws Exception on error.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      */
     public static function updateAll($attributes, $condition = [])
     {
@@ -677,9 +678,9 @@ class ActiveRecord extends BaseActiveRecord
      * Use negative values if you want to decrement the counters.
      * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
-     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return int the number of rows updated
      * @throws Exception on error.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      */
     public static function updateAllCounters($counters, $condition = [])
     {
@@ -767,7 +768,7 @@ class ActiveRecord extends BaseActiveRecord
                 $this->getOldPrimaryKey(false),
                 $options
             );
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             // HTTP 409 is the response in case of failed optimistic locking
             // http://www.elastic.co/guide/en/elasticsearch/guide/current/optimistic-concurrency-control.html
             if (isset($e->errorInfo['responseCode']) && $e->errorInfo['responseCode'] == 409) {
@@ -799,9 +800,9 @@ class ActiveRecord extends BaseActiveRecord
      *
      * @param array $condition the conditions that will be passed to the `where()` method when building the query.
      * Please refer to [[ActiveQuery::where()]] on how to specify this parameter.
-     * @see [[ActiveRecord::primaryKeysByCondition()]]
      * @return int the number of rows deleted
      * @throws Exception on error.
+     * @see [[ActiveRecord::primaryKeysByCondition()]]
      */
     public static function deleteAll($condition = [])
     {
@@ -856,5 +857,58 @@ class ActiveRecord extends BaseActiveRecord
     public function unlinkAll($name, $delete = false)
     {
         throw new NotSupportedException('unlinkAll() is not supported by elasticsearch, use unlink() instead.');
+    }
+
+    public function link($name, $model, $extraColumns = [])
+    {
+        $relation = $this->getRelation($name);
+
+        if ($relation->via === null) {
+            $this->validateViaRelationLink($model, $relation);
+        }
+
+        parent::link($name, $model, $extraColumns);
+    }
+
+    /**
+     * Validates model so that it does not contain array as it's keys while linking.
+     *
+     * @param ActiveRecordInterface $model the model to be linked with the current one.
+     * @param ActiveQueryInterface|ActiveQuery the relational query object.
+     */
+    protected function validateViaRelationLink($model, $relation)
+    {
+        $p1 = $model->isPrimaryKey(array_keys($relation->link));
+        $p2 = static::isPrimaryKey(array_values($relation->link));
+
+        $atLeastOneExists = !$this->getIsNewRecord() || !$model->getIsNewRecord();
+
+        $foreign = null;
+        $link = null;
+
+        if ($p1 && $p2 && $atLeastOneExists) {
+
+            if ($this->getIsNewRecord()) {
+                $foreign = $this;
+                $link = array_flip($relation->link);
+            } else {
+                $foreign = $model;
+                $link = $relation->link;
+            }
+        } elseif ($p1) {
+            $foreign = $this;
+            $link = array_flip($relation->link);
+        } elseif ($p2) {
+            $foreign = $model;
+            $link = $relation->link;
+        }
+
+        if ($foreign && $link) {
+            foreach ($link as $fk => $pk) {
+                if (is_array($foreign->{$fk})) {
+                    throw new InvalidCallException('Unable to link models: foreign model cannot be linked if it\'s property is an array.');
+                }
+            }
+        }
     }
 }
