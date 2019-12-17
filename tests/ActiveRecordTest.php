@@ -721,7 +721,7 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue(isset($items[2]));
 
         $item = Item::get(5);
-        $this->expectException(InvalidCallException::className());
+        $this->expectException(InvalidCallException::class);
         $order->link('itemsByArrayValue', $item);
     }
 

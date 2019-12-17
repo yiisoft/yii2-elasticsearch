@@ -266,7 +266,7 @@ class QueryTest extends TestCase
         $this->assertEquals(10, $query->limit);
         $this->assertEquals(5, $query->offset);
     }
-    
+
 
     /**
      * @since 2.0.4
