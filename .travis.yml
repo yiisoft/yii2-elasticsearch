@@ -2,16 +2,9 @@ env:
   global:
     secure: cIGYsPd8OZ3X/ugDZyySmlMl/6gMcMMZQupTgPzHeq24mx+NR7gbVfQmTVnBjmXIpEemQFSe1KwQA2xdvkJ+rhObs8e1tldWFxjXd95Drlf1rKx1oy1LehPmXN4IpbY7PqEbncoSJywb7aLe18u+/2NFA27JsMh83y2xv6YfTQE=
 
-language: php
+dist: xenial
 
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-  - 7.3
+language: php
 
 # faster builds on new travis setup not using sudo
 sudo: false
@@ -20,6 +13,34 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache
+
+
+matrix:
+    fast_finish: true
+    include:
+        - php: "7.4"
+          env: PHPUNIT_EXCLUDE_GROUP=oci,wincache,xcache,zenddata,cubrid
+
+        - php: "7.3"
+          env: PHPUNIT_EXCLUDE_GROUP=oci,wincache,xcache,zenddata,cubrid
+
+        - php: "7.2"
+          env: PHPUNIT_EXCLUDE_GROUP=oci,wincache,xcache,zenddata,cubrid
+
+        # run tests coverage on PHP 7.1
+        - php: "7.1"
+          env:
+              - PHPUNIT_EXCLUDE_GROUP=oci,wincache,xcache,zenddata,cubrid
+
+        - php: "7.0"
+
+        - php: "5.6"
+
+        - php: "5.5"
+          dist: trusty
+
+        - php: "5.4"
+          dist: trusty
 
 before_install:
 #  - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
