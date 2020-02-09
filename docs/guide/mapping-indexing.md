@@ -17,16 +17,14 @@ class Book extends yii\elasticsearch\ActiveRecord
     public static function mapping()
     {
         return [
-            static::type() => [
-                'properties' => [
+            'properties' => [
                     'name'           => ['type' => 'text'],
                     'author_name'    => ['type' => 'text'],
                     'publisher_name' => ['type' => 'text'],
                     'created_at'     => ['type' => 'long'],
                     'updated_at'     => ['type' => 'long'],
                     'status'         => ['type' => 'long'],
-                ]
-            ],
+            ]
         ];
     }
 
