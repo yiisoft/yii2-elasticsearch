@@ -116,7 +116,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         }
 
         $results = $this->getQueryResults();
-        return isset($results['hits']['total']) ? (int)$results['hits']['total'] : 0;
+        return isset($results['hits']['total']['value']) ? (int)$results['hits']['total']['value'] : 0;
     }
 
     /**
