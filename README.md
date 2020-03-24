@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://www.elastic.co/products/elasticsearch" target="_blank" rel="external">
-        <img src="https://static-www.elastic.co/assets/blt45b0886c90beceee/logo-elastic.svg" height="80px">
+        <img src="https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt280217a63b82a734/5bbdaacf63ed239936a7dd56/elastic-logo.svg" height="80px">
     </a>
     <h1 align="center">Elasticsearch Query and ActiveRecord for Yii 2</h1>
     <br>
