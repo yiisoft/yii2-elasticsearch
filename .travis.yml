@@ -4,6 +4,8 @@ env:
 
 language: php
 
+dist: trusty
+
 php:
   - 5.4
   - 5.5
