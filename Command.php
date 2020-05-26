@@ -662,4 +662,15 @@ class Command extends Component
     {
         return $this->db->get(['_template', $name]);
     }
+
+    /**
+     * @param $index
+     * @param $copyIndex
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/7.8/indices-clone-index.html
+     */
+    public function cloneIndex($index, $copyIndex)
+    {
+        return $this->db->post([$index, '_clone', $copyIndex]);
+    }
 }
