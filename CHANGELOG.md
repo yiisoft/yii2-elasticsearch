@@ -1,12 +1,19 @@
 Yii Framework 2 elasticsearch extension Change Log
 ==================================================
 
-2.0.6 under development
+2.1.0 under development
+-----------------------
+
+- no changes in this release.
+
+
+2.0.6 May 27, 2020
 -----------------------
 
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
 - Bug #227: Fixed `Bad Request (#400): Unable to verify your data submission.` in debug details panel 'run query' (rhertogh)
 - Enh #117: Add support for `QueryInterface::emulateExecution()` (cebe)
+- Enh #232: Fixed broken tests (ArekX)
 
 
 2.0.5 March 20, 2018
