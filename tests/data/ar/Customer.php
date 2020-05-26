@@ -19,8 +19,6 @@ class Customer extends ActiveRecord
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 2;
 
-    public $status2;
-
     public static function primaryKey()
     {
         return ['id'];
@@ -28,7 +26,7 @@ class Customer extends ActiveRecord
 
     public function attributes()
     {
-        return ['id', 'name', 'email', 'address', 'status'];
+        return ['id', 'name', 'email', 'address', 'status', 'is_active'];
     }
 
     public function getOrders()
@@ -76,11 +74,12 @@ class Customer extends ActiveRecord
     {
         $command->setMapping(static::index(), static::type(), [
             "properties" => [
-                "id" => ["type"=>"integer", "store" => true],
+                "id" => ["type" => "keyword", "index" => "not_analyzed", "store" => true],
                 "name" => ["type" => "keyword", "index" => "not_analyzed", "store" => true],
                 "email" => ["type" => "keyword", "index" => "not_analyzed", "store" => true],
                 "address" => ["type" => "text", "index" => "analyzed"],
                 "status" => ["type" => "integer", "store" => true],
+                "is_active" => ["type" => "boolean", "store" => true],
             ]
         ]);
 
