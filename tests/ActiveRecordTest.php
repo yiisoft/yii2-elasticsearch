@@ -3,9 +3,10 @@
 namespace yiiunit\extensions\elasticsearch;
 
 use yii\base\Event;
+use yii\base\InvalidCallException;
 use yii\db\BaseActiveRecord;
 use yii\elasticsearch\Connection;
-use yiiunit\framework\ar\ActiveRecordTestTrait;
+use yii\elasticsearch\tests\helpers\Record;
 use yiiunit\extensions\elasticsearch\data\ar\ActiveRecord;
 use yiiunit\extensions\elasticsearch\data\ar\Customer;
 use yiiunit\extensions\elasticsearch\data\ar\OrderItem;
@@ -22,7 +23,6 @@ use yiiunit\extensions\elasticsearch\data\ar\Cat;
  */
 class ActiveRecordTest extends TestCase
 {
-
     use ActiveRecordTestTrait;
 
     public function getCustomerClass()
@@ -77,6 +77,7 @@ class ActiveRecordTest extends TestCase
         $db->createCommand()->createIndex('yiitest');
 
         $command = $db->createCommand();
+
         Customer::setUpMapping($command);
         Item::setUpMapping($command);
         Order::setUpMapping($command);
@@ -87,110 +88,53 @@ class ActiveRecordTest extends TestCase
 
         $db->createCommand()->flushIndex('yiitest');
 
-        $customer = new Customer();
-        $customer->id = 1;
-        $customer->setAttributes(['email' => 'user1@example.com', 'name' => 'user1', 'address' => 'address1', 'status' => 1], false);
-        $customer->save(false);
-        $customer = new Customer();
-        $customer->id = 2;
-        $customer->setAttributes(['email' => 'user2@example.com', 'name' => 'user2', 'address' => 'address2', 'status' => 1], false);
-        $customer->save(false);
-        $customer = new Customer();
-        $customer->id = 3;
-        $customer->setAttributes(['email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 2], false);
-        $customer->save(false);
+        Record::insertMany(Customer::className(), [
+            ['id' => 1, 'email' => 'user1@example.com', 'name' => 'user1', 'address' => 'address1', 'status' => 1, 'is_active' => true],
+            ['id' => 2, 'email' => 'user2@example.com', 'name' => 'user2', 'address' => 'address2', 'status' => 1, 'is_active' => true],
+            ['id' => 3, 'email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 2, 'is_active' => false],
+        ]);
 
-//		INSERT INTO category (name) VALUES ('Books');
-//		INSERT INTO category (name) VALUES ('Movies');
+        Record::insertMany(Item::className(), [
+            ['id' => 1, 'name' => 'Agile Web Application Development with Yii1.1 and PHP5', 'category_id' => 1],
+            ['id' => 2, 'name' => 'Yii 1.1 Application Development Cookbook', 'category_id' => 1],
+            ['id' => 3, 'name' => 'Ice Age', 'category_id' => 2],
+            ['id' => 4, 'name' => 'Toy Story', 'category_id' => 2],
+            ['id' => 5, 'name' => 'Cars', 'category_id' => 2],
+        ]);
 
-        $item = new Item();
-        $item->id = 1;
-        $item->setAttributes(['name' => 'Agile Web Application Development with Yii1.1 and PHP5', 'category_id' => 1], false);
-        $item->save(false);
-        $item = new Item();
-        $item->id = 2;
-        $item->setAttributes(['name' => 'Yii 1.1 Application Development Cookbook', 'category_id' => 1], false);
-        $item->save(false);
-        $item = new Item();
-        $item->id = 3;
-        $item->setAttributes(['name' => 'Ice Age', 'category_id' => 2], false);
-        $item->save(false);
-        $item = new Item();
-        $item->id = 4;
-        $item->setAttributes(['name' => 'Toy Story', 'category_id' => 2], false);
-        $item->save(false);
-        $item = new Item();
-        $item->id = 5;
-        $item->setAttributes(['name' => 'Cars', 'category_id' => 2], false);
-        $item->save(false);
+        Record::insertMany(Order::className(), [
+            ['id' => 1, 'customer_id' => 1, 'created_at' => 1325282384, 'total' => 110.0, 'itemsArray' => [1, 2]],
+            ['id' => 2, 'customer_id' => 2, 'created_at' => 1325334482, 'total' => 33.0, 'itemsArray' => [4, 5, 3]],
+            ['id' => 3, 'customer_id' => 2, 'created_at' => 1325502201, 'total' => 40.0, 'itemsArray' => [2]],
+        ]);
 
-        $order = new Order();
-        $order->id = 1;
-        $order->setAttributes(['customer_id' => 1, 'created_at' => 1325282384, 'total' => 110.0, 'itemsArray' => [1, 2]], false);
-        $order->save(false);
-        $order = new Order();
-        $order->id = 2;
-        $order->setAttributes(['customer_id' => 2, 'created_at' => 1325334482, 'total' => 33.0, 'itemsArray' => [4, 5, 3]], false);
-        $order->save(false);
-        $order = new Order();
-        $order->id = 3;
-        $order->setAttributes(['customer_id' => 2, 'created_at' => 1325502201, 'total' => 40.0, 'itemsArray' => [2]], false);
-        $order->save(false);
+        Record::insertMany(OrderItem::className(), [
+            ['order_id' => 1, 'item_id' => 1, 'quantity' => 1, 'subtotal' => 30.0],
+            ['order_id' => 1, 'item_id' => 2, 'quantity' => 2, 'subtotal' => 40.0],
+            ['order_id' => 2, 'item_id' => 4, 'quantity' => 1, 'subtotal' => 10.0],
+            ['order_id' => 2, 'item_id' => 5, 'quantity' => 1, 'subtotal' => 15.0],
+            ['order_id' => 2, 'item_id' => 3, 'quantity' => 1, 'subtotal' => 8.0],
+            ['order_id' => 3, 'item_id' => 2, 'quantity' => 1, 'subtotal' => 40.0]
+        ]);
 
-        $orderItem = new OrderItem();
-        $orderItem->setAttributes(['order_id' => 1, 'item_id' => 1, 'quantity' => 1, 'subtotal' => 30.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItem();
-        $orderItem->setAttributes(['order_id' => 1, 'item_id' => 2, 'quantity' => 2, 'subtotal' => 40.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItem();
-        $orderItem->setAttributes(['order_id' => 2, 'item_id' => 4, 'quantity' => 1, 'subtotal' => 10.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItem();
-        $orderItem->setAttributes(['order_id' => 2, 'item_id' => 5, 'quantity' => 1, 'subtotal' => 15.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItem();
-        $orderItem->setAttributes(['order_id' => 2, 'item_id' => 3, 'quantity' => 1, 'subtotal' => 8.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItem();
-        $orderItem->setAttributes(['order_id' => 3, 'item_id' => 2, 'quantity' => 1, 'subtotal' => 40.0], false);
-        $orderItem->save(false);
+        Record::insertMany(OrderWithNullFK::className(), [
+            ['id' => 1, 'customer_id' => 1, 'created_at' => 1325282384, 'total' => 110.0],
+            ['id' => 2, 'customer_id' => 2, 'created_at' => 1325334482, 'total' => 33.0],
+            ['id' => 3, 'customer_id' => 2, 'created_at' => 1325502201, 'total' => 40.0],
+        ]);
 
-        $order = new OrderWithNullFK();
-        $order->id = 1;
-        $order->setAttributes(['customer_id' => 1, 'created_at' => 1325282384, 'total' => 110.0], false);
-        $order->save(false);
-        $order = new OrderWithNullFK();
-        $order->id = 2;
-        $order->setAttributes(['customer_id' => 2, 'created_at' => 1325334482, 'total' => 33.0], false);
-        $order->save(false);
-        $order = new OrderWithNullFK();
-        $order->id = 3;
-        $order->setAttributes(['customer_id' => 2, 'created_at' => 1325502201, 'total' => 40.0], false);
-        $order->save(false);
+        Record::insertMany(OrderItemWithNullFK::className(), [
+            ['order_id' => 1, 'item_id' => 1, 'quantity' => 1, 'subtotal' => 30.0],
+            ['order_id' => 1, 'item_id' => 2, 'quantity' => 2, 'subtotal' => 40.0],
+            ['order_id' => 2, 'item_id' => 4, 'quantity' => 1, 'subtotal' => 10.0],
+            ['order_id' => 2, 'item_id' => 5, 'quantity' => 1, 'subtotal' => 15.0],
+            ['order_id' => 2, 'item_id' => 3, 'quantity' => 1, 'subtotal' => 8.0],
+            ['order_id' => 3, 'item_id' => 2, 'quantity' => 1, 'subtotal' => 40.0],
+        ]);
 
-        $orderItem = new OrderItemWithNullFK();
-        $orderItem->setAttributes(['order_id' => 1, 'item_id' => 1, 'quantity' => 1, 'subtotal' => 30.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItemWithNullFK();
-        $orderItem->setAttributes(['order_id' => 1, 'item_id' => 2, 'quantity' => 2, 'subtotal' => 40.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItemWithNullFK();
-        $orderItem->setAttributes(['order_id' => 2, 'item_id' => 4, 'quantity' => 1, 'subtotal' => 10.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItemWithNullFK();
-        $orderItem->setAttributes(['order_id' => 2, 'item_id' => 5, 'quantity' => 1, 'subtotal' => 15.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItemWithNullFK();
-        $orderItem->setAttributes(['order_id' => 2, 'item_id' => 3, 'quantity' => 1, 'subtotal' => 8.0], false);
-        $orderItem->save(false);
-        $orderItem = new OrderItemWithNullFK();
-        $orderItem->setAttributes(['order_id' => 3, 'item_id' => 2, 'quantity' => 1, 'subtotal' => 40.0], false);
-        $orderItem->save(false);
+        Record::insert(Cat::className(), []);
+        Record::insert(Dog::className(), []);
 
-        (new Cat())->save(false);
-        (new Dog())->save(false);
-        
         $db->createCommand()->flushIndex('yiitest');
     }
 
@@ -199,9 +143,11 @@ class ActiveRecordTest extends TestCase
         // this should not fail with exception
         $customer = new Customer();
         // insert
-        $customer->save(false);
+        $this->assertTrue($customer->save(false));
         // update
-        $customer->save(false);
+        $this->assertTrue($customer->save(false));
+
+
     }
 
     public function testFindAsArray()
@@ -214,8 +160,9 @@ class ActiveRecordTest extends TestCase
             'name' => 'user2',
             'address' => 'address2',
             'status' => 1,
+            'is_active' => true,
 //            '_score' => 1.0
-                ], $customer['_source']);
+        ], $customer['_source']);
     }
 
     public function testSearch()
@@ -382,7 +329,6 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals(2, $orderItem->oldPrimaryKey);
         $this->assertEquals(2, $orderItem->$pkName);
 
-//		$this->setExpectedException('yii\base\InvalidCallException');
         $orderItem->$pkName = 13;
         $this->assertEquals(13, $orderItem->primaryKey);
         $this->assertEquals(2, $orderItem->oldPrimaryKey);
@@ -596,8 +542,8 @@ class ActiveRecordTest extends TestCase
 
         // indexBy callable + asArray
         $customers = $customerClass::find()->indexBy(function ($customer) {
-                    return $customer['_source']['id'] . '-' . $customer['_source']['name'];
-                })->asArray()->all();
+            return $customer['_source']['id'] . '-' . $customer['_source']['name'];
+        })->asArray()->all();
         $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['1-user1']['_source']);
         $this->assertArrayHasKey('name', $customers['1-user1']['_source']);
@@ -638,7 +584,7 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals([
             [$customerClass, false, 1, false],
             [$customerClass, false, 2, false],
-                ], $afterFindCalls);
+        ], $afterFindCalls);
         $afterFindCalls = [];
 
         Event::off(BaseActiveRecord::className(), BaseActiveRecord::EVENT_AFTER_FIND);
@@ -736,22 +682,13 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue(isset($items[2]));
 
         $item = Item::get(5);
-        $order->link('itemsByArrayValue', $item);
-        $this->afterSave();
 
-        $items = $order->itemsByArrayValue;
-        $this->assertCount(3, $items);
-        $this->assertTrue(isset($items[1]));
-        $this->assertTrue(isset($items[2]));
-        $this->assertTrue(isset($items[5]));
+        try {
+            $order->link('itemsByArrayValue', $item);
+        } catch (InvalidCallException $e) {
+            $this->assertEquals($e->getMessage(), 'Unable to link models: foreign model cannot be linked if it\'s property is an array.');
+        }
 
-        // check also after refresh
-        $this->assertTrue($order->refresh());
-        $items = $order->itemsByArrayValue;
-        $this->assertCount(3, $items);
-        $this->assertTrue(isset($items[1]));
-        $this->assertTrue(isset($items[2]));
-        $this->assertTrue(isset($items[5]));
     }
 
     public function testArrayAttributeRelationUnLink()
@@ -805,75 +742,19 @@ class ActiveRecordTest extends TestCase
         $this->assertFalse(isset($items[$removeId]));
     }
 
-    /**
-     * @expectedException \yii\base\NotSupportedException
-     */
-    public function testArrayAttributeRelationUnLinkAll()
+    public function testUnlinkAllNotSupported()
     {
-        /* @var $order Order */
-        $order = Order::find()->where(['id' => 1])->one();
-        $items = $order->itemsByArrayValue;
-        $this->assertEquals(2, count($items));
-        $this->assertTrue(isset($items[1]));
-        $this->assertTrue(isset($items[2]));
-
-        $order->unlinkAll('itemsByArrayValue');
-        $this->afterSave();
-
-        $items = $order->itemsByArrayValue;
-        $this->assertEquals(0, count($items));
-
-        // check also after refresh
-        $this->assertTrue($order->refresh());
-        $items = $order->itemsByArrayValue;
-        $this->assertEquals(0, count($items));
-    }
-
-    public function testUnlinkAll()
-    {
-        // not supported by elasticsearch
-    }
-
-    /**
-     * @expectedException \yii\base\NotSupportedException
-     */
-    public function testUnlinkAllAndConditionSetNull()
-    {
-        /* @var $customerClass \yii\db\BaseActiveRecord */
-        $customerClass = $this->getCustomerClass();
-        /* @var $orderClass \yii\db\BaseActiveRecord */
-        $orderClass = $this->getOrderWithNullFKClass();
-
-        // in this test all orders are owned by customer 1
-        $orderClass::updateAll(['customer_id' => 1]);
-        $this->afterSave();
-
-        $customer = $customerClass::findOne(1);
-        $this->assertEquals(3, count($customer->ordersWithNullFK));
-        $this->assertEquals(1, count($customer->expensiveOrdersWithNullFK));
-        $this->assertEquals(3, $orderClass::find()->count());
-        $customer->unlinkAll('expensiveOrdersWithNullFK');
-    }
-
-    /**
-     * @expectedException \yii\base\NotSupportedException
-     */
-    public function testUnlinkAllAndConditionDelete()
-    {
-        /* @var $customerClass \yii\db\BaseActiveRecord */
-        $customerClass = $this->getCustomerClass();
-        /* @var $orderClass \yii\db\BaseActiveRecord */
-        $orderClass = $this->getOrderWithNullFKClass();
-
-        // in this test all orders are owned by customer 1
-        $orderClass::updateAll(['customer_id' => 1]);
-        $this->afterSave();
-
-        $customer = $customerClass::findOne(1);
-        $this->assertEquals(3, count($customer->ordersWithNullFK));
-        $this->assertEquals(1, count($customer->expensiveOrdersWithNullFK));
-        $this->assertEquals(3, $orderClass::find()->count());
-        $customer->unlinkAll('expensiveOrdersWithNullFK', true);
+        try {
+            /* @var $order Order */
+            $order = Order::find()->where(['id' => 1])->one();
+            $items = $order->itemsByArrayValue;
+            $this->assertEquals(2, count($items));
+            $this->assertTrue(isset($items[1]));
+            $this->assertTrue(isset($items[2]));
+            $order->unlinkAll('itemsByArrayValue');
+        } catch (\yii\base\NotSupportedException $e) {
+            $this->assertEquals($e->getMessage(), 'unlinkAll() is not supported by elasticsearch, use unlink() instead.');
+        }
     }
 
     public function testPopulateRecordCallWhenQueryingOnParentClass()
@@ -924,6 +805,30 @@ class ActiveRecordTest extends TestCase
 
     public function testBooleanAttribute()
     {
+        /* @var $customerClass \yii\db\ActiveRecordInterface */
+        $customerClass = $this->getCustomerClass();
+
+        $customers = $customerClass::find()->where(['is_active' => true])->all();
+        $this->assertCount(2, $customers);
+
+        $customers = $customerClass::find()->where(['is_active' => false])->all();
+        $this->assertCount(1, $customers);
+
+        /* @var $this TestCase|ActiveRecordTestTrait */
+        $customer = new $customerClass();
+        $customer->name = 'boolean customer';
+        $customer->email = 'mail@example.com';
+        $customer->is_active = true;
+        $customer->save(false);
+
+        $customer->refresh();
+        $this->assertTrue($customer->is_active);
+
+        $customer->is_active = false;
+        $customer->save(false);
+
+        $customer->refresh();
+        $this->assertFalse($customer->is_active);
     }
 
     // TODO test AR with not mapped PK
@@ -932,11 +837,11 @@ class ActiveRecordTest extends TestCase
     public function illegalValuesForFindByCondition()
     {
         return [
-            [['id' => ['`id`=`id` and 1' => 1]], ['id' => 1]],
+            [['id' => ['`id`=`id` and 1' => 1]], null],
             [['id' => [
                 'legal' => 1,
                 '`id`=`id` and 1' => 1,
-            ]], ['id' => 1]],
+            ]], null],
             [['id' => [
                 'nested_illegal' => [
                     'false or 1=' => 1
@@ -954,9 +859,8 @@ class ActiveRecordTest extends TestCase
                 'id' => '1',
             ]], ['id' => 1]],
             [['id' => [
-                'name' => 'Cars',
-                'email' => 'test@example.com',
-            ]], ['id' => 1]],
+                'name' => 'Cars'
+            ]], ['id' => 5]],
         ];
     }
 
@@ -973,7 +877,7 @@ class ActiveRecordTest extends TestCase
             $this->assertNull($result);
         } else {
             $this->assertNotNull($result);
-            foreach($expectedResult as $col => $value) {
+            foreach ($expectedResult as $col => $value) {
                 $this->assertEquals($value, $result->$col);
             }
         }

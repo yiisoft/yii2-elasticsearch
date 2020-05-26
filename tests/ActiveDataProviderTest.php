@@ -98,7 +98,9 @@ class ActiveDataProviderTest extends TestCase
             'query' => $query,
             'db' => $this->getConnection(),
         ]);
+
+        // as of ES 2.0 querying a non-existent index returns a 404
+        $this->expectException('\yii\elasticsearch\Exception');
         $models = $provider->getModels();
-        $this->assertEquals(0, count($models));
     }
 }

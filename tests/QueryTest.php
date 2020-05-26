@@ -296,9 +296,6 @@ class QueryTest extends TestCase
         $this->assertEquals(5, $query->offset);
     }
 
-    public function testUnion()
-    {
-    }
 
     /**
      * @since 2.0.4

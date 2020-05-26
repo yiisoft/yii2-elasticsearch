@@ -16,6 +16,7 @@ use yii\elasticsearch\Command;
  *
  * @property-read Item[] $expensiveItemsUsingViaWithCallable
  * @property-read Item[] $cheapItemsUsingViaWithCallable
+ * @property-read Item[] $itemsByArrayValue
  */
 class Order extends ActiveRecord
 {

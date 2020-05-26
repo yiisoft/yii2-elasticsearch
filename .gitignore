@@ -28,5 +28,4 @@ phpunit.phar
 /phpunit.xml
 
 # local tests files
-/tests/ActiveRecordTestTrait.php
 /tests/data/config.local.php
