@@ -6,6 +6,7 @@ Yii Framework 2 elasticsearch extension Change Log
 
 - Bug #248: Fix 'run query' in debugger tool (tunecino)
 - Bug #257: ActiveRecord::get() for non-existent ID now works in PHP 7.4 (trifonovivan)
+- Bug #199: Fixed `ActiveRecord::insert()` check if insert was indeed successful (rhertogh)
 
 
 2.0.6 May 27, 2020
