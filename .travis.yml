@@ -1,0 +1,52 @@
+env:
+  global:
+    secure: cIGYsPd8OZ3X/ugDZyySmlMl/6gMcMMZQupTgPzHeq24mx+NR7gbVfQmTVnBjmXIpEemQFSe1KwQA2xdvkJ+rhObs8e1tldWFxjXd95Drlf1rKx1oy1LehPmXN4IpbY7PqEbncoSJywb7aLe18u+/2NFA27JsMh83y2xv6YfTQE=
+
+language: php
+
+dist: trusty
+
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+
+services:
+  - docker
+
+# faster builds on new travis setup not using sudo
+sudo: required
+
+# cache vendor dirs
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - docker pull elasticsearch:5.1
+  - docker run -p 9200:9200 -d elasticsearch:5.1 -Etransport.host=127.0.0.1 -Ehttp.publish_host=127.0.0.1
+
+install:
+  - travis_retry composer self-update && composer --version
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - travis_retry composer install --prefer-source --no-interaction
+
+before_script:
+  - echo 'elasticsearch version ' && curl http://localhost:9200/
+  - |
+    if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
+      PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
+    fi
+
+script:
+  - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
+
+after_script:
+  - |
+    if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
+      travis_retry wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    fi
