@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.7 under development
 -----------------------
 
-- no changes in this release.
+- Bug #248: Fix 'run query' in debugger tool (tunecino)
 
 
 2.0.6 May 27, 2020
