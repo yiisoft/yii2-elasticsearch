@@ -168,7 +168,7 @@ $aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
     'size' => 10, //top 10 registration dates
 ])->search(null, ['search_type' => 'count']);
 
-```                    
+```
 
 In this example we are specifically requesting aggregation results only. The following code further process the data.
 
@@ -177,3 +177,36 @@ $customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date'
 ```
 
 Now `$customersByDate` contains 10 dates that correspond to the the highest number of users registered.
+
+
+## Unusual behavior of attributes with object mapping
+
+The extension updates records using the `_update` endpoint. Since this endpoint is designed to perform partial updates to documents, all attributes that have an "object" mapping type in ElasticSearch will be merged with existing data. To demonstrate:
+
+```
+$customer = new Customer();
+$customer->my_attribute = ['foo' => 'v1', 'bar' => 'v2'];
+$customer->save();
+// at this point the value of my_attribute in ElasticSearch is {"foo": "v1", "bar": "v2"}
+
+$customer->my_attribute = ['foo' => 'v3', 'bar' => 'v4'];
+$customer->save();
+// now the value of my_attribute in ElasticSearch is {"foo": "v3", "bar": "v4"}
+
+$customer->my_attribute = ['baz' => 'v5'];
+$customer->save();
+// now the value of my_attribute in ElasticSearch is {"foo": "v3", "bar": "v4", "baz": "v5"}
+// but $customer->my_attribute is still equal to ['baz' => 'v5']
+```
+
+Since this logic only applies to objects, the solution is to wrap the object into a single-element array. Since to ElasticSearch a single-element array is the same thing as the element itself, there is no need to modify any other code.
+
+```
+$customer->my_attribute = [['new' => 'value']]; // note the double brackets
+$customer->save();
+// now the value of my_attribute in ElasticSearch is {"new": "value"}
+$customer->my_attribute = $customer->my_attribute[0]; // could be done for consistensy
+```
+
+For more information see this discussion:
+https://discuss.elastic.co/t/updating-an-object-field/110735
