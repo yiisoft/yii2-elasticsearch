@@ -92,12 +92,14 @@ $customers = Customer::find()->active()->all(); // クエリによって全て�
 // http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
 $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // articles whose title contains "yii"
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query-fuzziness
 $query = Article::find()->query([
-    "fuzzy_like_this" => [
-        "fields" => ["title", "description"],
-        "like_text" => "このクエリは、このテキストに似た記事を返します :-)",
-        "max_query_terms" => 12
+    'match' => [
+        'title' => [
+            'query' => 'このクエリは、このテキストに似た記事を返します :-)',
+            'operator' => 'and',
+            'fuzziness' => 'AUTO'
+        ]
     ]
 ]);
 

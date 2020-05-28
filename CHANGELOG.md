@@ -10,6 +10,21 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.6 May 27, 2020
 ------------------
 
+2.1.0 under development
+-----------------------
+
+- Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
+- Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
+- Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
+- Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
+- Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
+- Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
+- Enh #222: Added collapse support (walkskyer)
+
+2.0.5 under development
+2.0.6 under development
+-----------------------
+
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
 - Bug #227: Fixed `Bad Request (#400): Unable to verify your data submission.` in debug details panel 'run query' (rhertogh)
 - Enh #117: Add support for `QueryInterface::emulateExecution()` (cebe)

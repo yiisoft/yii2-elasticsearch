@@ -89,9 +89,9 @@ class ActiveRecordTest extends TestCase
         $db->createCommand()->flushIndex('yiitest');
 
         Record::insertMany(Customer::className(), [
-            ['id' => 1, 'email' => 'user1@example.com', 'name' => 'user1', 'address' => 'address1', 'status' => 1],
-            ['id' => 2, 'email' => 'user2@example.com', 'name' => 'user2', 'address' => 'address2', 'status' => 1],
-            ['id' => 3, 'email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 2],
+            ['id' => 1, 'email' => 'user1@example.com', 'name' => 'user1', 'address' => 'address1', 'status' => 1, 'is_active' => true],
+            ['id' => 2, 'email' => 'user2@example.com', 'name' => 'user2', 'address' => 'address2', 'status' => 1, 'is_active' => true],
+            ['id' => 3, 'email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 2, 'is_active' => false],
         ]);
 
         Record::insertMany(Item::className(), [
@@ -160,6 +160,7 @@ class ActiveRecordTest extends TestCase
             'name' => 'user2',
             'address' => 'address2',
             'status' => 1,
+            'is_active' => true,
 //            '_score' => 1.0
         ], $customer['_source']);
     }
@@ -354,57 +355,18 @@ class ActiveRecordTest extends TestCase
         $this->assertEquals([], $order->items);
     }
 
-    /**
-     * Some PDO implementations(e.g. cubrid) do not support boolean values.
-     * Make sure this does not affect AR layer.
-     */
-    public function testBooleanAttribute()
-    {
-        $db = $this->getConnection();
-        Customer::deleteAll();
-        Customer::setUpMapping($db->createCommand(), true);
-
-        $customerClass = $this->getCustomerClass();
-        $customer = new $customerClass();
-        $customer->name = 'boolean customer';
-        $customer->email = 'mail@example.com';
-        $customer->status = true;
-        $customer->save(false);
-
-        $customer->refresh();
-        $this->assertEquals(true, $customer->status);
-
-        $customer->status = false;
-        $customer->save(false);
-
-        $customer->refresh();
-        $this->assertEquals(false, $customer->status);
-
-        $customer = new Customer();
-        $customer->setAttributes(['email' => 'user2b@example.com', 'name' => 'user2b', 'status' => true], false);
-        $customer->save(false);
-        $customer = new Customer();
-        $customer->setAttributes(['email' => 'user3b@example.com', 'name' => 'user3b', 'status' => false], false);
-        $customer->save(false);
-        $this->afterSave();
-
-        $customers = Customer::find()->where(['status' => true])->all();
-        $this->assertCount(1, $customers);
-
-        $customers = Customer::find()->where(['status' => false])->all();
-        $this->assertCount(2, $customers);
-    }
-
     public function testScriptFields()
     {
-        $orderItems = OrderItem::find()->fields([
-            'quantity',
-            'subtotal',
-            'total' => [
-                'script' => "doc['quantity'].value * doc['subtotal'].value",
-                'lang' => 'groovy',
-            ]
-        ])->all();
+        $orderItems = OrderItem::find()
+            ->source('quantity', 'subtotal')
+            ->scriptFields([
+                'total' => [
+                    'script' => [
+                        'lang' => 'painless',
+                        'inline' => "doc['quantity'].value * doc['subtotal'].value",
+                    ]
+                ]
+            ])->all();
         $this->assertNotEmpty($orderItems);
         foreach ($orderItems as $item) {
             $this->assertEquals($item->subtotal * $item->quantity, $item->total);
@@ -415,7 +377,8 @@ class ActiveRecordTest extends TestCase
     {
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
-        $customers = Customer::find()->asArray()->fields(['id', 'name'])->all();
+        $customers = Customer::find()->asArray()
+            ->storedFields(['id', 'name'])->all();
         $this->assertEquals(3, count($customers));
         $this->assertArrayHasKey('id', $customers[0]['fields']);
         $this->assertArrayHasKey('name', $customers[0]['fields']);
@@ -486,7 +449,7 @@ class ActiveRecordTest extends TestCase
         // indexBy callable + asArray
         $customers = Customer::find()->indexBy(function ($customer) {
             return $customer->id . '-' . $customer->name;
-        })->fields('id', 'name')->all();
+        })->storedFields('id', 'name')->all();
         $this->assertCount(3, $customers);
         $this->assertTrue($customers['1-user1'] instanceof $customerClass);
         $this->assertTrue($customers['2-user2'] instanceof $customerClass);
@@ -512,7 +475,7 @@ class ActiveRecordTest extends TestCase
     {
         /* @var $this TestCase|ActiveRecordTestTrait */
         // indexBy + asArray
-        $customers = Customer::find()->indexBy('name')->asArray()->fields('id', 'name')->all();
+        $customers = Customer::find()->indexBy('name')->asArray()->storedFields('id', 'name')->all();
         $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['user1']['fields']);
         $this->assertArrayHasKey('name', $customers['user1']['fields']);
@@ -533,7 +496,7 @@ class ActiveRecordTest extends TestCase
         // indexBy callable + asArray
         $customers = Customer::find()->indexBy(function ($customer) {
             return reset($customer['fields']['id']) . '-' . reset($customer['fields']['name']);
-        })->asArray()->fields('id', 'name')->all();
+        })->asArray()->storedFields('id', 'name')->all();
         $this->assertCount(3, $customers);
         $this->assertArrayHasKey('id', $customers['1-user1']['fields']);
         $this->assertArrayHasKey('name', $customers['1-user1']['fields']);
@@ -838,6 +801,34 @@ class ActiveRecordTest extends TestCase
 
         $this->assertFalse($customer->canGetProperty('non_existing_property'));
         $this->assertFalse($customer->canSetProperty('non_existing_property'));
+    }
+
+    public function testBooleanAttribute()
+    {
+        /* @var $customerClass \yii\db\ActiveRecordInterface */
+        $customerClass = $this->getCustomerClass();
+
+        $customers = $customerClass::find()->where(['is_active' => true])->all();
+        $this->assertCount(2, $customers);
+
+        $customers = $customerClass::find()->where(['is_active' => false])->all();
+        $this->assertCount(1, $customers);
+
+        /* @var $this TestCase|ActiveRecordTestTrait */
+        $customer = new $customerClass();
+        $customer->name = 'boolean customer';
+        $customer->email = 'mail@example.com';
+        $customer->is_active = true;
+        $customer->save(false);
+
+        $customer->refresh();
+        $this->assertTrue($customer->is_active);
+
+        $customer->is_active = false;
+        $customer->save(false);
+
+        $customer->refresh();
+        $this->assertFalse($customer->is_active);
     }
 
     // TODO test AR with not mapped PK

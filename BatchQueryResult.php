@@ -153,17 +153,15 @@ class BatchQueryResult extends BaseObject implements \Iterator
             //first query - do search
             $options = ['scroll' => $this->scrollWindow];
             if(!$this->query->orderBy) {
-                $options['search_type'] = 'scan';
+                $query = clone $this->query;
+                $query->orderBy('_doc');
+                $cmd = $this->query->createCommand($this->db);
+            } else {
+                $cmd = $this->query->createCommand($this->db);
             }
-            $result = $this->query->createCommand($this->db)->search($options);
-
-            //if using "scan" mode, make another request immediately
-            //(search request returned 0 results)
-            if(!$this->query->orderBy) {
-                $result = $this->query->createCommand($this->db)->scroll([
-                    'scroll_id' => $result['_scroll_id'],
-                    'scroll' => $this->scrollWindow,
-                ]);
+            $result = $cmd->search($options);
+            if ($result === false) {
+                throw new Exception('Elasticsearch search query failed.');
             }
         } else {
             //subsequent queries - do scroll

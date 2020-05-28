@@ -19,9 +19,9 @@ class Book extends yii\elasticsearch\ActiveRecord
         return [
             static::type() => [
                 'properties' => [
-                    'name'           => ['type' => 'string'],
-                    'author_name'    => ['type' => 'string'],
-                    'publisher_name' => ['type' => 'string'],
+                    'name'           => ['type' => 'text'],
+                    'author_name'    => ['type' => 'text'],
+                    'publisher_name' => ['type' => 'text'],
                     'created_at'     => ['type' => 'long'],
                     'updated_at'     => ['type' => 'long'],
                     'status'         => ['type' => 'long'],
