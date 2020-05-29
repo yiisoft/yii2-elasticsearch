@@ -891,4 +891,10 @@ class ActiveRecordTest extends TestCase
             }
         }
     }
+
+    public function testFindNonexistentById()
+    {
+        $customer = Customer::get(1111);
+        $this->assertNull($customer);
+    }
 }
