@@ -96,6 +96,8 @@ class Connection extends Component
      */
     public $dataTimeout = null;
 
+    public $dslVersion = 5;
+
     /**
      * @var resource the curl instance returned by [curl_init()](http://php.net/manual/en/function.curl-init.php).
      */

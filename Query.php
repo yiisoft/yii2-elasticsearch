@@ -469,10 +469,9 @@ class Query extends Component implements QueryInterface
         }
         // performing a query with return size of 0, is equal to getting result stats such as count
         // https://www.elastic.co/guide/en/elasticsearch/reference/5.6/breaking_50_search_changes.html#_literal_search_type_literal
-        $count = $this->createCommand($db)->search(['size' => 0])['hits']['total'];
-        if ($count === false) {
-            throw new Exception('Elasticsearch count query failed.');
-        }
+        $result = $this->createCommand($db)->search(['size' => 0]);
+        // since ES7 totals are returned as array (with count and precision values)
+        $count = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
         return $count;
     }
 

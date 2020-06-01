@@ -20,24 +20,19 @@ use yii\elasticsearch\Command;
  */
 class Order extends ActiveRecord
 {
-    public static function primaryKey()
-    {
-        return ['id'];
-    }
-
     public function attributes()
     {
-        return ['id', 'customer_id', 'created_at', 'total', 'itemsArray'];
+        return ['customer_id', 'created_at', 'total', 'itemsArray'];
     }
 
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Customer::className(), ['_id' => 'customer_id']);
     }
 
     public function getOrderItems()
     {
-        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderItem::className(), ['order_id' => '_id']);
     }
 
     /**
@@ -45,18 +40,18 @@ class Order extends ActiveRecord
      */
     public function getItemsByArrayValue()
     {
-        return $this->hasMany(Item::className(), ['id' => 'itemsArray'])->indexBy('id');
+        return $this->hasMany(Item::className(), ['_id' => 'itemsArray'])->indexBy('_id');
     }
 
     public function getItems()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
-            ->via('orderItems')->orderBy('id');
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+            ->via('orderItems')->orderBy('_id');
     }
 
     public function getExpensiveItemsUsingViaWithCallable()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
             ->via('orderItems', function (ActiveQuery $q) {
                 $q->where(['>=', 'subtotal', 10]);
             });
@@ -64,7 +59,7 @@ class Order extends ActiveRecord
 
     public function getCheapItemsUsingViaWithCallable()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
             ->via('orderItems', function (ActiveQuery $q) {
                 $q->where(['<', 'subtotal', 10]);
             });
@@ -72,24 +67,13 @@ class Order extends ActiveRecord
 
     public function getItemsIndexed()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
-            ->via('orderItems')->indexBy('id');
-    }
-
-    public function getItemsWithNullFK()
-    {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
-            ->via('orderItemsWithNullFK');
-    }
-
-    public function getOrderItemsWithNullFK()
-    {
-        return $this->hasMany(OrderItemWithNullFK::className(), ['order_id' => 'id']);
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+            ->via('orderItems')->indexBy('_id');
     }
 
     public function getItemsInOrder1()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
             ->via('orderItems', function ($q) {
                 $q->orderBy(['subtotal' => SORT_ASC]);
             })->orderBy('name');
@@ -97,7 +81,7 @@ class Order extends ActiveRecord
 
     public function getItemsInOrder2()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
             ->via('orderItems', function ($q) {
                 $q->orderBy(['subtotal' => SORT_DESC]);
             })->orderBy('name');
@@ -105,15 +89,8 @@ class Order extends ActiveRecord
 
     public function getBooks()
     {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
+        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
             ->via('orderItems')
-            ->where(['category_id' => 1]);
-    }
-
-    public function getBooksWithNullFK()
-    {
-        return $this->hasMany(Item::className(), ['id' => 'item_id'])
-            ->via('orderItemsWithNullFK')
             ->where(['category_id' => 1]);
     }
 
@@ -124,11 +101,9 @@ class Order extends ActiveRecord
     public static function setUpMapping($command)
     {
         $command->setMapping(static::index(), static::type(), [
-            static::type() => [
-                'properties' => [
-                    'customer_id' => ['type' => 'integer'],
-                    'total' => ['type' => 'integer'],
-                ]
+            'properties' => [
+                'customer_id' => ['type' => 'integer'],
+                'total' => ['type' => 'integer'],
             ]
         ]);
     }

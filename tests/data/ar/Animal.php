@@ -19,19 +19,19 @@ class Animal extends ActiveRecord
 
     public $does;
 
-    public static function primaryKey()
+    public static function index()
     {
-        return ['id'];
+        return 'animals';
     }
 
     public static function type()
     {
-        return 'test_animals';
+        return 'animal';
     }
 
     public function attributes()
     {
-        return ['id', 'type'];
+        return ['species'];
     }
 
     /**
@@ -41,10 +41,8 @@ class Animal extends ActiveRecord
     public static function setUpMapping($command)
     {
         $command->setMapping(static::index(), static::type(), [
-            static::type() => [
-                "properties" => [
-                    "type" => ["type" => "string", "index" => "not_analyzed"]
-                ]
+            "properties" => [
+                "species" => ["type" => "keyword"]
             ]
         ]);
     }
@@ -52,7 +50,7 @@ class Animal extends ActiveRecord
     public function init()
     {
         parent::init();
-        $this->type = get_called_class();
+        $this->species = get_called_class();
     }
 
     public function getDoes()
@@ -61,13 +59,13 @@ class Animal extends ActiveRecord
     }
 
     /**
-     * 
+     *
      * @param type $row
      * @return \yiiunit\data\ar\elasticsearch\Animal
      */
     public static function instantiate($row)
     {
-        $class = $row['_source']['type'];
+        $class = $row['_source']['species'];
         return new $class;
     }
 

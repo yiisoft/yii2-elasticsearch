@@ -18,30 +18,30 @@ class ActiveDataProviderTest extends TestCase
         $db = ActiveRecord::$db = $this->getConnection();
 
         // delete index
-        if ($db->createCommand()->indexExists('yiitest')) {
-            $db->createCommand()->deleteIndex('yiitest');
+        if ($db->createCommand()->indexExists(Customer::index())) {
+            $db->createCommand()->deleteIndex(Customer::index());
         }
-        $db->createCommand()->createIndex('yiitest');
+        $db->createCommand()->createIndex(Customer::index());
 
         $command = $db->createCommand();
         Customer::setUpMapping($command);
 
-        $db->createCommand()->flushIndex('yiitest');
+        $db->createCommand()->refreshIndex(Customer::index());
 
         $customer = new Customer();
-        $customer->id = 1;
+        $customer->_id = 1;
         $customer->setAttributes(['email' => 'user1@example.com', 'name' => 'user1', 'address' => 'address1', 'status' => 1], false);
         $customer->save(false);
         $customer = new Customer();
-        $customer->id = 2;
+        $customer->_id = 2;
         $customer->setAttributes(['email' => 'user2@example.com', 'name' => 'user2', 'address' => 'address2', 'status' => 1], false);
         $customer->save(false);
         $customer = new Customer();
-        $customer->id = 3;
+        $customer->_id = 3;
         $customer->setAttributes(['email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 1], false);
         $customer->save(false);
 
-        $db->createCommand()->flushIndex('yiitest');
+        $db->createCommand()->refreshIndex(Customer::index());
     }
 
     // Tests :
@@ -49,7 +49,7 @@ class ActiveDataProviderTest extends TestCase
     public function testQuery()
     {
         $query = new Query();
-        $query->from('yiitest', 'customer');
+        $query->from(Customer::index(), 'customer');
 
         $provider = new ActiveDataProvider([
             'query' => $query,

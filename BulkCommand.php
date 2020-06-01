@@ -53,12 +53,17 @@ class BulkCommand extends Component
     public function execute()
     {
         //valid endpoints are /_bulk, /{index}/_bulk, and {index}/{type}/_bulk
+        //for ES7+ type is omitted
         if ($this->index === null && $this->type === null) {
             $endpoint = ['_bulk'];
         } elseif ($this->index !== null && $this->type === null) {
             $endpoint = [$this->index, '_bulk'];
         } elseif ($this->index !== null && $this->type !== null) {
-            $endpoint = [$this->index, $this->type, '_bulk'];
+            if ($this->db->dslVersion >= 7) {
+                $endpoint = [$this->index, '_bulk'];
+            } else {
+                $endpoint = [$this->index, $this->type, '_bulk'];
+            }
         } else {
             throw new InvalidCallException('Invalid endpoint: if type is defined, index must be defined too.');
         }

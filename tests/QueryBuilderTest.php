@@ -21,8 +21,8 @@ class QueryBuilderTest extends TestCase
         $command = $this->getConnection()->createCommand();
 
         // delete index
-        if ($command->indexExists('yiitest')) {
-            $command->deleteIndex('yiitest');
+        if ($command->indexExists('builder-test')) {
+            $command->deleteIndex('builder-test');
         }
 
         $info = $command->db->get('/');
@@ -34,20 +34,19 @@ class QueryBuilderTest extends TestCase
     private function prepareDbData()
     {
         $command = $this->getConnection()->createCommand();
-        $command->setMapping('yiitest', 'article', [
-            '_id' => ['path' => 'id', 'index' => 'not_analyzed', 'store' => 'yes'],
+        $command->setMapping('builder-test', 'article', [
             'properties' => [
-                'title' => ["type" => "string", "index" => "not_analyzed"],
-                'created_at' => ["type" => "string", "index" => "not_analyzed"],
+                'title' => ["type" => "keyword"],
+                'created_at' => ["type" => "keyword"],
                 'weight' => ["type" => "integer"],
             ]
         ]);
-        $command->insert('yiitest', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'], 1);
-        $command->insert('yiitest', 'article', ['title' => 'Symfony2 is another framework', 'weight' => 2, 'created_at' => '2010-01-15'], 2);
-        $command->insert('yiitest', 'article', ['title' => 'Yii2 out now!', 'weight' => 3, 'created_at' => '2010-01-20'], 3);
-        $command->insert('yiitest', 'article', ['title' => 'yii test', 'weight' => 4, 'created_at' => '2012-05-11'], 4);
+        $command->insert('builder-test', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'], 1);
+        $command->insert('builder-test', 'article', ['title' => 'Symfony2 is another framework', 'weight' => 2, 'created_at' => '2010-01-15'], 2);
+        $command->insert('builder-test', 'article', ['title' => 'Yii2 out now!', 'weight' => 3, 'created_at' => '2010-01-20'], 3);
+        $command->insert('builder-test', 'article', ['title' => 'yii test', 'weight' => 4, 'created_at' => '2012-05-11'], 4);
 
-        $command->flushIndex('yiitest');
+        $command->refreshIndex('builder-test');
     }
 
     public function testQueryBuilderRespectsQuery()
@@ -86,10 +85,11 @@ class QueryBuilderTest extends TestCase
     {
         $queryParts = ['term' => ['title' => 'yii']];
         $query = new Query();
-        $query->from('yiitest', 'article');
+        $query->from('builder-test', 'article');
         $query->query = $queryParts;
         $result = $query->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
     }
 
     public function testMinScore()
@@ -110,20 +110,23 @@ class QueryBuilderTest extends TestCase
         //without min_score should get 2 documents with weights 1 and 4
 
         $query = new Query();
-        $query->from('yiitest', 'article');
+        $query->from('builder-test', 'article');
         $query->query($queryParts);
 
         $query->minScore(0.5);
         $result = $query->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
 
         $query->minScore(2);
         $result = $query->search($this->getConnection());
-        $this->assertEquals(1, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(1, $total);
 
         $query->minScore(5);
         $result = $query->search($this->getConnection());
-        $this->assertEquals(0, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(0, $total);
     }
 
     public function testMltSearch()
@@ -131,75 +134,84 @@ class QueryBuilderTest extends TestCase
         $queryParts = [
             "more_like_this" => [
                 "fields" => ["title"],
-                "like_text" => "Mention YII now",
+                "like" => "Mention YII now",
                 "min_term_freq" => 1,
                 "min_doc_freq" => 1,
             ]
         ];
         $query = new Query();
-        $query->from('yiitest', 'article');
+        $query->from('builder-test', 'article');
         $query->query = $queryParts;
         $result = $query->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
     }
 
     public function testHalfBoundedRange()
     {
         // >= 2010-01-15, 3 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['>=', 'created_at', '2010-01-15'])
             ->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
 
         // >= 2010-01-15, 3 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['gte', 'created_at', '2010-01-15'])
             ->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
 
         // > 2010-01-15, 2 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['>', 'created_at', '2010-01-15'])
             ->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
 
         // > 2010-01-15, 2 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['gt', 'created_at', '2010-01-15'])
             ->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
 
         // <= 2010-01-20, 3 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['<=', 'created_at', '2010-01-20'])
             ->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
 
         // <= 2010-01-20, 3 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['lte', 'created_at', '2010-01-20'])
             ->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
 
         // < 2010-01-20, 2 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['<', 'created_at', '2010-01-20'])
             ->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
 
         // < 2010-01-20, 2 results
         $result = (new Query())
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['lt', 'created_at', '2010-01-20'])
             ->search($this->getConnection());
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
     }
 
     public function testNotCondition()
@@ -210,12 +222,12 @@ class QueryBuilderTest extends TestCase
         ];
 
         $query = (new Query)
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['not in', 'title', $titles]);
 
         $result = $query->search($this->getConnection());
-
-        $this->assertEquals(2, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
     }
 
     public function testInCondition()
@@ -227,11 +239,12 @@ class QueryBuilderTest extends TestCase
         ];
 
         $query =  (new Query)
-            ->from('yiitest', 'article')
+            ->from('builder-test', 'article')
             ->where(['in', 'title', $titles]);
 
         $result = $query->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
     }
 
     public function testBuildNotCondition()

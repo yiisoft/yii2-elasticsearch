@@ -60,9 +60,11 @@ class Command extends Component
             $query = Json::encode($query);
         }
         $url = [$this->index !== null ? $this->index : '_all'];
-        if ($this->type !== null) {
+
+        if ($this->db->dslVersion < 7 && $this->type !== null) {
             $url[] = $this->type;
         }
+
         $url[] = '_search';
 
         return $this->db->get($url, array_merge($this->options, $options), $query);
@@ -136,9 +138,17 @@ class Command extends Component
         }
 
         if ($id !== null) {
-            return $this->db->put([$index, $type, $id], $options, $body);
+            if ($this->db->dslVersion >= 7) {
+                return $this->db->put([$index, '_doc', $id], $options, $body);
+            } else {
+                return $this->db->put([$index, $type, $id], $options, $body);
+            }
         } else {
-            return $this->db->post([$index, $type], $options, $body);
+            if ($this->db->dslVersion >= 7) {
+                return $this->db->post([$index, '_doc'], $options, $body);
+            } else {
+                return $this->db->post([$index, $type], $options, $body);
+            }
         }
     }
 
@@ -153,7 +163,11 @@ class Command extends Component
      */
     public function get($index, $type, $id, $options = [])
     {
-        return $this->db->get([$index, $type, $id], $options);
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->get([$index, '_doc', $id], $options);
+        } else {
+            return $this->db->get([$index, $type, $id], $options);
+        }
     }
 
     /**
@@ -171,7 +185,11 @@ class Command extends Component
     {
         $body = Json::encode(['ids' => array_values($ids)]);
 
-        return $this->db->get([$index, $type, '_mget'], $options, $body);
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->get([$index, '_doc', '_mget'], $options, $body);
+        } else {
+            return $this->db->get([$index, $type, '_mget'], $options, $body);
+        }
     }
 
     /**
@@ -184,7 +202,11 @@ class Command extends Component
      */
     public function getSource($index, $type, $id)
     {
-        return $this->db->get([$index, $type, $id]);
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->get([$index, '_doc', $id]);
+        } else {
+            return $this->db->get([$index, $type, $id]);
+        }
     }
 
     /**
@@ -197,7 +219,11 @@ class Command extends Component
      */
     public function exists($index, $type, $id)
     {
-        return $this->db->head([$index, $type, $id]);
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->head([$index, '_doc', $id]);
+        } else {
+            return $this->db->head([$index, $type, $id]);
+        }
     }
 
     /**
@@ -211,7 +237,11 @@ class Command extends Component
      */
     public function delete($index, $type, $id, $options = [])
     {
-        return $this->db->delete([$index, $type, $id], $options);
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->delete([$index, '_doc', $id], $options);
+        } else {
+            return $this->db->delete([$index, $type, $id], $options);
+        }
     }
 
     /**
@@ -233,7 +263,11 @@ class Command extends Component
             unset($options["detect_noop"]);
         }
 
-        return $this->db->post([$index, $type, $id, '_update'], $options, Json::encode($body));
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->post([$index, '_doc', $id, '_update'], $options, Json::encode($body));
+        } else {
+            return $this->db->post([$index, $type, $id, '_update'], $options, Json::encode($body));
+        }
     }
 
     // TODO bulk http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
@@ -292,7 +326,11 @@ class Command extends Component
      */
     public function typeExists($index, $type)
     {
-        return $this->db->head([$index, $type]);
+        if ($this->db->dslVersion >= 7) {
+            return $this->db->head([$index, '_doc']);
+        } else {
+            return $this->db->head([$index, $type]);
+        }
     }
 
     /**
@@ -578,7 +616,12 @@ class Command extends Component
     {
         $body = $mapping !== null ? (is_string($mapping) ? $mapping : Json::encode($mapping)) : null;
 
-        return $this->db->put([$index, '_mapping', $type], $options, $body);
+        if ($this->db->dslVersion >= 7) {
+            $endpoint = [$index, '_mapping'];
+        } else {
+            $endpoint = [$index, '_mapping', $type];
+        }
+        return $this->db->put($endpoint, $options, $body);
     }
 
     /**
@@ -590,7 +633,7 @@ class Command extends Component
     public function getMapping($index = '_all', $type = null)
     {
         $url = [$index, '_mapping'];
-        if ($type !== null) {
+        if ($this->db->dslVersion < 7 && $type !== null) {
             $url[] = $type;
         }
         return $this->db->get($url);

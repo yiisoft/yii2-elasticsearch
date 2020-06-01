@@ -1,0 +1,82 @@
+on:
+  - pull_request
+  - push
+
+name: build
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php-version }} / ES ${{ matrix.es-version }}
+    env:
+      extensions: curl, mbstring, dom, intl
+      key: cache-v1
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "5.6"
+          - "7.0"
+          - "7.1"
+          - "7.2"
+          - "7.3"
+          - "7.4"
+
+        es-version:
+          - "7.7.0"
+          - "6.8.9"
+          - "5.6.16"
+
+    services:
+      elasticsearch:
+        image: elasticsearch:${{ matrix.es-version }}
+        env:
+          "transport.host": "127.0.0.1"
+          "http.publish_host": "127.0.0.1"
+        ports:
+          - 9200:9200
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          ini-values: date.timezone='UTC'
+
+      - name: Determine composer cache directory
+        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(composer config cache-dir)"
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+
+      - name: Install dependencies with composer
+        run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+      - name: Run tests with phpunit
+        run: ES_VERSION=${{ matrix.es-version }} vendor/bin/phpunit

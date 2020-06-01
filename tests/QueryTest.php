@@ -16,12 +16,12 @@ class QueryTest extends TestCase
         $command = $this->getConnection()->createCommand();
 
         // delete index
-        if ($command->indexExists('yiitest')) {
-            $command->deleteIndex('yiitest');
+        if ($command->indexExists('query-test')) {
+            $command->deleteIndex('query-test');
         }
-        $command->createIndex('yiitest');
+        $command->createIndex('query-test');
 
-        $command->setMapping('yiitest', 'user', [
+        $command->setMapping('query-test', 'user', [
             'properties' => [
                 'name' => [ 'type' => 'keyword', 'store' => true ],
                 'email' => [ 'type' => 'keyword', 'store' => true ],
@@ -29,26 +29,26 @@ class QueryTest extends TestCase
             ],
         ]);
 
-        $command->insert('yiitest', 'user', ['name' => 'user1', 'email' => 'user1@example.com', 'status' => 1], 1);
-        $command->insert('yiitest', 'user', ['name' => 'user2', 'email' => 'user2@example.com', 'status' => 1], 2);
-        $command->insert('yiitest', 'user', ['name' => 'user3', 'email' => 'user3@example.com', 'status' => 2], 3);
-        $command->insert('yiitest', 'user', ['name' => 'user4', 'email' => 'user4@example.com', 'status' => 1], 4);
-        $command->insert('yiitest', 'user', ['name' => 'user5', 'email' => 'user5@example.com', 'status' => 1], 5);
-        $command->insert('yiitest', 'user', ['name' => 'user6', 'email' => 'user6@example.com', 'status' => 1], 6);
-        $command->insert('yiitest', 'user', ['name' => 'user7', 'email' => 'user7@example.com', 'status' => 2], 7);
-        $command->insert('yiitest', 'user', ['name' => 'user8', 'email' => 'user8@example.com', 'status' => 1], 8);
-        $command->insert('yiitest', 'user', ['name' => 'user9', 'email' => 'user9@example.com', 'status' => 1], 9);
-        $command->insert('yiitest', 'user', ['name' => 'usera', 'email' => 'user10@example.com', 'status' => 1], 10);
-        $command->insert('yiitest', 'user', ['name' => 'userb', 'email' => 'user11@example.com', 'status' => 2], 11);
-        $command->insert('yiitest', 'user', ['name' => 'userc', 'email' => 'user12@example.com', 'status' => 1], 12);
+        $command->insert('query-test', 'user', ['name' => 'user1', 'email' => 'user1@example.com', 'status' => 1], 1);
+        $command->insert('query-test', 'user', ['name' => 'user2', 'email' => 'user2@example.com', 'status' => 1], 2);
+        $command->insert('query-test', 'user', ['name' => 'user3', 'email' => 'user3@example.com', 'status' => 2], 3);
+        $command->insert('query-test', 'user', ['name' => 'user4', 'email' => 'user4@example.com', 'status' => 1], 4);
+        $command->insert('query-test', 'user', ['name' => 'user5', 'email' => 'user5@example.com', 'status' => 1], 5);
+        $command->insert('query-test', 'user', ['name' => 'user6', 'email' => 'user6@example.com', 'status' => 1], 6);
+        $command->insert('query-test', 'user', ['name' => 'user7', 'email' => 'user7@example.com', 'status' => 2], 7);
+        $command->insert('query-test', 'user', ['name' => 'user8', 'email' => 'user8@example.com', 'status' => 1], 8);
+        $command->insert('query-test', 'user', ['name' => 'user9', 'email' => 'user9@example.com', 'status' => 1], 9);
+        $command->insert('query-test', 'user', ['name' => 'usera', 'email' => 'user10@example.com', 'status' => 1], 10);
+        $command->insert('query-test', 'user', ['name' => 'userb', 'email' => 'user11@example.com', 'status' => 2], 11);
+        $command->insert('query-test', 'user', ['name' => 'userc', 'email' => 'user12@example.com', 'status' => 1], 12);
 
-        $command->flushIndex();
+        $command->refreshIndex('query-test');
     }
 
     public function testFields()
     {
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $query->storedFields(['name', 'status']);
         $this->assertEquals(['name', 'status'], $query->storedFields);
@@ -83,7 +83,7 @@ class QueryTest extends TestCase
     public function testOne()
     {
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $result = $query->one($this->getConnection());
         $this->assertEquals(3, count($result['_source']));
@@ -107,7 +107,7 @@ class QueryTest extends TestCase
     public function testAll()
     {
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $results = $query->limit(100)->all($this->getConnection());
         $this->assertEquals(12, count($results));
@@ -119,7 +119,7 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('_id', $result);
 
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $results = $query->where(['name' => 'user1'])->all($this->getConnection());
         $this->assertEquals(1, count($results));
@@ -133,7 +133,7 @@ class QueryTest extends TestCase
 
         // indexBy
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $results = $query->limit(100)->indexBy('name')->all($this->getConnection());
         $this->assertEquals(12, count($results));
@@ -157,7 +157,7 @@ class QueryTest extends TestCase
     public function testScalar()
     {
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $result = $query->where(['name' => 'user1'])->scalar('name', $this->getConnection());
         $this->assertEquals('user1', $result);
@@ -170,7 +170,7 @@ class QueryTest extends TestCase
     public function testColumn()
     {
         $query = new Query;
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
 
         $result = $query->orderBy(['name' => SORT_ASC])->limit(4)->column('name', $this->getConnection());
         $this->assertEquals(['user1', 'user2', 'user3', 'user4'], $result);
@@ -206,17 +206,17 @@ class QueryTest extends TestCase
         // should work with hash format
         $query = new Query;
         $query->filterWhere([
-            'id' => 0,
+            '_id' => 0,
             'title' => '   ',
             'author_ids' => [],
         ]);
-        $this->assertEquals(['id' => 0], $query->where);
+        $this->assertEquals(['_id' => 0], $query->where);
 
         $query->andFilterWhere(['status' => null]);
-        $this->assertEquals(['id' => 0], $query->where);
+        $this->assertEquals(['_id' => 0], $query->where);
 
         $query->orFilterWhere(['name' => '']);
-        $this->assertEquals(['id' => 0], $query->where);
+        $this->assertEquals(['_id' => 0], $query->where);
 
         // should work with operator format
         $query = new Query;
@@ -224,31 +224,31 @@ class QueryTest extends TestCase
         $query->filterWhere($condition);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['between', 'id', null, null]);
+        $query->andFilterWhere(['between', '_id', null, null]);
         $this->assertEquals($condition, $query->where);
 
-        $query->orFilterWhere(['not between', 'id', null, null]);
+        $query->orFilterWhere(['not between', '_id', null, null]);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['in', 'id', []]);
+        $query->andFilterWhere(['in', '_id', []]);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['not in', 'id', []]);
+        $query->andFilterWhere(['not in', '_id', []]);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['not in', 'id', []]);
+        $query->andFilterWhere(['not in', '_id', []]);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['like', 'id', '']);
+        $query->andFilterWhere(['like', '_id', '']);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['or like', 'id', '']);
+        $query->andFilterWhere(['or like', '_id', '']);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['not like', 'id', '   ']);
+        $query->andFilterWhere(['not like', '_id', '   ']);
         $this->assertEquals($condition, $query->where);
 
-        $query->andFilterWhere(['or not like', 'id', null]);
+        $query->andFilterWhere(['or not like', '_id', null]);
         $this->assertEquals($condition, $query->where);
     }
 
@@ -259,10 +259,10 @@ class QueryTest extends TestCase
             'and',
             ['like', 'name', ''],
             ['like', 'title', ''],
-            ['id' => 1],
+            ['_id' => 1],
             ['not', ['like', 'name', '']]
         ]);
-        $this->assertEquals(['and', ['id' => 1]], $query->where);
+        $this->assertEquals(['and', ['_id' => 1]], $query->where);
     }
 
     // TODO test facets
@@ -334,7 +334,7 @@ class QueryTest extends TestCase
 
         //test each
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        $query->from('query-test', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $result_keys = [];
@@ -352,7 +352,7 @@ class QueryTest extends TestCase
 
         //test batch
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
+        $query->from('query-test', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
         $results = [];
@@ -368,7 +368,7 @@ class QueryTest extends TestCase
 
         //test scan (no ordering)
         $query = new Query;
-        $query->from('yiitest', 'user')->limit(3);
+        $query->from('query-test', 'user')->limit(3);
 
         $results = [];
         foreach ($query->each('1m', $this->getConnection()) as $value) {
@@ -390,11 +390,12 @@ class QueryTest extends TestCase
             'term' => ['status' => 2]
         ];
         $query = new Query();
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
         $query->postFilter($postFilter);
         $query->addAggregation('statuses', 'terms', ['field' => 'status']);
         $result = $query->search($this->getConnection());
-        $this->assertEquals(3, $result['hits']['total']);
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
     }
 
     /**
@@ -404,7 +405,7 @@ class QueryTest extends TestCase
     public function testExplain()
     {
         $query = new Query();
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
         $query->explain(true);
         $result = $query->search($this->getConnection());
         $this->assertTrue(is_array($result['hits']['hits'][0]['_explanation']));
@@ -418,7 +419,7 @@ class QueryTest extends TestCase
     public function testNoExplain()
     {
         $query = new Query();
-        $query->from('yiitest', 'user');
+        $query->from('query-test', 'user');
         $result = $query->search($this->getConnection());
         $this->assertFalse(array_key_exists('_explanation', $result['hits']['hits'][0]));
     }

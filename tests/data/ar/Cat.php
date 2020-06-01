@@ -16,9 +16,8 @@ namespace yiiunit\extensions\elasticsearch\data\ar;
  */
 class Cat extends Animal
 {
-
     /**
-     * 
+     *
      * @param self $record
      * @param array $row
      */
@@ -28,5 +27,4 @@ class Cat extends Animal
 
         $record->does = 'meow';
     }
-
 }

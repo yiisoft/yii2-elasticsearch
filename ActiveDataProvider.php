@@ -136,23 +136,11 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
             return $keys;
         } elseif ($this->query instanceof ActiveQueryInterface) {
-            /* @var $class \yii\db\ActiveRecord */
+            /* @var $class \yii\elasticsearch\ActiveRecord */
             $class = $this->query->modelClass;
-            $pks = $class::primaryKey();
-            if (!is_array($pks) || count($pks) === 1) {
-                foreach ($models as $model) {
-                    $keys[] = $model->primaryKey;
-                }
-            } else {
-                foreach ($models as $model) {
-                    $kk = [];
-                    foreach ($pks as $pk) {
-                        $kk[$pk] = $model[$pk];
-                    }
-                    $keys[] = $kk;
-                }
+            foreach ($models as $model) {
+                $keys[] = $model->primaryKey;
             }
-
             return $keys;
         } else {
             return array_keys($models);
