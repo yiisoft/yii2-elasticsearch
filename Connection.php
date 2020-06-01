@@ -10,7 +10,7 @@ namespace yii\elasticsearch;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\Json;
 
 /**
@@ -589,7 +589,7 @@ class Connection extends Component
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;
-        } catch(InvalidParamException $e) {
+        } catch(InvalidArgumentException $e) {
             return $body;
         }
     }

@@ -9,7 +9,7 @@ namespace yii\elasticsearch;
 
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\db\QueryInterface;
 use yii\db\QueryTrait;
 
@@ -784,14 +784,14 @@ class Query extends Component implements QueryInterface
      * Sets the options to be passed to the command created by this query.
      * @param array $options the options to be set.
      * @return $this the query object itself
-     * @throws InvalidParamException if $options is not an array
+     * @throws InvalidArgumentException if $options is not an array
      * @see Command::$options
      * @since 2.0.4
      */
     public function options($options)
     {
         if (!is_array($options)) {
-            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+            throw new InvalidArgumentException('Array parameter expected, ' . gettype($options) . ' received.');
         }
 
         $this->options = $options;
@@ -802,14 +802,14 @@ class Query extends Component implements QueryInterface
      * Adds more options, overwriting existing options.
      * @param array $options the options to be added.
      * @return $this the query object itself
-     * @throws InvalidParamException if $options is not an array
+     * @throws InvalidArgumentException if $options is not an array
      * @see options()
      * @since 2.0.4
      */
     public function addOptions($options)
     {
         if (!is_array($options)) {
-            throw new InvalidParamException('Array parameter expected, ' . gettype($options) . ' received.');
+            throw new InvalidArgumentException('Array parameter expected, ' . gettype($options) . ' received.');
         }
 
         $this->options = array_merge($this->options, $options);

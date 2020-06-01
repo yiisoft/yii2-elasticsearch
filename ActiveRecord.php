@@ -11,7 +11,6 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
 use yii\db\BaseActiveRecord;
 use yii\db\StaleObjectException;
@@ -553,7 +552,7 @@ class ActiveRecord extends BaseActiveRecord
 
         if (isset($options['optimistic_locking']) && $options['optimistic_locking']) {
             if ($this->_version === null) {
-                throw new InvalidParamException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::update() for details.');
+                throw new InvalidArgumentException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::update() for details.');
             }
             $options['version'] = $this->_version;
             unset($options['optimistic_locking']);
@@ -763,7 +762,7 @@ class ActiveRecord extends BaseActiveRecord
         }
         if (isset($options['optimistic_locking']) && $options['optimistic_locking']) {
             if ($this->_version === null) {
-                throw new InvalidParamException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::delete() for details.');
+                throw new InvalidArgumentException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::delete() for details.');
             }
             $options['version'] = $this->_version;
             unset($options['optimistic_locking']);
