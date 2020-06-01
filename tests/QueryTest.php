@@ -19,6 +19,15 @@ class QueryTest extends TestCase
         if ($command->indexExists('yiitest')) {
             $command->deleteIndex('yiitest');
         }
+        $command->createIndex('yiitest');
+
+        $command->setMapping('yiitest', 'user', [
+            'properties' => [
+                'name' => [ 'type' => 'keyword', 'store' => true ],
+                'email' => [ 'type' => 'keyword', 'store' => true ],
+                'status' => [ 'type' => 'integer', 'store' => true ],
+            ],
+        ]);
 
         $command->insert('yiitest', 'user', ['name' => 'user1', 'email' => 'user1@example.com', 'status' => 1], 1);
         $command->insert('yiitest', 'user', ['name' => 'user2', 'email' => 'user2@example.com', 'status' => 1], 2);
@@ -41,11 +50,11 @@ class QueryTest extends TestCase
         $query = new Query;
         $query->from('yiitest', 'user');
 
-        $query->fields(['name', 'status']);
-        $this->assertEquals(['name', 'status'], $query->fields);
+        $query->storedFields(['name', 'status']);
+        $this->assertEquals(['name', 'status'], $query->storedFields);
 
-        $query->fields('name', 'status');
-        $this->assertEquals(['name', 'status'], $query->fields);
+        $query->storedFields('name', 'status');
+        $this->assertEquals(['name', 'status'], $query->storedFields);
 
         $result = $query->one($this->getConnection());
         $this->assertEquals(2, count($result['fields']));
@@ -53,15 +62,15 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('name', $result['fields']);
         $this->assertArrayHasKey('_id', $result);
 
-        $query->fields([]);
-        $this->assertEquals([], $query->fields);
+        $query->storedFields([]);
+        $this->assertEquals([], $query->storedFields);
 
         $result = $query->one($this->getConnection());
         $this->assertArrayNotHasKey('fields', $result);
         $this->assertArrayHasKey('_id', $result);
 
-        $query->fields(null);
-        $this->assertNull($query->fields);
+        $query->storedFields(null);
+        $this->assertNull($query->storedFields);
 
         $result = $query->one($this->getConnection());
         $this->assertEquals(3, count($result['_source']));
@@ -170,6 +179,26 @@ class QueryTest extends TestCase
         $result = $query->where(['name' => 'user15'])->scalar('name', $this->getConnection());
         $this->assertNull($result);
 
+    }
+
+    public function testAndWhere() {
+        $query = new Query;
+        $query->where(1)
+            ->andWhere(2)
+            ->andWhere(3);
+
+        $expected = [ 'and', 1, 2, 3 ];
+        $this->assertEquals($expected, $query->where);
+    }
+
+    public function testOrWhere() {
+        $query = new Query;
+        $query->where(1)
+            ->orWhere(2)
+            ->orWhere(3);
+
+        $expected = [ 'or', 1, 2, 3 ];
+        $this->assertEquals($expected, $query->where);
     }
 
     public function testFilterWhere()

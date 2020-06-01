@@ -92,18 +92,20 @@ $customers = Customer::find()->active()->all(); // find all by query (using the 
 // http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
 $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // articles whose title contains "yii"
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query-fuzziness
 $query = Article::find()->query([
-    "fuzzy_like_this" => [
-        "fields" => ["title", "description"],
-        "like_text" => "This query will return articles that are similar to this text :-)",
-        "max_query_terms" => 12
+    'match' => [
+        'title' => [
+            'query' => 'This query will return articles that are similar to this text :-)',
+            'operator' => 'and',
+            'fuzziness' => 'AUTO'
+        ]
     ]
 ]);
 
 $query->all(); // gives you all the documents
-// you can add facets to your search:
-$query->addStatisticalFacet('click_stats', ['field' => 'visit_count']);
+// you can add aggregates to your search
+$query->addAggregate('click_stats', ['terms' => ['field' => 'visit_count']]);
 $query->search(); // gives you all the records + stats about the visit_count field. e.g. mean, sum, min, max etc...
 ```
 
@@ -162,10 +164,12 @@ Using the previously defined `Customer` class, let's find out how many customers
 
 
 ```php
-$aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
-    'field' => 'registration_date',
-    'order' => ['_count' => 'desc'],
-    'size' => 10, //top 10 registration dates
+$aggData = Customer::find()->addAggregate('customers_by_date', [
+    'terms' => [
+        'field' => 'registration_date',
+        'order' => ['_count' => 'desc'],
+        'size' => 10, //top 10 registration dates
+    ],
 ])->search(null, ['search_type' => 'count']);
 
 ```

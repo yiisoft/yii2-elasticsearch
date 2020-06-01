@@ -98,6 +98,10 @@ class CommandTest extends TestCase
         $actualResult = $this->command->getAliasInfo();
         $this->command->deleteIndex($index);
 
+        // order is not guaranteed
+        sort($expectedResult);
+        sort($actualResult);
+
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -340,6 +344,10 @@ class CommandTest extends TestCase
         $this->command->deleteIndex($index1);
         $this->command->deleteIndex($index2);
 
+        // order is not guaranteed
+        sort($expectedResult);
+        sort($actualResult);
+
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -490,5 +498,22 @@ class CommandTest extends TestCase
         $this->command->deleteIndex($index);
 
         $this->assertTrue($actualResult);
+    }
+
+    public function testIndexStats()
+    {
+        $cmd = $this->command;
+        if (!$cmd->indexExists('yii2test2')) {
+            $cmd->createIndex('yii2test2');
+        }
+        $stats = $cmd->getIndexStats();
+        $this->assertArrayHasKey('_all', $stats, print_r(array_keys($stats), true));
+        $this->assertArrayHasKey('indices', $stats, print_r(array_keys($stats), true));
+        $this->assertArrayHasKey('yii2test2', $stats['indices'], print_r(array_keys($stats['indices']), true));
+
+        $stats = $cmd->getIndexStats('yii2test2');
+        $this->assertArrayHasKey('_all', $stats, print_r(array_keys($stats), true));
+        $this->assertArrayHasKey('indices', $stats, print_r(array_keys($stats), true));
+        $this->assertArrayHasKey('yii2test2', $stats['indices'], print_r(array_keys($stats['indices']), true));
     }
 }
