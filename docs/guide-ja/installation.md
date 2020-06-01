@@ -17,6 +17,8 @@ script.disable_dynamic: false
 composer require --prefer-dist yiisoft/yii2-elasticsearch
 ```
 
+を追加してください。
+
 ## アプリケーションを構成する
 
 このエクステンションを使用するためには、アプリケーションの構成情報で `Connection` クラスを構成する必要があります。

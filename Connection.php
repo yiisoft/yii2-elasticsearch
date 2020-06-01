@@ -10,7 +10,7 @@ namespace yii\elasticsearch;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\Json;
 
 /**
@@ -173,7 +173,7 @@ class Connection extends Component
         if (strncmp($host, 'inet[/', 6) === 0) {
             $host = substr($host, 6, -1);
         }
-        $response = $this->httpRequest('GET', "$protocol://$host/_nodes");
+        $response = $this->httpRequest('GET', "$protocol://$host/_nodes/_all/http");
         if (!empty($response['nodes'])) {
             $nodes = $response['nodes'];
         } else {
@@ -181,12 +181,13 @@ class Connection extends Component
         }
 
         foreach ($nodes as $key => &$node) {
-            // Make sure that nodes have an 'http_address' property, which is not the case
-            // if you're using AWS Elasticsearch service (at least as of Oct., 2015, still the case in July, 2017).
-            // it should be there according to the docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html
-            if (!isset($node['http_address'])) {
+            // Make sure that nodes have an 'http_address' property, which is not the case if you're using AWS
+            // Elasticsearch service (at least as of Oct., 2015). - TO BE VERIFIED
+            // Temporary workaround - simply ignore all invalid nodes
+            if (!isset($node['http']['publish_address'])) {
                 unset($nodes[$key]);
             }
+            $node['http_address'] = $node['http']['publish_address'];
 
             // Protocol is not a standard ES node property, so we add it manually
             $node['protocol'] = $this->defaultProtocol;
@@ -219,7 +220,7 @@ class Connection extends Component
             return;
         }
         Yii::trace('Closing connection to elasticsearch. Active node was: '
-            . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
+            . $this->nodes[$this->activeNode]['http']['publish_address'], __CLASS__);
         $this->activeNode = null;
         if ($this->_curl) {
             curl_close($this->_curl);
@@ -423,7 +424,10 @@ class Connection extends Component
             CURLOPT_RETURNTRANSFER => false,
             CURLOPT_HEADER         => false,
             // http://www.php.net/manual/en/function.curl-setopt.php#82418
-            CURLOPT_HTTPHEADER     => ['Expect:', 'Content-Type: application/json'],
+            CURLOPT_HTTPHEADER     => [
+                'Expect:',
+                'Content-Type: application/json',
+            ],
 
             CURLOPT_WRITEFUNCTION  => function ($curl, $data) use (&$body) {
                 $body .= $data;
@@ -512,7 +516,7 @@ class Connection extends Component
         }
 
         if ($responseCode >= 200 && $responseCode < 300) {
-            if ($method == 'HEAD') {
+            if ($method === 'HEAD') {
                 return true;
             } else {
                 if (isset($headers['content-length']) && ($len = mb_strlen($body, '8bit')) < $headers['content-length']) {
@@ -545,7 +549,7 @@ class Connection extends Component
         } elseif ($responseCode == 404) {
             return false;
         } else {
-            throw new Exception("Elasticsearch request failed with code $responseCode.", [
+            throw new Exception("Elasticsearch request failed with code $responseCode. Response body:\n{$body}", [
                 'requestMethod' => $method,
                 'requestUrl' => $url,
                 'requestBody' => $requestBody,
@@ -564,6 +568,7 @@ class Connection extends Component
             CURLOPT_WRITEFUNCTION => null,
             CURLOPT_READFUNCTION => null,
             CURLOPT_PROGRESSFUNCTION => null,
+            CURLOPT_POSTFIELDS => null,
         ];
         curl_setopt_array($this->_curl, $unsetValues);
         if (function_exists('curl_reset')) { // since PHP 5.5.0
@@ -584,7 +589,7 @@ class Connection extends Component
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;
-        } catch(InvalidParamException $e) {
+        } catch(InvalidArgumentException $e) {
             return $body;
         }
     }

@@ -7,16 +7,17 @@ language: php
 dist: trusty
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
   - 7.0
   - 7.1
   - 7.2
   - 7.3
 
+services:
+  - docker
+
 # faster builds on new travis setup not using sudo
-sudo: false
+sudo: required
 
 # cache vendor dirs
 cache:
@@ -24,27 +25,25 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-#  - curl -s https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz | tar xz -C /tmp
-  - wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.zip -O /tmp/elasticsearch-1.7.6.zip
-  - unzip /tmp/elasticsearch-1.7.6.zip -d /tmp/
-  - 'echo "script.disable_dynamic: false" | sudo tee -a /tmp/elasticsearch-1.7.6/config/elasticsearch.yml'
-#  - 'echo "script.inline: on" | sudo tee -a /tmp/elasticsearch-2.4.6/config/elasticsearch.yml'
-#  - 'echo "script.indexed: on" | sudo tee -a /tmp/elasticsearch-2.4.6/config/elasticsearch.yml'
+  - docker pull elasticsearch:5.1
+  - docker run -p 9200:9200 -d elasticsearch:5.1 -Etransport.host=127.0.0.1 -Ehttp.publish_host=127.0.0.1
+
 install:
   - travis_retry composer self-update && composer --version
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - travis_retry composer install --prefer-dist --no-interaction
+  - travis_retry composer install --prefer-source --no-interaction
+
 before_script:
-  # - /tmp/elasticsearch-2.4.6/bin/elasticsearch -d
-  - /tmp/elasticsearch-1.7.6/bin/elasticsearch -d
-  - sleep 10
   - echo 'elasticsearch version ' && curl http://localhost:9200/
   - |
     if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
       PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
     fi
+
 script:
   - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
+
 after_script:
   - |
     if [ $TRAVIS_PHP_VERSION = '5.6' ]; then

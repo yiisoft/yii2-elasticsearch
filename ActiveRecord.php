@@ -11,7 +11,6 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQueryInterface;
 use yii\db\ActiveRecordInterface;
@@ -443,15 +442,14 @@ class ActiveRecord extends BaseActiveRecord
      *
      * - `routing` define shard placement of this record.
      * - `parent` by giving the primaryKey of another record this defines a parent-child relation
-     * - `timestamp` specifies the timestamp to store along with the document. Default is indexing time.
      *
      * Please refer to the [elasticsearch documentation](http://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)
      * for more details on these options.
      *
-     * By default the `op_type` is set to `create`.
+     * By default the `op_type` is set to `create` if model primary key is present.
      * @return bool whether the attributes are valid and the record is inserted successfully.
      */
-    public function insert($runValidation = true, $attributes = null, $options = ['op_type' => 'create'])
+    public function insert($runValidation = true, $attributes = null, $options = [ ])
     {
         if ($runValidation && !$this->validate($attributes)) {
             return false;
@@ -460,6 +458,10 @@ class ActiveRecord extends BaseActiveRecord
             return false;
         }
         $values = $this->getDirtyAttributes($attributes);
+
+        if ($this->getPrimaryKey() !== null) {
+            $options['op_type'] = isset($options['op_type']) ? $options['op_type'] : 'create';
+        }
 
         $response = static::getDb()->createCommand()->insert(
             static::index(),
@@ -555,7 +557,7 @@ class ActiveRecord extends BaseActiveRecord
 
         if (isset($options['optimistic_locking']) && $options['optimistic_locking']) {
             if ($this->_version === null) {
-                throw new InvalidParamException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::update() for details.');
+                throw new InvalidArgumentException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::update() for details.');
             }
             $options['version'] = $this->_version;
             unset($options['optimistic_locking']);
@@ -700,9 +702,15 @@ class ActiveRecord extends BaseActiveRecord
         foreach ($primaryKeys as $pk) {
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.{$counter} += {$counter};\n";
+                $script .= "ctx._source.{$counter} += params.{$counter};\n";
             }
-            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["script" => $script, "params" => $counters, "lang" => "groovy"]);
+            $bulkCommand->addAction(["update" => ["_id" => $pk]], [
+                'script' => [
+                    'inline' => $script,
+                    'params' => $counters,
+                    'lang' => 'painless',
+                ],
+            ]);
         }
         $response = $bulkCommand->execute();
 
@@ -759,7 +767,7 @@ class ActiveRecord extends BaseActiveRecord
         }
         if (isset($options['optimistic_locking']) && $options['optimistic_locking']) {
             if ($this->_version === null) {
-                throw new InvalidParamException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::delete() for details.');
+                throw new InvalidArgumentException('Unable to use optimistic locking on a record that has no version set. Refer to the docs of ActiveRecord::delete() for details.');
             }
             $options['version'] = $this->_version;
             unset($options['optimistic_locking']);

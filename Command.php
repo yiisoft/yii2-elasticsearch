@@ -89,9 +89,9 @@ class Command extends Component
         if ($this->type !== null) {
             $url[] = $this->type;
         }
-        $url[] = '_query';
+        $url[] = '_delete_by_query';
 
-        return $this->db->delete($url, array_merge($this->options, $options), $query);
+        return $this->db->post($url, array_merge($this->options, $options), $query);
     }
 
     /**
@@ -513,14 +513,23 @@ class Command extends Component
     /**
      * @param $index
      * @return mixed
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-status.html
+     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html
      */
-    public function getIndexStatus($index = '_all')
+    public function getIndexStats($index = '_all')
     {
-        return $this->db->get([$index, '_status']);
+        return $this->db->get([$index, '_stats']);
     }
 
-    // TODO http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html
+    /**
+     * @param $index
+     * @return mixed
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-recovery.html
+     */
+    public function getIndexRecoveryStats($index = '_all')
+    {
+        return $this->db->get([$index, '_recovery']);
+    }
+
     // http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-segments.html
 
     /**
@@ -585,17 +594,6 @@ class Command extends Component
             $url[] = $type;
         }
         return $this->db->get($url);
-    }
-
-    /**
-     * @param $index
-     * @param $type
-     * @return mixed
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
-     */
-    public function deleteMapping($index, $type)
-    {
-        return $this->db->delete([$index, '_mapping', $type]);
     }
 
     /**

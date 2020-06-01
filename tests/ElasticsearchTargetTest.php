@@ -22,6 +22,7 @@ class ElasticsearchTargetTest extends TestCase
 
         $logger->log('Test message', Logger::LEVEL_INFO, 'test-category');
         $logger->flush(true);
+        $this->getConnection()->createCommand()->refreshIndex($this->index);
 
         $query = new Query();
         $query->from($this->index, $this->type);
@@ -55,9 +56,6 @@ class ElasticsearchTargetTest extends TestCase
                     'db' => $this->getConnection(),
                     'index' => $this->index,
                     'type' => $this->type,
-                    'options' => [
-                        'refresh' => true
-                    ]
                 ]
             ]
         ]);
