@@ -8,7 +8,7 @@
 namespace yii\elasticsearch;
 
 use yii\base\BaseObject;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\NotSupportedException;
 use yii\helpers\Json;
 
@@ -163,7 +163,7 @@ class QueryBuilder extends BaseObject
      * Parses the condition specification and generates the corresponding SQL expression.
      *
      * @param string|array $condition the condition specification. Please refer to [[Query::where()]] on how to specify a condition.
-     * @throws \yii\base\InvalidParamException if unknown operator is used in query
+     * @throws \yii\base\InvalidArgumentException if unknown operator is used in query
      * @throws \yii\base\NotSupportedException if string conditions are used in where
      * @return string the generated SQL expression
      */
@@ -205,7 +205,7 @@ class QueryBuilder extends BaseObject
 
                 return $this->$method($operator, $condition);
             } else {
-                throw new InvalidParamException('Found unknown operator in query: ' . $operator);
+                throw new InvalidArgumentException('Found unknown operator in query: ' . $operator);
             }
         } else { // hash format: 'column1' => 'value1', 'column2' => 'value2', ...
 
@@ -246,7 +246,7 @@ class QueryBuilder extends BaseObject
     private function buildNotCondition($operator, $operands)
     {
         if (count($operands) != 1) {
-            throw new InvalidParamException("Operator '$operator' requires exactly one operand.");
+            throw new InvalidArgumentException("Operator '$operator' requires exactly one operand.");
         }
 
         $operand = reset($operands);
@@ -269,7 +269,7 @@ class QueryBuilder extends BaseObject
         } else if ($operator === 'or') {
             $clause = 'should';
         } else {
-            throw new InvalidParamException("Operator should be 'or' or 'and'");
+            throw new InvalidArgumentException("Operator should be 'or' or 'and'");
         }
 
         foreach ($operands as $operand) {
@@ -294,7 +294,7 @@ class QueryBuilder extends BaseObject
     private function buildBetweenCondition($operator, $operands)
     {
         if (!isset($operands[0], $operands[1], $operands[2])) {
-            throw new InvalidParamException("Operator '$operator' requires three operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires three operands.");
         }
 
         list($column, $value1, $value2) = $operands;
@@ -312,7 +312,7 @@ class QueryBuilder extends BaseObject
     private function buildInCondition($operator, $operands)
     {
         if (!isset($operands[0], $operands[1]) || !is_array($operands)) {
-            throw new InvalidParamException("Operator '$operator' requires array of two operands: column and values");
+            throw new InvalidArgumentException("Operator '$operator' requires array of two operands: column and values");
         }
 
         list($column, $values) = $operands;
@@ -400,7 +400,7 @@ class QueryBuilder extends BaseObject
     private function buildHalfBoundedRangeCondition($operator, $operands)
     {
         if (!isset($operands[0], $operands[1])) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
         }
 
         list($column, $value) = $operands;
@@ -421,7 +421,7 @@ class QueryBuilder extends BaseObject
         }
 
         if ($range_operator === null) {
-            throw new InvalidParamException("Operator '$operator' is not implemented.");
+            throw new InvalidArgumentException("Operator '$operator' is not implemented.");
         }
 
         $filter = [
