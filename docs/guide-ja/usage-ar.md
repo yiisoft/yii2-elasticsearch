@@ -164,10 +164,12 @@ $customers = Customer::find()->filter([
 
 
 ```php
-$aggData = Customer::find()->addAggregation('customers_by_date', 'terms', [
-    'field' => 'registration_date',
-    'order' => ['_count' => 'desc'],
-    'size' => 10, // 登録日の上位 10
+$aggData = Customer::find()->addAggregate('customers_by_date', [
+    'terms' => [
+        'field' => 'registration_date',
+        'order' => ['_count' => 'desc'],
+        'size' => 10, // 登録日の上位 10
+    ],
 ])->search(null, ['search_type' => 'count']);
 
 ```                    
@@ -179,3 +181,36 @@ $customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date'
 ```
 
 これで `$customersByDate` に、ユーザー登録数の最も多い日付け上位 10 個が入ります。
+
+
+## オブジェクトにマップされた属性の異常な振る舞いについて
+
+このエクステンションは `_update` エンドポイントを使ってレコードを更新します。このエンドポイントはドキュメントの部分更新をするように設計されているため、ElasticSearch で "オブジェクト" マップ型を持つ全ての属性は既存のデータとマージされます。例示しましょう。
+
+```
+$customer = new Customer();
+$customer->my_attribute = ['foo' => 'v1', 'bar' => 'v2'];
+$customer->save();
+// この時点で ElasticSearch における my_attribute の値は {"foo": "v1", "bar": "v2"}
+
+$customer->my_attribute = ['foo' => 'v3', 'bar' => 'v4'];
+$customer->save();
+// ElasticSearch における my_attribute の値は {"foo": "v3", "bar": "v4"} となる
+
+$customer->my_attribute = ['baz' => 'v5'];
+$customer->save();
+// ElasticSearch における my_attribute の値は {"foo": "v3", "bar": "v4", "baz": "v5"} となる
+// しかし $customer->my_attribute は ['baz' => 'v5'] に等しいままである
+```
+
+このロジックはオブジェクトに対してのみ適用されるので、オブジェクトを単一要素の配列に包むことが解決策になります。ElasticSearch にとっては単一要素の配列は要素自体と同じものであるため、それ以外のコードを修正する必要はありません。
+
+```
+$customer->my_attribute = [['new' => 'value']]; // 二重括弧に注意
+$customer->save();
+// ElasticSearch における my_attribute の値は {"new": "value"} になる
+$customer->my_attribute = $customer->my_attribute[0]; // 一貫性のためにこうしてもよい
+```
+
+詳細については次の議論を参照して下さい。
+https://discuss.elastic.co/t/updating-an-object-field/110735
