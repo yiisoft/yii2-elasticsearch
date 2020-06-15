@@ -130,8 +130,10 @@ class QueryBuilder extends BaseObject
             } else {
                 $column = $name;
             }
-            if ($column == '_id') {
-                $column = '_uid';
+            if ($this->db->dslVersion < 7) {
+                if ($column == '_id') {
+                    $column = '_uid';
+                }
             }
 
             // allow elasticsearch extended syntax as described in http://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
@@ -404,8 +406,10 @@ class QueryBuilder extends BaseObject
         }
 
         list($column, $value) = $operands;
-        if ($column === '_id') {
-            $column = '_uid';
+        if ($this->db->dslVersion < 7) {
+            if ($column === '_id') {
+                $column = '_uid';
+            }
         }
 
         $range_operator = null;
