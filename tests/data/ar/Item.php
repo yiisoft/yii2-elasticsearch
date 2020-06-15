@@ -13,14 +13,9 @@ use yii\elasticsearch\Command;
  */
 class Item extends ActiveRecord
 {
-    public static function primaryKey()
-    {
-        return ['id'];
-    }
-
     public function attributes()
     {
-        return ['id', 'name', 'category_id'];
+        return ['name', 'category_id'];
     }
 
     /**
@@ -30,11 +25,9 @@ class Item extends ActiveRecord
     public static function setUpMapping($command)
     {
         $command->setMapping(static::index(), static::type(), [
-            static::type() => [
-                "properties" => [
-                    "name" =>        ["type" => "keyword", "index" => "not_analyzed", "store" => true],
-                    "category_id" =>      ["type" => "integer"],
-                ]
+            "properties" => [
+                "name" => ["type" => "keyword", "store" => true],
+                "category_id" => ["type" => "integer"],
             ]
         ]);
 

@@ -20,6 +20,11 @@ $config = [
     ],
 ];
 
+$esVersion = getenv('ES_VERSION');
+if (preg_match('/^\d+/', $esVersion, $matches)) {
+    $config['elasticsearch']['dslVersion'] = $matches[0];
+}
+
 if (is_file(__DIR__ . '/config.local.php')) {
     include(__DIR__ . '/config.local.php');
 }

@@ -30,4 +30,21 @@ class Record
 
         return $results;
     }
+
+    public static function initIndex($class, $db)
+    {
+        $index = $class::index();
+
+        if ($db->createCommand()->indexExists($index)) {
+            $db->createCommand()->deleteIndex($index);
+        }
+        $db->createCommand()->createIndex($index);
+
+        $class::setUpMapping($db->createCommand());
+    }
+
+    public static function refreshIndex($class, $db)
+    {
+        $db->createCommand()->refreshIndex($class::index());
+    }
 }

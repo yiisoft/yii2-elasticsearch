@@ -23,12 +23,12 @@ class OrderItem extends ActiveRecord
 
     public function getOrder()
     {
-        return $this->hasOne(Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(Order::className(), ['_id' => 'order_id']);
     }
 
     public function getItem()
     {
-        return $this->hasOne(Item::className(), ['id' => 'item_id']);
+        return $this->hasOne(Item::className(), ['_id' => 'item_id']);
     }
 
     /**
@@ -38,13 +38,11 @@ class OrderItem extends ActiveRecord
     public static function setUpMapping($command)
     {
         $command->setMapping(static::index(), static::type(), [
-            static::type() => [
-                "properties" => [
-                    "order_id" => ["type" => "integer"],
-                    "item_id"  => ["type" => "integer"],
-                    "quantity" => ["type" => "integer"],
-                    "subtotal" => ["type" => "integer"],
-                ]
+            "properties" => [
+                "order_id" => ["type" => "integer"],
+                "item_id"  => ["type" => "integer"],
+                "quantity" => ["type" => "integer"],
+                "subtotal" => ["type" => "integer"],
             ]
         ]);
 

@@ -130,8 +130,10 @@ class QueryBuilder extends BaseObject
             } else {
                 $column = $name;
             }
-            if ($column == '_id') {
-                $column = '_uid';
+            if ($this->db->dslVersion < 7) {
+                if ($column == '_id') {
+                    $column = '_uid';
+                }
             }
 
             // allow elasticsearch extended syntax as described in http://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
@@ -219,7 +221,7 @@ class QueryBuilder extends BaseObject
         foreach ($condition as $attribute => $value) {
             if ($attribute == '_id') {
                 if ($value === null) { // there is no null pk
-                    $parts[] = ['terms' => ['_uid' => []]]; // this condition is equal to WHERE false
+                    $parts[] = ['bool' => ['must_not' => [['match_all' => new \stdClass()]]]]; // this condition is equal to WHERE false
                 } else {
                     $parts[] = ['ids' => ['values' => is_array($value) ? $value : [$value]]];
                 }
@@ -320,7 +322,7 @@ class QueryBuilder extends BaseObject
         $values = (array)$values;
 
         if (empty($values) || $column === []) {
-            return $operator === 'in' ? ['terms' => ['_uid' => []]] : []; // this condition is equal to WHERE false
+            return $operator === 'in' ? ['bool' => ['must_not' => [['match_all' => new \stdClass()]]]] : []; // this condition is equal to WHERE false
         }
 
         if (is_array($column)) {
@@ -341,7 +343,7 @@ class QueryBuilder extends BaseObject
         }
         if ($column === '_id') {
             if (empty($values) && $canBeNull) { // there is no null pk
-                $filter = ['terms' => ['_uid' => []]]; // this condition is equal to WHERE false
+                $filter = ['bool' => ['must_not' => [['match_all' => new \stdClass()]]]]; // this condition is equal to WHERE false
             } else {
                 $filter = ['ids' => ['values' => array_values($values)]];
                 if ($canBeNull) {
@@ -404,8 +406,10 @@ class QueryBuilder extends BaseObject
         }
 
         list($column, $value) = $operands;
-        if ($column === '_id') {
-            $column = '_uid';
+        if ($this->db->dslVersion < 7) {
+            if ($column === '_id') {
+                $column = '_uid';
+            }
         }
 
         $range_operator = null;
