@@ -1,10 +1,10 @@
 Yii Framework 2 elasticsearch extension Change Log
 ==================================================
 
-2.0.8 under development
+2.1.0 under development
 -----------------------
 
-- no changes in this release.
+- Enh #272: Add ElasticSearch 7 compatibility (beowulfenator)
 
 
 2.0.7 June 01, 2020
