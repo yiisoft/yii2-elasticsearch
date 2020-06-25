@@ -7,8 +7,8 @@ Elasticsearch のアクティブレコードを定義するためには、あな
 最低限、レコードの属性を定義するための [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] メソッドを実装する必要があります。
 Elasticsearch ではプライマリ・キーの扱いが通常と異なります。
 というのは、プライマリ・キー (elasticsearch の用語では `_id` フィールド) が、デフォルトでは属性のうちに入らないからです。
-ただし、`_id` フィールドを属性に含めるための [パス・マッピング](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を定義することは出来ます。
-パス・マッピングの定義の仕方については、[elasticsearch のドキュメント](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を参照してください。
+ただし、`_id` フィールドを属性に含めるための [パス・マッピング](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を定義することは出来ます。
+パス・マッピングの定義の仕方については、[elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を参照してください。
 document または record の `_id` フィールドは、[[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]]
 および [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]] を使ってアクセスすることが出来ます。
 パス・マッピングが定義されている場合は、[[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] メソッドを使って属性の名前を定義することが出来ます。
@@ -55,8 +55,8 @@ elasticsearch のアクティブレコードの一般的な使用方法は、[�
 - elasticsearch は SQL をサポートしていないため、クエリの API は `join()`、`groupBy()`、`having()` および `union()` をサポートしません。
   並べ替え、リミット、オフセット、条件付き WHERE は、すべてサポートされています。
 - [[yii\elasticsearch\ActiveQuery::from()|from()]] はテーブルを選択しません。
-  そうではなく、クエリ対象の [インデックス](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) と
-  [タイプ](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) を選択します。
+  そうではなく、クエリ対象の [インデックス](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) と
+  [タイプ](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) を選択します。
 - `select()` は [[yii\elasticsearch\ActiveQuery::fields()|fields()]] に置き換えられています。
   基本的には同じことをするものですが、`fields` の方が elasticsearch の用語として相応しいでしょう。
   ドキュメントから取得するフィールドを定義します。
@@ -66,7 +66,7 @@ elasticsearch のアクティブレコードの一般的な使用方法は、[�
   [[yii\elasticsearch\ActiveQuery::filter()|filter()]] そして 
   [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] というメソッドがあります。
   これらがどのように働くかについて、下の使用例を見てください。
-  また、`query` と `filter` の部分を構成する方法については、[クエリ DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
+  また、`query` と `filter` の部分を構成する方法については、[クエリ DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
   を参照してください。
 - Elasticsearch のアクティブレコードから通常のアクティブレコード・クラスへのリレーションを定義することも可能です。また、その逆も可能です。
 
@@ -89,7 +89,7 @@ $customers = Customer::mget([1,2,3]); // PK によって複数のレコードを
 $customer = Customer::find()->where(['name' => 'test'])->one(); // クエリによる取得。レコードを正しく取得するためにはこのフィールドにマッピングを構成する必要があることに注意。
 $customers = Customer::find()->active()->all(); // クエリによって全てを取得 (`active` スコープを使って)
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
 $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // articles whose title contains "yii"
 
 // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query-fuzziness
@@ -111,7 +111,7 @@ $query->search(); // 全てのレコード、および、visit_count フィー�
 
 ## 複雑なクエリ
 
-どのようなクエリでも、ElasticSearch のクエリ DSL を使って作成して `ActiveRecord::query()` メソッドに渡すことが出来ます。しかし、ES のクエリ DSL は冗長さで悪名高いものです。長すぎるクエリは、すぐに管理できないものになってしまいます。
+どのようなクエリでも、Elasticsearch のクエリ DSL を使って作成して `ActiveRecord::query()` メソッドに渡すことが出来ます。しかし、ES のクエリ DSL は冗長さで悪名高いものです。長すぎるクエリは、すぐに管理できないものになってしまいます。
 クエリをもっと保守しやすくする方法があります。SQL ベースの `ActiveRecord` のために定義されているようなクエリクラスを定義することから始めましょう。
 
 ```php
@@ -185,30 +185,30 @@ $customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date'
 
 ## オブジェクトにマップされた属性の異常な振る舞いについて
 
-このエクステンションは `_update` エンドポイントを使ってレコードを更新します。このエンドポイントはドキュメントの部分更新をするように設計されているため、ElasticSearch で "オブジェクト" マップ型を持つ全ての属性は既存のデータとマージされます。例示しましょう。
+このエクステンションは `_update` エンドポイントを使ってレコードを更新します。このエンドポイントはドキュメントの部分更新をするように設計されているため、Elasticsearch で "オブジェクト" マップ型を持つ全ての属性は既存のデータとマージされます。例示しましょう。
 
 ```
 $customer = new Customer();
 $customer->my_attribute = ['foo' => 'v1', 'bar' => 'v2'];
 $customer->save();
-// この時点で ElasticSearch における my_attribute の値は {"foo": "v1", "bar": "v2"}
+// この時点で Elasticsearch における my_attribute の値は {"foo": "v1", "bar": "v2"}
 
 $customer->my_attribute = ['foo' => 'v3', 'bar' => 'v4'];
 $customer->save();
-// ElasticSearch における my_attribute の値は {"foo": "v3", "bar": "v4"} となる
+// Elasticsearch における my_attribute の値は {"foo": "v3", "bar": "v4"} となる
 
 $customer->my_attribute = ['baz' => 'v5'];
 $customer->save();
-// ElasticSearch における my_attribute の値は {"foo": "v3", "bar": "v4", "baz": "v5"} となる
+// Elasticsearch における my_attribute の値は {"foo": "v3", "bar": "v4", "baz": "v5"} となる
 // しかし $customer->my_attribute は ['baz' => 'v5'] に等しいままである
 ```
 
-このロジックはオブジェクトに対してのみ適用されるので、オブジェクトを単一要素の配列に包むことが解決策になります。ElasticSearch にとっては単一要素の配列は要素自体と同じものであるため、それ以外のコードを修正する必要はありません。
+このロジックはオブジェクトに対してのみ適用されるので、オブジェクトを単一要素の配列に包むことが解決策になります。Elasticsearch にとっては単一要素の配列は要素自体と同じものであるため、それ以外のコードを修正する必要はありません。
 
 ```
 $customer->my_attribute = [['new' => 'value']]; // 二重括弧に注意
 $customer->save();
-// ElasticSearch における my_attribute の値は {"new": "value"} になる
+// Elasticsearch における my_attribute の値は {"new": "value"} になる
 $customer->my_attribute = $customer->my_attribute[0]; // 一貫性のためにこうしてもよい
 ```
 

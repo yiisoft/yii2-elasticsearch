@@ -1,10 +1,10 @@
 <?php
 
 /**
- * This is the configuration file for the Yii2 ElasticSearch unit tests.
+ * This is the configuration file for the Yii2 Elasticsearch unit tests.
  * You can override configuration values by creating a `config.local.php` file
  * and manipulate the `$config` variable.
- * For example to change ElasticSearch http address of nodes your `config.local.php`
+ * For example to change Elasticsearch http address of nodes your `config.local.php`
  * should contain the following:
  *
  * <?php

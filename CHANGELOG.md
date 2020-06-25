@@ -4,7 +4,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.1.0 under development
 -----------------------
 
-- Enh #272: Add ElasticSearch 7 compatibility (beowulfenator)
+- Enh #272: Add Elasticsearch 7 compatibility (beowulfenator)
 - Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
 - Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)

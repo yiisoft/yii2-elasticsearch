@@ -136,7 +136,7 @@ class QueryBuilder extends BaseObject
                 }
             }
 
-            // allow elasticsearch extended syntax as described in http://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
+            // allow elasticsearch extended syntax as described in https://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
             if (is_array($direction)) {
                 $orders[] = [$column => $direction];
             } else {

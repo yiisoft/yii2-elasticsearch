@@ -7,7 +7,7 @@ use yii\elasticsearch\Connection;
 /**
  * @group elasticsearch
  */
-class ElasticSearchConnectionTest extends TestCase
+class ElasticsearchConnectionTest extends TestCase
 {
     public function testOpen()
     {

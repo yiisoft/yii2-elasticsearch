@@ -72,12 +72,12 @@ class BatchQueryResult extends BaseObject implements \Iterator
     private $_key;
     /**
      * @var string the amount of time to keep the scroll window open
-     * (in ElasticSearch [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units).
+     * (in Elasticsearch [time units](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units).
      */
     public $scrollWindow = '1m';
 
     /*
-     * @var string internal ElasticSearch scroll id
+     * @var string internal Elasticsearch scroll id
      */
     private $_lastScrollId = null;
 

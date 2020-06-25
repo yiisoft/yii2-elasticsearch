@@ -53,7 +53,7 @@ class Connection extends Component
      *
      *  - `protocol`: explicitly sets the protocol for the current node (useful when manually defining a HTTPS cluster)
      *
-     * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html#cluster-nodes-info
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html#cluster-nodes-info
      */
     public $nodes = [
         ['http_address' => 'inet[/127.0.0.1:9200]'],
@@ -63,7 +63,7 @@ class Connection extends Component
      */
     public $activeNode;
     /**
-     * @var array Authentication data used to connect to the ElasticSearch node.
+     * @var array Authentication data used to connect to the Elasticsearch node.
      *
      * Array elements:
      *

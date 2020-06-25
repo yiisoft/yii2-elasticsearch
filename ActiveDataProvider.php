@@ -12,10 +12,10 @@ use yii\base\InvalidConfigException;
 use yii\db\ActiveQueryInterface;
 
 /**
- * ActiveDataProvider is an enhanced version of [[\yii\data\ActiveDataProvider]] specific to the ElasticSearch.
+ * ActiveDataProvider is an enhanced version of [[\yii\data\ActiveDataProvider]] specific to the Elasticsearch.
  * It allows to fetch not only rows and total rows count, but full query results including aggregations and so on.
  *
- * Note: this data provider fetches result models and total count using single ElasticSearch query, so results total
+ * Note: this data provider fetches result models and total count using single Elasticsearch query, so results total
  * count will be fetched after pagination limit applying, which eliminates ability to verify if requested page number
  * actually exist. Data provider disables [[yii\data\Pagination::validatePage]] automatically because of this.
  *

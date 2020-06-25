@@ -5,9 +5,9 @@
 
 Для определения класса Elasticsearch ActiveRecord ваш класс должен быть расширен от [[yii\elasticsearch\ActiveRecord]] и реализовывать, по крайней мере, метод [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] для определения атрибутов записи.
 
-Обработка первичных ключей в Elasticsearch различна, поскольку первичный ключ (поле `_id` в терминах Elasticsearch) по умолчанию не является частью атрибутов. Однако можно определить [сопоставление пути](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) для поля `_id` чтобы стать частью атрибута.
+Обработка первичных ключей в Elasticsearch различна, поскольку первичный ключ (поле `_id` в терминах Elasticsearch) по умолчанию не является частью атрибутов. Однако можно определить [сопоставление пути](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) для поля `_id` чтобы стать частью атрибута.
 
-Смотри [документацию Elasticsearch](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) как определить это. Поле `_id` документа/записи можно получить используя [[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] и [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]]. Когда определено сопоставление пути, имя атрибута может быть определено с помощью метода [[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]].
+Смотри [документацию Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) как определить это. Поле `_id` документа/записи можно получить используя [[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] и [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]]. Когда определено сопоставление пути, имя атрибута может быть определено с помощью метода [[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]].
 
 Ниже приведен пример модели `Customer`:
 
@@ -48,10 +48,10 @@ class Customer extends \yii\elasticsearch\ActiveRecord
 
 - Посколку Elasticsearch не поддерживает SQL, API запросов не поддреживает `join()`, `groupBy()`, `having()` и `union()`.
   Сортировка, `limit`, `offset` и условия поддерживаются.
-- [[yii\elasticsearch\ActiveQuery::from()|from()]] не выбирает таблицы, но [индекс](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) и [тип](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) запрашивают.
+- [[yii\elasticsearch\ActiveQuery::from()|from()]] не выбирает таблицы, но [индекс](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index) и [тип](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) запрашивают.
 - `select()` был заменен на [[yii\elasticsearch\ActiveQuery::fields()|fields()]] который, в основном, делает тоже самое, но `fields` является более подходящим в терминологии Elasticsearch. Он определяет поля для извлечения из документа.
 - [[yii\elasticsearch\ActiveQuery::via()|via]] - отношения не могут быть определены через таблицу, так как в Elasticsearch нет таблиц. Вы можете определять отношения только через другие записи.
-- Поскольку Elasticsearch - это не только хранилище данных, но и поисковая система, была добавлена поддержка для поиска ваших записей. Есть [[yii\elasticsearch\ActiveQuery::query()|query()]], [[yii\elasticsearch\ActiveQuery::filter()|filter()]] и [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] методы, которые позволяют составить запрос в Elasticsearch. См. пример использования ниже, как они работают, и проверьте [Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) о том как составлять части `query` и `filter`.
+- Поскольку Elasticsearch - это не только хранилище данных, но и поисковая система, была добавлена поддержка для поиска ваших записей. Есть [[yii\elasticsearch\ActiveQuery::query()|query()]], [[yii\elasticsearch\ActiveQuery::filter()|filter()]] и [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] методы, которые позволяют составить запрос в Elasticsearch. См. пример использования ниже, как они работают, и проверьте [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) о том как составлять части `query` и `filter`.
 - Также можно определить отношения от Elasticsearch ActiveRecords до обычных классов ActiveRecord и наоборот.
 
 > **NOTE:** Elasticsearch ограничивает количество записей, возвращаемых любым запросом, до 10 записей по умолчанию.
@@ -71,10 +71,10 @@ $customers = Customer::mget([1,2,3]); // получитть множествен
 $customer = Customer::find()->where(['name' => 'test'])->one(); // найти по запросу. Обратите внимание, вам необходимо настроить сопоставление для этого поля, чтобы правильно найти запись
 $customers = Customer::find()->active()->all(); // найти все по запросу (используя область видимости `active`)
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
 $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // статьи название которых содержит "yii"
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-flt-query.html
 $query = Article::find()->query([
     "fuzzy_like_this" => [
         "fields" => ["title", "description"],
@@ -91,7 +91,7 @@ $query->search(); // вернет все записи + статистику о 
 
 ## Комплексные запросы
 
-Любой запрос может быть составлен с использованием запроса DSL ElasticSearch и передан методу `ActiveRecord::query()`. Однако DS-запрос известен своей многословностью, и эти запросы большего размера вскоре становятся неуправляемыми.
+Любой запрос может быть составлен с использованием запроса DSL Elasticsearch и передан методу `ActiveRecord::query()`. Однако DS-запрос известен своей многословностью, и эти запросы большего размера вскоре становятся неуправляемыми.
 Есть способ сделать запросы более удобными. Начните с определения класса запросов так же, как это делается для SQL ActiveRecord.
 
 ```php

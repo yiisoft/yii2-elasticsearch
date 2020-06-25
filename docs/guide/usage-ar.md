@@ -6,9 +6,9 @@ For general information on how to use yii's ActiveRecord please refer to the [gu
 For defining an elasticsearch ActiveRecord class your record class needs to extend from [[yii\elasticsearch\ActiveRecord]] and
 implement at least the [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] method to define the attributes of the record.
 The handling of primary keys is different in elasticsearch as the primary key (the `_id` field in elasticsearch terms)
-is not part of the attributes by default. However it is possible to define a [path mapping](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html)
+is not part of the attributes by default. However it is possible to define a [path mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html)
 for the `_id` field to be part of the attributes.
-See [elasticsearch docs](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) on how to define it.
+See [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) on how to define it.
 The `_id` field of a document/record can be accessed using [[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] and
 [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]].
 When path mapping is defined, the attribute name can be defined using the [[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] method.
@@ -55,8 +55,8 @@ It supports the same interface and features except the following limitations and
 - As elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()` and `union()`.
   Sorting, limit, offset and conditional where are all supported.
 - [[yii\elasticsearch\ActiveQuery::from()|from()]] does not select the tables, but the
-  [index](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index)
-  and [type](http://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) to query against.
+  [index](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index)
+  and [type](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) to query against.
 - `select()` has been replaced with [[yii\elasticsearch\ActiveQuery::fields()|fields()]] which basically does the same but
   `fields` is more elasticsearch terminology.
   It defines the fields to retrieve from a document.
@@ -66,7 +66,7 @@ It supports the same interface and features except the following limitations and
   [[yii\elasticsearch\ActiveQuery::query()|query()]],
   [[yii\elasticsearch\ActiveQuery::filter()|filter()]] and
   [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] methods that allows to compose an elasticsearch query.
-  See the usage example below on how they work and check out the [Query DSL](http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
+  See the usage example below on how they work and check out the [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
   on how to compose `query` and `filter` parts.
 - It is also possible to define relations from elasticsearch ActiveRecords to normal ActiveRecord classes and vice versa.
 
@@ -89,7 +89,7 @@ $customers = Customer::mget([1,2,3]); // get multiple records by pk
 $customer = Customer::find()->where(['name' => 'test'])->one(); // find by query, note that you need to configure mapping for this field in order to find records properly
 $customers = Customer::find()->active()->all(); // find all by query (using the `active` scope)
 
-// http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
 $result = Article::find()->query(["match" => ["title" => "yii"]])->all(); // articles whose title contains "yii"
 
 // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query-fuzziness
@@ -111,7 +111,7 @@ $query->search(); // gives you all the records + stats about the visit_count fie
 
 ## Complex queries
 
-Any query can be composed using ElasticSearch's query DSL and passed to the `ActiveRecord::query()` method. However, ES query DSL is notorious for its verbosity, and these oversized queries soon become unmanageable.
+Any query can be composed using Elasticsearch's query DSL and passed to the `ActiveRecord::query()` method. However, ES query DSL is notorious for its verbosity, and these oversized queries soon become unmanageable.
 Here is a method to make queries more maintainable. Start by defining a query class just as it is done for SQL-based `ActiveRecord`.
 
 ```php
@@ -185,30 +185,30 @@ Now `$customersByDate` contains 10 dates that correspond to the the highest numb
 
 ## Unusual behavior of attributes with object mapping
 
-The extension updates records using the `_update` endpoint. Since this endpoint is designed to perform partial updates to documents, all attributes that have an "object" mapping type in ElasticSearch will be merged with existing data. To demonstrate:
+The extension updates records using the `_update` endpoint. Since this endpoint is designed to perform partial updates to documents, all attributes that have an "object" mapping type in Elasticsearch will be merged with existing data. To demonstrate:
 
 ```
 $customer = new Customer();
 $customer->my_attribute = ['foo' => 'v1', 'bar' => 'v2'];
 $customer->save();
-// at this point the value of my_attribute in ElasticSearch is {"foo": "v1", "bar": "v2"}
+// at this point the value of my_attribute in Elasticsearch is {"foo": "v1", "bar": "v2"}
 
 $customer->my_attribute = ['foo' => 'v3', 'bar' => 'v4'];
 $customer->save();
-// now the value of my_attribute in ElasticSearch is {"foo": "v3", "bar": "v4"}
+// now the value of my_attribute in Elasticsearch is {"foo": "v3", "bar": "v4"}
 
 $customer->my_attribute = ['baz' => 'v5'];
 $customer->save();
-// now the value of my_attribute in ElasticSearch is {"foo": "v3", "bar": "v4", "baz": "v5"}
+// now the value of my_attribute in Elasticsearch is {"foo": "v3", "bar": "v4", "baz": "v5"}
 // but $customer->my_attribute is still equal to ['baz' => 'v5']
 ```
 
-Since this logic only applies to objects, the solution is to wrap the object into a single-element array. Since to ElasticSearch a single-element array is the same thing as the element itself, there is no need to modify any other code.
+Since this logic only applies to objects, the solution is to wrap the object into a single-element array. Since to Elasticsearch a single-element array is the same thing as the element itself, there is no need to modify any other code.
 
 ```
 $customer->my_attribute = [['new' => 'value']]; // note the double brackets
 $customer->save();
-// now the value of my_attribute in ElasticSearch is {"new": "value"}
+// now the value of my_attribute in Elasticsearch is {"new": "value"}
 $customer->my_attribute = $customer->my_attribute[0]; // could be done for consistensy
 ```
 
