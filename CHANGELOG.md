@@ -13,6 +13,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
 - Enh #222: Added collapse support (walkskyer)
 - Chg #269: Replace InvalidParamException with InvalidArgumentException (Julian-B90)
+- Bug #191: Fixed error when calling `column('_id')` in `ActiveQuery` (pvassiliou)
 
 
 2.0.7 June 01, 2020

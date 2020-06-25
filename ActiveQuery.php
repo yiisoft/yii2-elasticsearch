@@ -329,7 +329,6 @@ class ActiveQuery extends Query implements ActiveQueryInterface
     {
         if ($field === '_id') {
             $command = $this->createCommand($db);
-            $command->queryParts['fields'] = [];
             $command->queryParts['_source'] = false;
             $result = $command->search();
             if ($result === false) {
