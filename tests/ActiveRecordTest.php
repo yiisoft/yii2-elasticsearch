@@ -591,7 +591,7 @@ class ActiveRecordTest extends TestCase
         try {
             $order->link('itemsByArrayValue', $item);
         } catch (InvalidCallException $e) {
-            $this->assertEquals($e->getMessage(), 'Unable to link models: foreign model cannot be linked if it\'s property is an array.');
+            $this->assertEquals($e->getMessage(), 'Unable to link models: foreign model cannot be linked if its property is an array.');
         }
 
     }
