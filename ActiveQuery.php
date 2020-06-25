@@ -45,7 +45,7 @@ use yii\db\ActiveRelationTrait;
  * ```php
  * $customers = Customer::find()->with('orders')->asArray()->all();
  * ```
- * > NOTE: elasticsearch limits the number of records returned to 10 records by default.
+ * > NOTE: Elasticsearch limits the number of records returned to 10 records by default.
  * > If you expect to get more records you should specify limit explicitly.
  *
  * Relational query
@@ -64,7 +64,7 @@ use yii\db\ActiveRelationTrait;
  * This methods may only be called in a relational context. Same is true for [[inverseOf()]], which
  * marks a relation as inverse of another relation.
  *
- * > Note: elasticsearch limits the number of records returned by any query to 10 records by default.
+ * > Note: Elasticsearch limits the number of records returned by any query to 10 records by default.
  * > If you expect to get more records you should specify limit explicitly in relation definition.
  * > This is also important for relations that use [[via()]] so that if via records are limited to 10
  * > the relations records can also not be more than 10.

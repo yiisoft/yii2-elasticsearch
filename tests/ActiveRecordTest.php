@@ -658,7 +658,7 @@ class ActiveRecordTest extends TestCase
             $this->assertTrue(isset($items[2]));
             $order->unlinkAll('itemsByArrayValue');
         } catch (\yii\base\NotSupportedException $e) {
-            $this->assertEquals($e->getMessage(), 'unlinkAll() is not supported by elasticsearch, use unlink() instead.');
+            $this->assertEquals($e->getMessage(), 'unlinkAll() is not supported by Elasticsearch, use unlink() instead.');
         }
     }
 

@@ -1,4 +1,4 @@
-Yii Framework 2 elasticsearch extension Change Log
+Yii Framework 2 Elasticsearch extension Change Log
 ==================================================
 
 2.1.0 under development
@@ -42,7 +42,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Bug #149: Changed `yii\base\Object` to `yii\base\BaseObject` (dmirogin)
 - Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug: Updated debug panel classes to be consistent with yii 2.0.7 (beowulfenator)
-- Bug: Added accessor method for the default elasticsearch primary key (kyle-mccarthy)
+- Bug: Added accessor method for the default Elasticsearch primary key (kyle-mccarthy)
 - Enh #15: Special data provider `yii\elasticsearch\ActiveDataProvider` created (klimov-paul)
 - Enh #43: Elasticsearch log target (trntv, beowulfenator)
 - Enh #47: Added support for post_filter option in search queries (mxkh)
@@ -50,7 +50,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Enh #82: Support HTTPS protocol (dor-denis, beowulfenator)
 - Enh #83: Support for "gt", ">", "gte", ">=", "lt", "<", "lte", "<=" operators in query (i-lie, beowulfenator)
 - Enh #119: Added support for explanation on query (kyle-mccarthy)
-- Enh #150: Explicitily send `Content-Type` header in HTTP requests to elasticsearch (lubobill1990)
+- Enh #150: Explicitily send `Content-Type` header in HTTP requests to Elasticsearch (lubobill1990)
 - Enh: Bulk API implemented and used in AR (tibee, beowulfenator)
 - Enh: Deserialization of raw response when text/plain is supported (Tezd)
 - Enh: Added ability to work with aliases through Command class (Tezd)
@@ -64,7 +64,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Bug #19: `DeleteAll` now deletes all entries, not first 10 (beowulfenator)
 - Bug #48: `UpdateAll` now updates all entries, not first 10 (beowulfenator)
 - Bug #65: Fixed warning `array to string conversion` when parsing error response (rhertogh, silverfire)
-- Bug #73: Fixed debug panel exception when no data was recorded for elasticsearch panel (jafaripur)
+- Bug #73: Fixed debug panel exception when no data was recorded for Elasticsearch panel (jafaripur)
 - Enh #2: Added `min_score` option to query (knut)
 - Enh #28: AWS Elasticsearch service compatibility (andrey-bahrachev)
 - Enh #33: Implemented `Command::updateSettings()` and `Command::updateAnalyzers()` (githubjeka)
@@ -83,7 +83,7 @@ Yii Framework 2 elasticsearch extension Change Log
 2.0.2 January 11, 2015
 ----------------------
 
-- Enh: Added `ActiveFixture` class for testing fixture support for elasticsearch (cebe, viilveer)
+- Enh: Added `ActiveFixture` class for testing fixture support for Elasticsearch (cebe, viilveer)
 
 
 2.0.1 December 07, 2014
@@ -116,7 +116,7 @@ Yii Framework 2 elasticsearch extension Change Log
 - Chg #4451: Removed support for facets and replaced them with aggregations (cebe, tadaszelvys)
 - Chg: asArray in ActiveQuery is now equal to using the normal Query. This means, that the output structure has changed and `with` is supported anymore. (cebe)
 - Chg: Deletion of a record is now also considered successful if the record did not exist. (cebe)
-- Chg: Requirement changes: Yii now requires elasticsearch version 1.0 or higher (cebe)
+- Chg: Requirement changes: Yii now requires Elasticsearch version 1.0 or higher (cebe)
 
 
 2.0.0-beta April 13, 2014
@@ -124,8 +124,8 @@ Yii Framework 2 elasticsearch extension Change Log
 
 - Bug #1993: afterFind event in AR is now called after relations have been populated (cebe, creocoder)
 - Bug #2324: Fixed QueryBuilder bug when building a query with "query" option (mintao)
-- Enh #1313: made index and type available in `ActiveRecord::instantiate()` to allow creating records based on elasticsearch type when doing cross index/type search (cebe)
-- Enh #1382: Added a debug toolbar panel for elasticsearch (cebe)
+- Enh #1313: made index and type available in `ActiveRecord::instantiate()` to allow creating records based on Elasticsearch type when doing cross index/type search (cebe)
+- Enh #1382: Added a debug toolbar panel for Elasticsearch (cebe)
 - Enh #1765: Added support for primary key path mapping, pk can now be part of the attributes when mapping is defined (cebe)
 - Enh #2002: Added filterWhere() method to yii\elasticsearch\Query to allow easy addition of search filter conditions by ignoring empty search fields (samdark, cebe)
 - Enh #2892: ActiveRecord dirty attributes are now reset after call to `afterSave()` so information about changed attributes is available in `afterSave`-event (cebe)

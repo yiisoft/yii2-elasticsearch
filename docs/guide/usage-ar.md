@@ -3,12 +3,12 @@ Using the ActiveRecord
 
 For general information on how to use yii's ActiveRecord please refer to the [guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/db-active-record.md).
 
-For defining an elasticsearch ActiveRecord class your record class needs to extend from [[yii\elasticsearch\ActiveRecord]] and
+For defining an Elasticsearch ActiveRecord class your record class needs to extend from [[yii\elasticsearch\ActiveRecord]] and
 implement at least the [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] method to define the attributes of the record.
-The handling of primary keys is different in elasticsearch as the primary key (the `_id` field in elasticsearch terms)
+The handling of primary keys is different in Elasticsearch as the primary key (the `_id` field in Elasticsearch terms)
 is not part of the attributes by default. However it is possible to define a [path mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html)
 for the `_id` field to be part of the attributes.
-See [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) on how to define it.
+See [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) on how to define it.
 The `_id` field of a document/record can be accessed using [[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]] and
 [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]].
 When path mapping is defined, the attribute name can be defined using the [[yii\elasticsearch\ActiveRecord::primaryKey()|primaryKey()]] method.
@@ -48,29 +48,29 @@ class Customer extends \yii\elasticsearch\ActiveRecord
 You may override [[yii\elasticsearch\ActiveRecord::index()|index()]] and [[yii\elasticsearch\ActiveRecord::type()|type()]]
 to define the index and type this record represents.
 
-The general usage of elasticsearch ActiveRecord is very similar to the database ActiveRecord as described in the
+The general usage of Elasticsearch ActiveRecord is very similar to the database ActiveRecord as described in the
 [guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md).
 It supports the same interface and features except the following limitations and additions(*!*):
 
-- As elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()` and `union()`.
+- As Elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()` and `union()`.
   Sorting, limit, offset and conditional where are all supported.
 - [[yii\elasticsearch\ActiveQuery::from()|from()]] does not select the tables, but the
   [index](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index)
   and [type](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) to query against.
 - `select()` has been replaced with [[yii\elasticsearch\ActiveQuery::fields()|fields()]] which basically does the same but
-  `fields` is more elasticsearch terminology.
+  `fields` is more Elasticsearch terminology.
   It defines the fields to retrieve from a document.
-- [[yii\elasticsearch\ActiveQuery::via()|via]]-relations can not be defined via a table as there are no tables in elasticsearch. You can only define relations via other records.
-- As elasticsearch is not only a data storage but also a search engine there is of course support added for searching your records.
+- [[yii\elasticsearch\ActiveQuery::via()|via]]-relations can not be defined via a table as there are no tables in Elasticsearch. You can only define relations via other records.
+- As Elasticsearch is not only a data storage but also a search engine there is of course support added for searching your records.
   There are
   [[yii\elasticsearch\ActiveQuery::query()|query()]],
   [[yii\elasticsearch\ActiveQuery::filter()|filter()]] and
-  [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] methods that allows to compose an elasticsearch query.
+  [[yii\elasticsearch\ActiveQuery::addFacet()|addFacet()]] methods that allows to compose an Elasticsearch query.
   See the usage example below on how they work and check out the [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
   on how to compose `query` and `filter` parts.
-- It is also possible to define relations from elasticsearch ActiveRecords to normal ActiveRecord classes and vice versa.
+- It is also possible to define relations from Elasticsearch ActiveRecords to normal ActiveRecord classes and vice versa.
 
-> **NOTE:** elasticsearch limits the number of records returned by any query to 10 records by default.
+> **NOTE:** Elasticsearch limits the number of records returned by any query to 10 records by default.
 > If you expect to get more records you should specify limit explicitly in query **and also** relation definition.
 > This is also important for relations that use via() so that if via records are limited to 10
 > the relations records can also not be more than 10.

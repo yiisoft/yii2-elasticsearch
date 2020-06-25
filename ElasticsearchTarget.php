@@ -17,7 +17,7 @@ use yii\log\Logger;
 use yii\log\Target;
 
 /**
- * ElasticsearchTarget stores log messages in a elasticsearch index.
+ * ElasticsearchTarget stores log messages in a Elasticsearch index.
  *
  * @author Eugene Terentev <eugene@terentev.net>
  * @since 2.0.5
@@ -33,8 +33,8 @@ class ElasticsearchTarget extends Target
      */
     public $type = 'log';
     /**
-     * @var Connection|array|string the elasticsearch connection object or the application component ID
-     * of the elasticsearch connection.
+     * @var Connection|array|string the Elasticsearch connection object or the application component ID
+     * of the Elasticsearch connection.
      */
     public $db = 'elasticsearch';
     /**

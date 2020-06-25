@@ -14,7 +14,7 @@ use yii\base\InvalidArgumentException;
 use yii\helpers\Json;
 
 /**
- * elasticsearch Connection is used to connect to an elasticsearch cluster version 0.20 or higher
+ * Elasticsearch Connection is used to connect to an Elasticsearch cluster version 0.20 or higher
  *
  * @property string $driverName Name of the DB driver. This property is read-only.
  * @property bool $isActive Whether the DB connection is established. This property is read-only.
@@ -34,8 +34,9 @@ class Connection extends Component
      * @var boolean whether to autodetect available cluster nodes on [[open()]]
      */
     public $autodetectCluster = true;
+
     /**
-     * @var array The elasticsearch cluster nodes to connect to.
+     * @var array The Elasticsearch cluster nodes to connect to.
      *
      * This is populated with the result of a cluster nodes request when [[autodetectCluster]] is true.
      *
@@ -58,10 +59,12 @@ class Connection extends Component
     public $nodes = [
         ['http_address' => 'inet[/127.0.0.1:9200]'],
     ];
+
     /**
      * @var string the active node. Key of one of the [[nodes]]. Will be randomly selected on [[open()]].
      */
     public $activeNode;
+
     /**
      * @var array Authentication data used to connect to the Elasticsearch node.
      *
@@ -74,6 +77,7 @@ class Connection extends Component
      * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
      */
     public $auth = [];
+
     /**
      * Elasticsearch has no knowledge of protocol used to access its nodes. Specifically, cluster autodetection request
      * returns node hosts and ports, but not the protocols to access them. Therefore we need to specify a default protocol here,
@@ -83,19 +87,26 @@ class Connection extends Component
      * @since 2.0.5
      */
     public $defaultProtocol = 'http';
+
     /**
-     * @var float timeout to use for connecting to an elasticsearch node.
+     * @var float timeout to use for connecting to an Elasticsearch node.
      * This value will be used to configure the curl `CURLOPT_CONNECTTIMEOUT` option.
      * If not set, no explicit timeout will be set for curl.
      */
     public $connectionTimeout = null;
+
     /**
-     * @var float timeout to use when reading the response from an elasticsearch node.
+     * @var float timeout to use when reading the response from an Elasticsearch node.
      * This value will be used to configure the curl `CURLOPT_TIMEOUT` option.
      * If not set, no explicit timeout will be set for curl.
      */
     public $dataTimeout = null;
 
+    /**
+     * @var integer version of the domain-specific language to use with the server.
+     * This must be set to the major version of the Elasticsearch server in use, e.g. `5` for Elasticsearch 5.x.x,
+     * `6` for Elasticsearch 6.x.x, and `7` for Elasticsearch 7.x.x.
+     */
     public $dslVersion = 5;
 
     /**
@@ -150,14 +161,14 @@ class Connection extends Component
             return;
         }
         if (empty($this->nodes)) {
-            throw new InvalidConfigException('elasticsearch needs at least one node to operate.');
+            throw new InvalidConfigException('Elasticsearch needs at least one node to operate.');
         }
         $this->_curl = curl_init();
         if ($this->autodetectCluster) {
             $this->populateNodes();
         }
         $this->selectActiveNode();
-        Yii::trace('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
+        Yii::trace('Opening connection to Elasticsearch. Nodes in cluster: ' . count($this->nodes)
             . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
     }
@@ -221,7 +232,7 @@ class Connection extends Component
         if ($this->activeNode === null) {
             return;
         }
-        Yii::trace('Closing connection to elasticsearch. Active node was: '
+        Yii::trace('Closing connection to Elasticsearch. Active node was: '
             . $this->nodes[$this->activeNode]['http']['publish_address'], __CLASS__);
         $this->activeNode = null;
         if ($this->_curl) {
@@ -493,7 +504,7 @@ class Connection extends Component
             $profile = false;
         }
 
-        Yii::trace("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
+        Yii::trace("Sending request to Elasticsearch node: $method $url\n$requestBody", __METHOD__);
         if ($profile !== false) {
             Yii::beginProfile($profile, __METHOD__);
         }
@@ -522,7 +533,7 @@ class Connection extends Component
                 return true;
             } else {
                 if (isset($headers['content-length']) && ($len = mb_strlen($body, '8bit')) < $headers['content-length']) {
-                    throw new Exception("Incomplete data received from elasticsearch: $len < {$headers['content-length']}", [
+                    throw new Exception("Incomplete data received from Elasticsearch: $len < {$headers['content-length']}", [
                         'requestMethod' => $method,
                         'requestUrl' => $url,
                         'requestBody' => $requestBody,
@@ -539,7 +550,7 @@ class Connection extends Component
                         return $raw ? $body : array_filter(explode("\n", $body));
                     }
                 }
-                throw new Exception('Unsupported data received from elasticsearch: ' . $headers['content-type'], [
+                throw new Exception('Unsupported data received from Elasticsearch: ' . $headers['content-type'], [
                     'requestMethod' => $method,
                     'requestUrl' => $url,
                     'requestBody' => $requestBody,

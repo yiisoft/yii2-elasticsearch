@@ -12,10 +12,10 @@ use yii\base\InvalidCallException;
 use yii\helpers\Json;
 
 /**
- * The [[BulkCommand]] class implements the API for accessing the elasticsearch bulk REST API.
+ * The [[BulkCommand]] class implements the API for accessing the Elasticsearch bulk REST API.
  *
  * Further details on bulk API is available in
- * [elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html).
+ * [Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html).
  *
  * @author Konstantin Sirotkin <beowulfenator@gmail.com>
  * @since 2.0.5

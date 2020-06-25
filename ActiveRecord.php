@@ -24,7 +24,7 @@ use yii\helpers\StringHelper;
  * ActiveRecord is the base class for classes representing relational data in terms of objects.
  *
  * This class implements the ActiveRecord pattern for the fulltext search and data storage
- * [elasticsearch](https://www.elastic.co/products/elasticsearch).
+ * [Elasticsearch](https://www.elastic.co/products/elasticsearch).
  *
  * For defining a record a subclass should at least implement the [[attributes()]] method
  * to define attributes.
@@ -139,9 +139,9 @@ class ActiveRecord extends BaseActiveRecord
      * Gets a record by its primary key.
      *
      * @param mixed $primaryKey the primaryKey value
-     * @param array $options options given in this parameter are passed to elasticsearch
+     * @param array $options options given in this parameter are passed to Elasticsearch
      * as request URI parameters.
-     * Please refer to the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html)
+     * Please refer to the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html)
      * for more details on these options.
      * @return static|null The record instance or null if it was not found.
      */
@@ -167,10 +167,10 @@ class ActiveRecord extends BaseActiveRecord
      * Gets a list of records by its primary keys.
      *
      * @param array $primaryKeys an array of primaryKey values
-     * @param array $options options given in this parameter are passed to elasticsearch
+     * @param array $options options given in this parameter are passed to Elasticsearch
      * as request URI parameters.
      *
-     * Please refer to the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html)
+     * Please refer to the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html)
      * for more details on these options.
      * @return array The record instances, or empty array if nothing was found
      */
@@ -322,14 +322,14 @@ class ActiveRecord extends BaseActiveRecord
      * This method must be overridden by child classes to define available attributes.
      * IMPORTANT: The primary key (the `_id` attribute) MUST NOT be included in [[attributes()]].
      *
-     * Attributes are names of fields of the corresponding elasticsearch document.
+     * Attributes are names of fields of the corresponding Elasticsearch document.
      *
      * @return string[] list of attribute names.
      * @throws \yii\base\InvalidConfigException if not overridden in a child class.
      */
     public function attributes()
     {
-        throw new InvalidConfigException('The attributes() method of elasticsearch ActiveRecord has to be implemented by child classes.');
+        throw new InvalidConfigException('The attributes() method of Elasticsearch ActiveRecord has to be implemented by child classes.');
     }
 
     /**
@@ -454,13 +454,13 @@ class ActiveRecord extends BaseActiveRecord
      * If the validation fails, the record will not be inserted into the database.
      * @param array $attributes list of attributes that need to be saved. Defaults to null,
      * meaning all attributes will be saved.
-     * @param array $options options given in this parameter are passed to elasticsearch
+     * @param array $options options given in this parameter are passed to Elasticsearch
      * as request URI parameters. These are among others:
      *
      * - `routing` define shard placement of this record.
      * - `parent` by giving the primaryKey of another record this defines a parent-child relation
      *
-     * Please refer to the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)
+     * Please refer to the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)
      * for more details on these options.
      *
      * By default the `op_type` is set to `create` if model primary key is present.
@@ -514,7 +514,7 @@ class ActiveRecord extends BaseActiveRecord
      * If the validation fails, the record will not be inserted into the database.
      * @param array $attributeNames list of attribute names that need to be saved. Defaults to null,
      * meaning all attributes that are loaded from DB will be saved.
-     * @param array $options options given in this parameter are passed to elasticsearch
+     * @param array $options options given in this parameter are passed to Elasticsearch
      * as request URI parameters. These are among others:
      *
      * - `routing` define shard placement of this record.
@@ -525,14 +525,14 @@ class ActiveRecord extends BaseActiveRecord
      * - `refresh` refresh the relevant primary and replica shards (not the whole index) immediately after the operation occurs, so that the updated document appears in search results immediately.
      * - `detect_noop` this parameter will become part of the request body and will prevent the index from getting updated when nothing has changed.
      *
-     * Please refer to the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html#docs-update-api-query-params)
+     * Please refer to the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html#docs-update-api-query-params)
      * for more details on these options.
      *
      * The following parameters are Yii specific:
      *
      * - `optimistic_locking` set this to `true` to enable optimistic locking, avoid updating when the record has changed since it
      *   has been loaded from the database. Yii will set the `version` parameter to the value stored in [[version]].
-     *   See the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/guide/current/optimistic-concurrency-control.html) for details.
+     *   See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/guide/current/optimistic-concurrency-control.html) for details.
      *
      *   Make sure the record has been fetched with a [[version]] before. This is only the case
      *   for records fetched via [[get()]] and [[mget()]] by default. For normal queries, the `_version` field has to be fetched explicitly.
@@ -553,7 +553,7 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * @param array $attributes attributes to update
-     * @param array $options options given in this parameter are passed to elasticsearch
+     * @param array $options options given in this parameter are passed to Elasticsearch
      * as request URI parameters. See [[update()]] for details.
      * @return int|false the number of rows affected, or false if [[beforeSave()]] stops the updating process.
      * @throws StaleObjectException if optimistic locking is enabled and the data being updated is outdated.
@@ -750,7 +750,7 @@ class ActiveRecord extends BaseActiveRecord
     /**
      * @inheritdoc
      *
-     * @param array $options options given in this parameter are passed to elasticsearch
+     * @param array $options options given in this parameter are passed to Elasticsearch
      * as request URI parameters. These are among others:
      *
      * - `routing` define shard placement of this record.
@@ -760,14 +760,14 @@ class ActiveRecord extends BaseActiveRecord
      * - `consistency` the write consistency of the index/delete operation.
      * - `refresh` refresh the relevant primary and replica shards (not the whole index) immediately after the operation occurs, so that the updated document appears in search results immediately.
      *
-     * Please refer to the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html)
+     * Please refer to the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html)
      * for more details on these options.
      *
      * The following parameters are Yii specific:
      *
      * - `optimistic_locking` set this to `true` to enable optimistic locking, avoid updating when the record has changed since it
      *   has been loaded from the database. Yii will set the `version` parameter to the value stored in [[version]].
-     *   See the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html#delete-versioning) for details.
+     *   See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html#delete-versioning) for details.
      *
      *   Make sure the record has been fetched with a [[version]] before. This is only the case
      *   for records fetched via [[get()]] and [[mget()]] by default. For normal queries, the `_version` field has to be fetched explicitly.
@@ -885,11 +885,11 @@ class ActiveRecord extends BaseActiveRecord
     /**
      * Destroys the relationship in current model.
      *
-     * This method is not supported by elasticsearch.
+     * This method is not supported by Elasticsearch.
      */
     public function unlinkAll($name, $delete = false)
     {
-        throw new NotSupportedException('unlinkAll() is not supported by elasticsearch, use unlink() instead.');
+        throw new NotSupportedException('unlinkAll() is not supported by Elasticsearch, use unlink() instead.');
     }
 
     public function link($name, $model, $extraColumns = [])

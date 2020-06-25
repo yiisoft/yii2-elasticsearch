@@ -6,9 +6,9 @@
     <br>
 </p>
 
-This extension provides the [elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the [Yii framework 2.0](http://www.yiiframework.com).
+This extension provides the [Elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the [Yii framework 2.0](http://www.yiiframework.com).
 It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
-records in elasticsearch.
+records in Elasticsearch.
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
@@ -21,12 +21,12 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 Requirements
 ------------
 
-Dependent on the version of elasticsearch you are using you need a different version of this extension.
+Dependent on the version of Elasticsearch you are using you need a different version of this extension.
 
-- Extension version 2.0.x works with elasticsearch version 1.6.0 to 1.7.6.
-- Extension version 2.1.x requires elasticsearch version 5.x.
+- Extension version 2.0.x works with Elasticsearch version 1.6.0 to 1.7.6.
+- Extension version 2.1.x requires Elasticsearch version 5.x.
 
-Note: to provide the work necessary a requests to the delete by query, in elasticsearch [since version 2.0](https://www.elastic.co/guide/en/elasticsearch/reference/1.7/docs-delete-by-query.html), you should to install the plugin [delete-by-query](https://www.elastic.co/guide/en/elasticsearch/plugins/2.3/plugins-delete-by-query.html)
+Note: to provide the work necessary a requests to the delete by query, in Elasticsearch [since version 2.0](https://www.elastic.co/guide/en/elasticsearch/reference/1.7/docs-delete-by-query.html), you should to install the plugin [delete-by-query](https://www.elastic.co/guide/en/elasticsearch/plugins/2.3/plugins-delete-by-query.html)
 
 Installation
 ------------

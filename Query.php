@@ -14,7 +14,7 @@ use yii\db\QueryInterface;
 use yii\db\QueryTrait;
 
 /**
- * Query represents a query to the search API of elasticsearch.
+ * Query represents a query to the search API of Elasticsearch.
  *
  * Query provides a set of methods to facilitate the specification of different
  * parameters of the query. These methods can be chained together.
@@ -31,7 +31,7 @@ use yii\db\QueryTrait;
  *     ->limit(10);
  * // build and execute the query
  * $command = $query->createCommand();
- * $rows = $command->search(); // this way you get the raw output of elasticsearch.
+ * $rows = $command->search(); // this way you get the raw output of Elasticsearch.
  * ~~~
  *
  * You would normally call `$query->search()` instead of creating a command as
@@ -47,7 +47,7 @@ use yii\db\QueryTrait;
  * - [[column()]]: returns the value of the first column in the query result.
  * - [[exists()]]: returns a value indicating whether the query result has data or not.
  *
- * NOTE: elasticsearch limits the number of records returned to 10 records by
+ * NOTE: Elasticsearch limits the number of records returned to 10 records by
  * default. If you expect to get more records you should specify limit
  * explicitly.
  *
@@ -228,7 +228,7 @@ class Query extends Component implements QueryInterface
     public function init()
     {
         parent::init();
-        // setting the default limit according to elasticsearch defaults
+        // setting the default limit according to Elasticsearch defaults
         // https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5
         if ($this->limit === null) {
             $this->limit = 10;
@@ -702,7 +702,7 @@ class Query extends Component implements QueryInterface
     /**
      * Sets the fields to retrieve from the documents.
      *
-     * Quote from the elasticsearch doc:
+     * Quote from the Elasticsearch doc:
      * > The stored_fields parameter is about fields that are explicitly marked
      * > as stored in the mapping, which is off by default and generally not
      * > recommended. Use source filtering instead to select subsets of the

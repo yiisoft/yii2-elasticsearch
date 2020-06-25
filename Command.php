@@ -12,9 +12,9 @@ use yii\base\InvalidCallException;
 use yii\helpers\Json;
 
 /**
- * The Command class implements the API for accessing the elasticsearch REST API.
+ * The Command class implements the API for accessing the Elasticsearch REST API.
  *
- * Check the [elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
+ * Check the [Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
  * for details on these commands.
  *
  * @author Carsten Brandt <mail@cebe.cc>

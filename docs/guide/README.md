@@ -1,9 +1,9 @@
 Elasticsearch Extension for Yii 2
 =================================
 
-This extension provides the [elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the Yii2 framework.
+This extension provides the [Elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the Yii2 framework.
 It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
-records in elasticsearch.
+records in Elasticsearch.
 
 Getting Started
 ---------------
@@ -20,6 +20,6 @@ Usage
 Additional topics
 -----------------
 
-* [Using the elasticsearch DebugPanel](topics-debug.md)
+* [Using the Elasticsearch DebugPanel](topics-debug.md)
 * Relation definitions with records whose primary keys are not part of attributes
 * Fetching records from different indexes/types

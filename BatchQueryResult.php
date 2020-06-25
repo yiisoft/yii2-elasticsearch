@@ -21,7 +21,7 @@ use yii\base\BaseObject;
  *
  * If [[Query::$orderBy]] parameter is not set, batches will be processed using the highly efficient "scan" mode.
  * In this case, [[Query::$limit]] setting determines batch size per shard.
- * See [elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html)
+ * See [Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html)
  * for more information.
  *
  * Example:

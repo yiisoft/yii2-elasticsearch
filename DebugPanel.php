@@ -16,7 +16,7 @@ use yii\web\View;
 use yii\web\YiiAsset;
 
 /**
- * Debugger panel that collects and displays elasticsearch queries performed.
+ * Debugger panel that collects and displays Elasticsearch queries performed.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -58,7 +58,7 @@ class DebugPanel extends Panel
         $url = $this->getUrl();
         $output = <<<EOD
 <div class="yii-debug-toolbar__block">
-    <a href="$url" title="Executed $queryCount elasticsearch queries which took $queryTime.">
+    <a href="$url" title="Executed $queryCount Elasticsearch queries which took $queryTime.">
         ES <span class="yii-debug-toolbar__label yii-debug-toolbar__ajax_counter yii-debug-toolbar__label_info">$queryCount</span> <span class="yii-debug-toolbar__label">$queryTime</span>
     </a>
 </div>

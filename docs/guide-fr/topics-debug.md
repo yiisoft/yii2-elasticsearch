@@ -1,7 +1,7 @@
 Utilisation du DebugPanel d'Elasticsearch
 -----------------------------------------
 
-L'extension yii2 elasticsearch extensions fournit un `DebugPanel` qui peut être intégré avec le module de débogage de yii, et qui affiche les requêtes elasticsearch exécutées. Il vous permet aussi d'exécuter ces requêtes et d'en voir les résultats.
+L'extension yii2 Elasticsearch extensions fournit un `DebugPanel` qui peut être intégré avec le module de débogage de yii, et qui affiche les requêtes Elasticsearch exécutées. Il vous permet aussi d'exécuter ces requêtes et d'en voir les résultats.
 
 Ajoutez ce qui suit à la configuration de votre application pour l'activer (si vous avez déjà activé le module de débogage, il vous suffit d'ajouter juste la partie `panels`) :
 
@@ -21,4 +21,4 @@ Ajoutez ce qui suit à la configuration de votre application pour l'activer (si 
     // ...
 ```
 
-![elasticsearch DebugPanel](images/debug.png)
+![Elasticsearch DebugPanel](images/debug.png)

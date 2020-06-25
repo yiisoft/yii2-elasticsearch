@@ -13,7 +13,7 @@ use yii\base\NotSupportedException;
 use yii\helpers\Json;
 
 /**
- * QueryBuilder builds an elasticsearch query based on the specification given as a [[Query]] object.
+ * QueryBuilder builds an Elasticsearch query based on the specification given as a [[Query]] object.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -136,7 +136,7 @@ class QueryBuilder extends BaseObject
                 }
             }
 
-            // allow elasticsearch extended syntax as described in https://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
+            // allow Elasticsearch extended syntax as described in https://www.elastic.co/guide/en/elasticsearch/guide/master/_sorting.html
             if (is_array($direction)) {
                 $orders[] = [$column => $direction];
             } else {
@@ -197,7 +197,7 @@ class QueryBuilder extends BaseObject
             return [];
         }
         if (!is_array($condition)) {
-            throw new NotSupportedException('String conditions in where() are not supported by elasticsearch.');
+            throw new NotSupportedException('String conditions in where() are not supported by Elasticsearch.');
         }
         if (isset($condition[0])) { // operator format: operator, operand 1, operand 2, ...
             $operator = strtolower($condition[0]);
@@ -441,11 +441,11 @@ class QueryBuilder extends BaseObject
 
     protected function buildCompositeInCondition($operator, $columns, $values)
     {
-        throw new NotSupportedException('composite in is not supported by elasticsearch.');
+        throw new NotSupportedException('composite in is not supported by Elasticsearch.');
     }
 
     private function buildLikeCondition($operator, $operands)
     {
-        throw new NotSupportedException('like conditions are not supported by elasticsearch.');
+        throw new NotSupportedException('like conditions are not supported by Elasticsearch.');
     }
 }
