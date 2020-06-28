@@ -423,4 +423,17 @@ class QueryTest extends TestCase
         $result = $query->search($this->getConnection());
         $this->assertFalse(array_key_exists('_explanation', $result['hits']['hits'][0]));
     }
+
+    public function testQueryWithWhere()
+    {
+        // make sure that both `query()` and `where()` work at the same time
+        $query = new Query();
+        $query->from('query-test', 'user');
+        $query->where(['status' => 2]);
+        $query->query(['term' => ['name' => 'userb']]);
+        $result = $query->search($this->getConnection());
+
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(1, $total);
+    }
 }

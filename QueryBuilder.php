@@ -70,11 +70,19 @@ class QueryBuilder extends BaseObject
             $parts['explain'] = $query->explain;
         }
 
+        // combine query with where
+        $conditionals = [];
         $whereQuery = $this->buildQueryFromWhere($query->where);
         if ($whereQuery) {
-            $parts['query'] = $whereQuery;
-        } else if ($query->query) {
-            $parts['query'] = $query->query;
+            $conditionals[] = $whereQuery;
+        }
+        if ($query->query) {
+            $conditionals[] = $query->query;
+        }
+        if (count($conditionals) === 2) {
+            $parts['query'] = ['bool' => ['must' => $conditionals]];
+        } elseif (count($conditionals) === 1) {
+            $parts['query'] = reset($conditionals);
         }
 
         if (!empty($query->highlight)) {
