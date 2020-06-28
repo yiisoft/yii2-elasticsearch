@@ -79,9 +79,9 @@ class QueryBuilder extends BaseObject
         if ($query->query) {
             $conditionals[] = $query->query;
         }
-        if (count($conditionals) == 2) {
+        if (count($conditionals) === 2) {
             $parts['query'] = ['bool' => ['must' => $conditionals]];
-        } elseif (count($conditionals) == 1) {
+        } elseif (count($conditionals) === 1) {
             $parts['query'] = reset($conditionals);
         }
 
