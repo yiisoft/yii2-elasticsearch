@@ -14,6 +14,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 - Enh #222: Added collapse support (walkskyer)
 - Chg #269: Replace InvalidParamException with InvalidArgumentException (Julian-B90)
 - Bug #191: Fixed error when calling `column('_id')` in `ActiveQuery` (pvassiliou)
+- Bug #171: Allow to have both `query()` and `where()` in a query (beowulfenator)
 
 
 2.0.7 June 01, 2020
