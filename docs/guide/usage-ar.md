@@ -23,37 +23,17 @@ class Customer extends yii\elasticsearch\ActiveRecord
 ```
 
 You may override [[yii\elasticsearch\ActiveRecord::index()|index()]] and [[yii\elasticsearch\ActiveRecord::type()|type()]]
-to define the index and type this record represents. Note that type is ignored for Elasticsearch 7.x and above. See
-[Data Mapping & Indexing](mapping-indexing.md) for more information.
+to define the index and type this record represents.
 
-
-## Basic usage
+> NOTE: Type is ignored for Elasticsearch 7.x and above. See [Data Mapping & Indexing](mapping-indexing.md) for more information.
 
 Elasticsearch ActiveRecord is very similar to the database ActiveRecord as described in the
 [guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md).
-It generally supports the same interface and features except the following limitations and additions:
 
-- As Elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()` and `union()`.
-  Sorting, limit, offset and conditional where are all supported (with certain limitations).
-- [[yii\elasticsearch\ActiveQuery::from()|from()]] does not select the tables, but the
-  [index](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index)
-  and [type](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-type) to query against.
-- `select()` has been replaced with [[yii\elasticsearch\ActiveQuery::fields()|fields()]] which basically does the same but
-  `fields` is more Elasticsearch terminology.
-  It defines the fields to retrieve from a document.
-- [[yii\elasticsearch\ActiveQuery::via()|via]]-relations can not be defined via a table as there are no tables in
-  Elasticsearch. You can only define relations via other records.
-- As Elasticsearch is not only a data store but also a search engine, additional query mechanisms and aggregation
-  mechanisms are supported.
-  See the usage example below on how they work and check out the
-  [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
-  on how to compose queries.
-- It is also possible to define relations from Elasticsearch ActiveRecords to normal ActiveRecord classes and vice versa.
+Most of its limitations and differences are derived from the [[yii\elasticsearch\Query]] implementation.
 
-> **NOTE:** Elasticsearch limits the number of records returned by any query to 10 records by default.
-> If you expect to get more records you should specify limit explicitly in query **and also** relation definition.
-> This is also important for relations that use via() so that if via records are limited to 10
-> the relations records can also not be more than 10.
+
+## Usage examples
 
 ```php
 // Creating a new record
@@ -86,7 +66,6 @@ $articles = Article::find()->query([
 ])->all();
 ```
 
-
 ## Primary keys
 
 Unlike traditional SQL databases that let you define a primary key as any column or a set of columns, or even create a
@@ -114,6 +93,17 @@ for term and other term-level queries. Therefore it is recommended to use `keywo
 on keyword fields.
 
 
+## Defining relations
+
+It is possible to define relations from Elasticsearch ActiveRecords to normal ActiveRecord classes and vice versa. However, [[yii\elasticsearch\ActiveQuery::via()|Via]]-relations can not be defined via a table as there are no tables in Elasticsearch.
+You can only define relations via other records.
+
+> **NOTE:** Elasticsearch limits the number of records returned by any query to 10 records by default.
+> If you expect to get more records you should specify limit explicitly in query **and also** relation definition.
+> This is also important for relations that use via() so that if via records are limited to 10
+> the relations records can also not be more than 10.
+
+
 ## Scalar and array attributes
 
 Any field in an Elasticsearch document [can hold multiple values](https://www.elastic.co/guide/en/elasticsearch/reference/current/array.html).
@@ -137,10 +127,10 @@ e.g. `['AB-32162']`.
 
 ## Organizing complex queries
 
-Any query can be composed using Elasticsearch's query DSL and passed to the `ActiveRecord::query()` method. However,
+Any query can be composed using Elasticsearch's query DSL and passed to the [[yii\elasticsearch\Query::query()|query()]] method. However,
 ES query DSL is notorious for its verbosity, and these oversized queries soon become unmanageable.
 
-The usual approach with SQL ActiveRecord classes is to create scopes, using methods in the query class that modify
+The usual approach with SQL ActiveRecord classes is to create scopes using methods in the query class that modify
 the query itself. This does not work so well with Elasticsearch, so the recommended approach is to create static
 functions that return building blocks of the query, then combine them.
 
@@ -202,16 +192,16 @@ $searchResult = Customer::find()->addAggregate('customers_by_date', [
         'field' => 'registered_at',
         'calendar_interval' => 'month',
     ],
-])->size(0)->search();
+])->limit(0)->search();
 
 $customersByDate = ArrayHelper::map($searchResult['aggregations']['customers_by_date']['buckets'], 'key_as_string', 'doc_count');
 ```
 
 Note that in this example [[yii\elasticsearch\ActiveQuery::search()|search()]] is used in place of
 [[yii\elasticsearch\ActiveQuery::one()|one()]] or [[yii\elasticsearch\ActiveQuery::all()|all()]]. The `search()`
-method returns not only the models, but also query metadata: scores, aggregations, etc. When using aggregations,
+method returns not only the models, but also query metadata: shard statistics, aggregations, etc. When using aggregations,
 the search results (hits) themselves often don't matter. That is why we're using
-[[yii\elasticsearch\ActiveQuery::size()|size(0)]] to only return the metadata.
+[[yii\elasticsearch\ActiveQuery::limit()|limit(0)]] to only return the metadata.
 
 After some processing, `$customersByDate` contains data similar to this:
 ```php
@@ -229,7 +219,7 @@ The extension updates records using the `_update` endpoint. Since this endpoint 
 to documents, all attributes that have an "object" mapping type in Elasticsearch will be merged with existing data.
 To demonstrate:
 
-```
+```php
 $customer = new Customer();
 $customer->my_attribute = ['foo' => 'v1', 'bar' => 'v2'];
 $customer->save();
@@ -248,7 +238,7 @@ $customer->save();
 Since this logic only applies to objects, the solution is to wrap the object into a single-element array. Since to
 Elasticsearch a single-element array is the same thing as the element itself, there is no need to modify any other code.
 
-```
+```php
 $customer->my_attribute = [['new' => 'value']]; // note the double brackets
 $customer->save();
 // now the value of my_attribute in Elasticsearch is {"new": "value"}

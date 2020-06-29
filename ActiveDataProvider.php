@@ -17,7 +17,7 @@ use yii\db\ActiveQueryInterface;
  *
  * Note: this data provider fetches result models and total count using single Elasticsearch query, so results total
  * count will be fetched after pagination limit applying, which eliminates ability to verify if requested page number
- * actually exist. Data provider disables [[yii\data\Pagination::validatePage]] automatically because of this.
+ * actually exist. Data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
  *
  * @property array $aggregations All aggregations results. This property is read-only.
  * @property array $queryResults Full query results.
@@ -65,13 +65,13 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
      * Returns results of the specified aggregation.
      * @param string $name aggregation name.
      * @return array aggregation results.
-     * @throws InvalidCallException if requested aggregation does not present in query results.
+     * @throws InvalidCallException if query results do not contain the requested aggregation.
      */
     public function getAggregation($name)
     {
         $aggregations = $this->getAggregations();
         if (!isset($aggregations[$name])) {
-            throw new InvalidCallException("Aggregation '{$name}' does not present.");
+            throw new InvalidCallException("Aggregation '{$name}' not found.");
         }
         return $aggregations[$name];
     }

@@ -1,55 +1,45 @@
 Working with data providers
 ===========================
 
-You can use [[\yii\data\ActiveDataProvider]] with the [[\yii\elasticsearch\Query]] and [[\yii\elasticsearch\ActiveQuery]]:
+The extension comes with its own enhanced and optimized [[\yii\elasticsearch\ActiveDataProvider|ActiveDataProvider]] class.
+The enhancements include:
 
-```php
-use yii\data\ActiveDataProvider;
-use yii\elasticsearch\Query;
+- Total record count is obtained from the same query that gets the records themselves, not in a separate query.
+- Aggregation data is available as a property of the data provider.
 
-$query = new Query();
-$query->from('yiitest', 'user');
-$provider = new ActiveDataProvider([
-    'query' => $query,
-    'pagination' => [
-        'pageSize' => 10,
-    ]
-]);
-$models = $provider->getModels();
-```
+While [[\yii\elasticsearch\Query]] and [[\yii\elasticsearch\ActiveQuery]] can be used with [[\yii\data\ActiveDataProvider]],
+this is not recommended.
 
-```php
-use yii\data\ActiveDataProvider;
-use app\models\User;
+> NOTE: The data provider fetches result models and total count using single Elasticsearch query, so results total count will be fetched
+  after pagination limit applying, which eliminates ability to verify if requested page number actually exist.
+  Data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
 
-$provider = new ActiveDataProvider([
-    'query' => User::find(),
-    'pagination' => [
-        'pageSize' => 10,
-    ]
-]);
-$models = $provider->getModels();
-```
 
-However, usage of [[\yii\data\ActiveDataProvider]] with enabled pagination is not efficient, since it require
-performing unnecessary extra query for the total item count fetching. Also it will be unable to give you access
-for the query aggregations results. You can use `yii\elasticsearch\ActiveDataProvider` instead. It allows preparing
-total item count using query 'meta' information and fetching of the aggregations results:
+## Usage examples
 
 ```php
 use yii\elasticsearch\ActiveDataProvider;
 use yii\elasticsearch\Query;
 
+// Using Query
 $query = new Query();
-$query->from('yiitest', 'user')
-    ->addAggregation('foo', 'terms', []);
-$provider = new ActiveDataProvider([
+$query->from('customer');
+
+// ActiveQuery can also be used
+// $query = Customer::find();
+
+$query->addAggregate(['date_histogram' => [
+    'field' => 'registered_at',
+    'calendar_interval' => 'month',
+]]);
+
+$dataProvider = new ActiveDataProvider([
     'query' => $query,
     'pagination' => [
         'pageSize' => 10,
     ]
 ]);
-$models = $provider->getModels();
-$aggregations = $provider->getAggregations();
-$fooAggregation = $provider->getAggregation('foo');
+
+$models = $dataProvider->getModels();
+$aggregations = $dataProvider->getAggregations();
 ```

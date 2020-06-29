@@ -69,8 +69,7 @@ class Query extends Component implements QueryInterface
      * > Note: Field values are [always returned as arrays] even if they only
      * > have one value.
      *
-     * [always returned as arrays]: https://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
-     * [script field]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
+     * [always returned as arrays]: https://www.elastic.co/guide/en/elasticsearch/reference/current/array.html
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-stored-fields.html
      * @see storedFields()
@@ -97,7 +96,7 @@ class Query extends Component implements QueryInterface
      *
      * > Note: Field values are [always returned as arrays] even if they only have one value.
      *
-     * [always returned as arrays]: https://www.elastic.co/guide/en/elasticsearch/reference/1.x/_return_values.html#_return_values
+     * [always returned as arrays]: https://www.elastic.co/guide/en/elasticsearch/reference/current/array.html
      * [script field]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-script-fields.html
@@ -141,7 +140,7 @@ class Query extends Component implements QueryInterface
      * executed within the specified time value and bail with the hits
      * accumulated up to that point when expired. Defaults to no timeout.
      * @see timeout()
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#global-search-timeout
      */
     public $timeout;
 
@@ -336,7 +335,6 @@ class Query extends Component implements QueryInterface
      * options are:
      *
      *  - [routing](https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#search-routing)
-     *  - [search_type](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-type.html)
      *
      * @return array the query results.
      */
