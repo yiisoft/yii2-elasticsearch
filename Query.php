@@ -533,7 +533,7 @@ class Query extends Component implements QueryInterface
     }
 
     /**
-     * @deprecated since 2.0.5 use addAggragate() instead
+     * @deprecated since 2.0.5 use addAggregate() instead
      *
      * Adds an aggregation to this query.
      *
