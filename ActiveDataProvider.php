@@ -77,6 +77,31 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
+     * @return array all suggestions results
+     */
+    public function getSuggestions()
+    {
+        $results = $this->getQueryResults();
+        return isset($results['suggest']) ? $results['suggest'] : [];
+    }
+
+    /**
+     * Returns results of the specified suggestion.
+     * @param string $name suggestion name.
+     * @return array suggestion results.
+     * @throws InvalidCallException if query results do not contain the requested suggestion.
+     */
+    public function getSuggestion($name)
+    {
+        $suggestions = $this->getSuggestions();
+        Yii::info($suggestions);
+        if (!isset($suggestions[$name])) {
+            throw new InvalidCallException("Suggestions '{$name}' not found.");
+        }
+        return $suggestions[$name];
+    }
+
+    /**
      * @inheritdoc
      */
     protected function prepareModels()
@@ -117,7 +142,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
         $results = $this->getQueryResults();
         if (isset($results['hits']['total'])) {
-            return is_array($results['hits']['total']) ? (int)$results['hits']['total']['value'] : (int)$results['hits']['total'];
+            return is_array($results['hits']['total']) ? (int) $results['hits']['total']['value'] : (int) $results['hits']['total'];
         }
         return 0;
     }
