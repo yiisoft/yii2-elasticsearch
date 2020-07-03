@@ -9,6 +9,7 @@ namespace yii\elasticsearch;
 
 use yii\base\Component;
 use yii\base\InvalidCallException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 /**
@@ -534,11 +535,8 @@ class Command extends Component
      */
     public function scroll($options = [])
     {
-        $scroll = isset($options['scroll']) ? $options['scroll'] : null;
-        $scrollId = isset($options['scroll_id']) ? $options['scroll_id'] : null;
-
-        unset($options['scroll']);
-        unset($options['scroll_id']);
+        $scroll = ArrayHelper::remove($options, 'scroll', null);
+        $scrollId = ArrayHelper::remove($options, 'scroll_id', null);
 
         $body = [
             'scroll' => $scroll,
@@ -560,9 +558,7 @@ class Command extends Component
      */
     public function clearScroll($options = [])
     {
-        $scrollId = isset($options['scroll_id']) ? $options['scroll_id'] : null;
-
-        unset($options['scroll_id']);
+        $scrollId = ArrayHelper::remove($options, 'scroll_id', null);
 
         $body = [
             'scroll_id' => $scrollId,
