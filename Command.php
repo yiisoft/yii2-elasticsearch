@@ -534,7 +534,22 @@ class Command extends Component
      */
     public function scroll($options = [])
     {
-       return $this->db->get(['_search', 'scroll'], $options);
+        $scroll = isset($options['scroll']) ? $options['scroll'] : null;
+        $scrollId = isset($options['scroll_id']) ? $options['scroll_id'] : null;
+
+        unset($options['scroll']);
+        unset($options['scroll_id']);
+
+        $body = [
+            'scroll' => $scroll,
+            'scroll_id' => $scrollId,
+        ];
+        $body = array_filter($body);
+        if (empty($body)) {
+            $body = (object) [];
+        }
+
+       return $this->db->post(['_search', 'scroll'], $options, Json::encode($body));
     }
 
     /**
@@ -545,7 +560,19 @@ class Command extends Component
      */
     public function clearScroll($options = [])
     {
-       return $this->db->delete(['_search', 'scroll'], $options);
+        $scrollId = isset($options['scroll_id']) ? $options['scroll_id'] : null;
+
+        unset($options['scroll_id']);
+
+        $body = [
+            'scroll_id' => $scrollId,
+        ];
+        $body = array_filter($body);
+        if (empty($body)) {
+            $body = (object) [];
+        }
+
+       return $this->db->delete(['_search', 'scroll'], $options, Json::encode($body));
     }
 
     /**
