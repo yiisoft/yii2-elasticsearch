@@ -146,20 +146,15 @@ class ElasticsearchTarget extends Target
             $result['trace'] = $message[4];
         }
 
-        //Exceptions get parsed into an array, text and arrays are passed as is, other types are var_dumped
-        if ($text instanceof \Exception) {
-            //convert exception to array for easier analysis
-            $result['message'] = [
-                'message' => $text->getMessage(),
-                'file' => $text->getFile(),
-                'line' => $text->getLine(),
-                'trace' => $text->getTraceAsString(),
-            ];
-        } elseif (is_array($text) || is_string($text)) {
-            $result['message'] = $text;
-        } else {
-            $result['message'] = VarDumper::export($text);
+        if (!is_string($text)) {
+            // exceptions may not be serializable if in the call stack somewhere is a Closure
+            if ($text instanceof \Throwable || $text instanceof \Exception) {
+                $text = (string) $text;
+            } else {
+                $text = VarDumper::export($text);
+            }
         }
+        $result['message'] = $text;
 
         if ($this->includeContext) {
             $result['context'] = $this->getContextMessage();

@@ -16,6 +16,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 - Bug #191: Fixed error when calling `column('_id')` in `ActiveQuery` (pvassiliou)
 - Bug #171: Allow to have both `query()` and `where()` in a query (beowulfenator)
 - Bug #176: Allow very long scroll id by passing scroll id in request body (russianlagman)
+- Bug #239: Make sure that `ElasticsearchTarget` consistently logs message as text (beowufenator)
 
 
 2.0.7 June 01, 2020
