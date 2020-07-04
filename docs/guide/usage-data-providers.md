@@ -33,10 +33,10 @@ $query->addAggregate(['date_histogram' => [
     'calendar_interval' => 'month',
 ]]);
 
-$query->addSuggester('customer.name', [
+$query->addSuggester('customer_name', [
     'text' => 'Hans',
     'term' => [
-        'field' => 'customer.name',
+        'field' => 'customer_name',
     ]
 ]);
 

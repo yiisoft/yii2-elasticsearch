@@ -217,10 +217,10 @@ After some processing, `$customersByDate` contains data similar to this:
 ### Usage examples
 
 ```php
-$searchResult = Customer::find()->addSuggester('customer.name', [
+$searchResult = Customer::find()->addSuggester('customer_name', [
     'text' => 'Hans',
     'term' => [
-        'field' => 'customer.name',
+        'field' => 'customer_name',
     ]
 ])->search();
 ```

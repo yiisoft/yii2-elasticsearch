@@ -179,14 +179,14 @@ class ActiveRecordTest extends TestCase
 
     public function testSuggestion()
     {
-        $result = Customer::find()->addSuggester('customer.name', [
+        $result = Customer::find()->addSuggester('customer_name', [
             'text' => 'user',
             'term' => [
                 'field' => 'name'
             ]
         ])->search();
 
-        $this->assertCount(3, $result['suggest']['customer.name'][0]['options']);
+        $this->assertCount(3, $result['suggest']['customer_name'][0]['options']);
     }
 
     public function testGetDb()
