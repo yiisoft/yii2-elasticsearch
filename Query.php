@@ -327,7 +327,7 @@ class Query extends Component implements QueryInterface
 
     /**
      * Executes the query and returns the complete search result including e.g.
-     * hits, facets, totalCount.
+     * hits, aggregations, suggesters, totalCount.
      * @param Connection $db the database connection used to execute the query.
      * If this parameter is not given, the `elasticsearch` application
      * component will be used.
