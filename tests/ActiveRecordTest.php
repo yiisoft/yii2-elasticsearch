@@ -162,21 +162,8 @@ class ActiveRecordTest extends TestCase
         $customer = reset($result['hits']);
         $this->assertTrue($customer instanceof Customer);
         $this->assertEquals(2, $customer->_id);
-
-        // TODO test query() and filter()
     }
-
-    // TODO test aggregations
-    //    public function testSearchFacets()
-    //    {
-    //        $result = Customer::find()->addAggregation('status_stats', ['field' => 'status'])->search();
-    //        $this->assertArrayHasKey('facets', $result);
-    //        $this->assertEquals(3, $result['facets']['status_stats']['count']);
-    //        $this->assertEquals(4, $result['facets']['status_stats']['total']); // sum of values
-    //        $this->assertEquals(1, $result['facets']['status_stats']['min']);
-    //        $this->assertEquals(2, $result['facets']['status_stats']['max']);
-    //    }
-
+  
     public function testSuggestion()
     {
         $result = Customer::find()->addSuggester('customer_name', [
@@ -188,7 +175,7 @@ class ActiveRecordTest extends TestCase
 
         $this->assertCount(3, $result['suggest']['customer_name'][0]['options']);
     }
-
+  
     public function testGetDb()
     {
         $this->mockApplication(['components' => ['elasticsearch' => Connection::className()]]);
