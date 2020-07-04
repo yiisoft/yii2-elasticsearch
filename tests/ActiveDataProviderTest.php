@@ -103,4 +103,17 @@ class ActiveDataProviderTest extends TestCase
         $this->expectException('\yii\elasticsearch\Exception');
         $models = $provider->getModels();
     }
+
+    public function testRefresh()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Customer::find(),
+        ]);
+        $this->assertEquals(3, $dataProvider->getTotalCount());
+
+        // Create new query and set to the same dataprovider
+        $dataProvider->query = Customer::find()->where(['name' => 'user2']);
+        $dataProvider->refresh();
+        $this->assertEquals(1, $dataProvider->getTotalCount());
+    }
 }
