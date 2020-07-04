@@ -535,14 +535,10 @@ class Command extends Component
      */
     public function scroll($options = [])
     {
-        $scroll = ArrayHelper::remove($options, 'scroll', null);
-        $scrollId = ArrayHelper::remove($options, 'scroll_id', null);
-
-        $body = [
-            'scroll' => $scroll,
-            'scroll_id' => $scrollId,
-        ];
-        $body = array_filter($body);
+        $body = array_filter([
+            'scroll' => ArrayHelper::remove($options, 'scroll', null),
+            'scroll_id' => ArrayHelper::remove($options, 'scroll_id', null),
+        ]);
         if (empty($body)) {
             $body = (object) [];
         }
@@ -558,12 +554,9 @@ class Command extends Component
      */
     public function clearScroll($options = [])
     {
-        $scrollId = ArrayHelper::remove($options, 'scroll_id', null);
-
-        $body = [
-            'scroll_id' => $scrollId,
-        ];
-        $body = array_filter($body);
+        $body = array_filter([
+            'scroll_id' => ArrayHelper::remove($options, 'scroll_id', null),
+        ]);
         if (empty($body)) {
             $body = (object) [];
         }
