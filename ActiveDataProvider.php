@@ -95,7 +95,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     {
         $suggestions = $this->getSuggestions();
         if (!isset($suggestions[$name])) {
-            throw new InvalidCallException("Suggestions '{$name}' not found.");
+            throw new InvalidCallException("Suggestion '{$name}' not found.");
         }
         return $suggestions[$name];
     }
