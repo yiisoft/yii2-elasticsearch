@@ -38,7 +38,7 @@ class ActiveDataProviderTest extends TestCase
         $customer->save(false);
         $customer = new Customer();
         $customer->_id = 3;
-        $customer->setAttributes(['email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 1], false);
+        $customer->setAttributes(['email' => 'user3@example.com', 'name' => 'user3', 'address' => 'address3', 'status' => 2], false);
         $customer->save(false);
 
         $db->createCommand()->refreshIndex(Customer::index());
@@ -67,6 +67,28 @@ class ActiveDataProviderTest extends TestCase
         ]);
         $models = $provider->getModels();
         $this->assertEquals(1, count($models));
+    }
+
+    public function testGetAggregations()
+    {
+        $provider = new ActiveDataProvider([
+            'query' => Customer::find()->addAggregate('agg_status', [
+                'terms' => [
+                    'field' => 'status'
+                ]
+            ]),
+        ]);
+        $models = $provider->getModels();
+        $this->assertEquals(3, count($models));
+
+        $aggregations = $provider->getAggregations();
+        $buckets = $aggregations['agg_status']['buckets'];
+        $this->assertEquals(2, count($buckets));
+        $status_1 = $buckets[array_search(1, array_column($buckets, 'key'))];
+        $status_2 = $buckets[array_search(2, array_column($buckets, 'key'))];
+
+        $this->assertEquals(2, $status_1['doc_count']);
+        $this->assertEquals(1, $status_2['doc_count']);
     }
 
     public function testActiveQuery()
