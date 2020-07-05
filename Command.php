@@ -112,7 +112,7 @@ class Command extends Component
         if (is_array($suggester)) {
             $suggester = Json::encode($suggester);
         }
-        $body = '{"suggest":'.$suggester.'}';
+        $body = '{"suggest":'.$suggester.',"size":0}';
         $url = [
             $this->index !== null ? $this->index : '_all',
             '_search'
