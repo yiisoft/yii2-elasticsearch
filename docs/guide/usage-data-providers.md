@@ -33,6 +33,13 @@ $query->addAggregate(['date_histogram' => [
     'calendar_interval' => 'month',
 ]]);
 
+$query->addSuggester('customer_name', [
+    'text' => 'Hans',
+    'term' => [
+        'field' => 'customer_name',
+    ]
+]);
+
 $dataProvider = new ActiveDataProvider([
     'query' => $query,
     'pagination' => [
@@ -42,4 +49,5 @@ $dataProvider = new ActiveDataProvider([
 
 $models = $dataProvider->getModels();
 $aggregations = $dataProvider->getAggregations();
+$suggestion = $dataProvider->getSuggestions();
 ```

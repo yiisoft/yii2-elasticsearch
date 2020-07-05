@@ -163,7 +163,19 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue($customer instanceof Customer);
         $this->assertEquals(2, $customer->_id);
     }
+  
+    public function testSuggestion()
+    {
+        $result = Customer::find()->addSuggester('customer_name', [
+            'text' => 'user',
+            'term' => [
+                'field' => 'name'
+            ]
+        ])->search();
 
+        $this->assertCount(3, $result['suggest']['customer_name'][0]['options']);
+    }
+  
     public function testGetDb()
     {
         $this->mockApplication(['components' => ['elasticsearch' => Connection::className()]]);
@@ -355,8 +367,8 @@ class ActiveRecordTest extends TestCase
 
         // indexBy callable + asArray
         $customers = Customer::find()->indexBy(function ($customer) {
-                    return $customer->_id . '-' . $customer->name;
-                })->storedFields('name')->all();
+            return $customer->_id . '-' . $customer->name;
+        })->storedFields('name')->all();
         $this->assertCount(3, $customers);
         $this->assertTrue($customers['1-user1'] instanceof $customerClass);
         $this->assertTrue($customers['2-user2'] instanceof $customerClass);
@@ -396,8 +408,8 @@ class ActiveRecordTest extends TestCase
 
         // indexBy callable + asArray
         $customers = Customer::find()->indexBy(function ($customer) {
-                    return $customer['_id'] . '-' . reset($customer['fields']['name']);
-                })->asArray()->storedFields('name')->all();
+            return $customer['_id'] . '-' . reset($customer['fields']['name']);
+        })->asArray()->storedFields('name')->all();
         $this->assertCount(3, $customers);
         $this->assertArrayHasKey('name', $customers['1-user1']['fields']);
         $this->assertArrayNotHasKey('email', $customers['1-user1']['fields']);
@@ -580,7 +592,6 @@ class ActiveRecordTest extends TestCase
         } catch (InvalidCallException $e) {
             $this->assertEquals($e->getMessage(), 'Unable to link models: foreign model cannot be linked if its property is an array.');
         }
-
     }
 
     public function testArrayAttributeRelationUnLink()

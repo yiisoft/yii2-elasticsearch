@@ -212,6 +212,21 @@ After some processing, `$customersByDate` contains data similar to this:
 ]
 ```
 
+## Suggestion 
+
+### Usage examples
+
+```php
+$searchResult = Customer::find()->addSuggester('customer_name', [
+    'text' => 'Hans',
+    'term' => [
+        'field' => 'customer_name',
+    ]
+])->search();
+```
+
+
+```php
 
 ## Unusual behavior of attributes with object mapping
 
