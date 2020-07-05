@@ -177,7 +177,6 @@ $customers = Customer::find()->query([
 ])->all();
 ```
 
-
 ## Aggregations
 
 [The aggregations framework](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html)
@@ -212,21 +211,29 @@ After some processing, `$customersByDate` contains data similar to this:
 ]
 ```
 
-## Suggestion 
+## Suggesters
 
-### Usage examples
+Sometimes it is necessary to suggest search terms that are similar to the search query and exist in the index.
+For example, it might be useful to find known alternative spellings of a name. See the example below, and also
+[Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) for details.
 
 ```php
-$searchResult = Customer::find()->addSuggester('customer_name', [
+$searchResult = Customer::find()->limit(0)
+->addSuggester('customer_name', [
     'text' => 'Hans',
     'term' => [
-        'field' => 'customer_name',
+        'field' => 'name',
     ]
 ])->search();
+
+// Note that limit(0) will prevent the query from returning hits,
+// so only suggestions are returned
+
+$suggestions = ArrayHelper::map($searchResult["suggest"]["customer_name"], 'text', 'options');
+$names = ArrayHelper::getColumn($suggestions['Hans'], 'text');
+// $names == ['Hanns', 'Hannes', 'Hanse', 'Hansi']
 ```
 
-
-```php
 
 ## Unusual behavior of attributes with object mapping
 
