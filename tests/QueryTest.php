@@ -436,4 +436,19 @@ class QueryTest extends TestCase
         $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
         $this->assertEquals(1, $total);
     }
+
+    public function testSuggest()
+    {
+        $cmd = $command = $this->getConnection()->createCommand();
+        $cmd->index = "query-test";
+
+        $result = $cmd->suggest(['customer_name' => [
+            'text' => 'user',
+            'term' => [
+                'field' => 'name'
+            ]
+        ]]);
+
+        $this->assertCount(5, $result['suggest']['customer_name'][0]['options']);
+    }
 }
