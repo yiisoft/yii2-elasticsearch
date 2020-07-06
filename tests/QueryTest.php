@@ -449,6 +449,6 @@ class QueryTest extends TestCase
             ]
         ]]);
 
-        $this->assertCount(5, $result['suggest']['customer_name'][0]['options']);
+        $this->assertCount(5, $result['customer_name'][0]['options']);
     }
 }

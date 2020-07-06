@@ -118,7 +118,9 @@ class Command extends Component
             '_search'
         ];
 
-        return $this->db->post($url, array_merge($this->options, $options), $body);
+        $result = $this->db->post($url, array_merge($this->options, $options), $body);
+
+        return $result['suggest'];
     }
 
     /**
