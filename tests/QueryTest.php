@@ -439,7 +439,7 @@ class QueryTest extends TestCase
 
     public function testSuggest()
     {
-        $cmd = $command = $this->getConnection()->createCommand();
+        $cmd = $this->getConnection()->createCommand();
         $cmd->index = "query-test";
 
         $result = $cmd->suggest(['customer_name' => [
