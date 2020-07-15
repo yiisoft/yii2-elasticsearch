@@ -98,7 +98,7 @@ class Command extends Component
     }
 
     /**
-     * Sends a request to the _suggest API and returns the result
+     * Sends a suggest request to the _search API and returns the result
      * @param string|array $suggester the suggester body
      * @param array $options
      * @return mixed
@@ -112,12 +112,15 @@ class Command extends Component
         if (is_array($suggester)) {
             $suggester = Json::encode($suggester);
         }
+        $body = '{"suggest":'.$suggester.',"size":0}';
         $url = [
             $this->index !== null ? $this->index : '_all',
-            '_suggest'
+            '_search'
         ];
 
-        return $this->db->post($url, array_merge($this->options, $options), $suggester);
+        $result = $this->db->post($url, array_merge($this->options, $options), $body);
+
+        return $result['suggest'];
     }
 
     /**
