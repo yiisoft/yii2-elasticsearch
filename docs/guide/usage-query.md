@@ -45,3 +45,35 @@ where only first few pages of results have any relevance. While it is technicall
 
 One possible solution would be to use the scroll mode, which behaves similar to cursors in traditional SQL databases. Scroll mode
 is implemented with [[yii\elasticsearch\Query::batch()|batch()]] and [[yii\elasticsearch\Query::each()|each()]] methods.
+
+
+## Error handling in queries
+
+Elasticsearch is a distributed database. Because of its distributed nature, certain requests may be partially successful.
+
+Consider how a typical search is performed. The query is sent to all relevant shards, then their results are collected,
+processed, and returned to user. It is possible that not all shards are able to return a result. Yet, even with some data
+missing, the result may be useful.
+
+With every query the server returns [some additional metadata](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-api-response-body),
+including data on which shards failed. This data is lost when using standard Yii2 methods like
+[[yii\elasticsearch\Query::one()|one()]] and [[yii\elasticsearch\Query::all()|all()]].
+Even if some shards failed, it is not considered a server error.
+
+To get extended data, including shard statictics, use the [[yii\elasticsearch\Query::search()|search()]] method.
+
+The query itself can also fail for a number of reasons (connectivity issues, syntax error, etc.) but that will result
+in an exception.
+
+
+
+## Error handling in bulk requests
+
+In Elasticsearch a [bulk request](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) performs
+multiple operations in a single API call. This reduces overhead and can greatly increase indexing speed.
+
+The operations are executed individually, so some can be successful, while others fail. Having some of the operations fail
+does not cause the whole bulk request to fail. If it is important to know if any of the constituent operations failed,
+the [[yii\elasticsearch\BulkCommand::execute()|result of the bulk request]] needs to be checked.
+
+The bulk request itself can also fail, for example, because of connectivity issues, but that will result in an exception.

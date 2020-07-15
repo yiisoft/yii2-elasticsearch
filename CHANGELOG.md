@@ -19,6 +19,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 - Bug #239: Make sure that `ElasticsearchTarget` consistently logs message as text (beowufenator)
 - Enh #156: Added suggester support to `ActiveDataProvider` (Julian-B90)
 - Bug #216: Updated `suggest()` command to support Elasticsearch 6.5+ (beowulfenator)
+- Enh #136: Added docs on error handling in queries (beowulfenator)
 
 
 2.0.7 June 01, 2020
