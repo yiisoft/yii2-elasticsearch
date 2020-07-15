@@ -18,6 +18,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 - Bug #176: Allow very long scroll id by passing scroll id in request body (russianlagman)
 - Bug #239: Make sure that `ElasticsearchTarget` consistently logs message as text (beowufenator)
 - Enh #156: Added suggester support to `ActiveDataProvider` (Julian-B90)
+- Bug #216: Updated `suggest()` command to support Elasticsearch 6.5+ (beowulfenator)
 
 
 2.0.7 June 01, 2020
