@@ -2,13 +2,32 @@ Mapping & Indexing
 ==================
 
 
-## Creating indices and mappings
+## Comparison with SQL
 
-Elasticsearch is a document store, and the schema of those documents is called a mapping. Every index should have a
-mapping. Even though new fields will be created on the fly when documents are indexed, it is considered good practice
+[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/_mapping_concepts_across_sql_and_elasticsearch.html) provides an extensive list of concepts in Elasticsearch and SQL and how they map to one another. We'll focus on the
+basics.
+
+An Elasticsearch cluster consists of one or more Elasticsearch instances. Requests are sent to one of the instances,
+which propagates the query to other instances in the cluster, collects results, and then returns them to the client.
+Therefore a cluster or an instance that represents it roughly correspond to a SQL database.
+
+In Elasticsearch data is stored in indices. An index corresponds to a SQL table.
+
+An index contains documents. Documents correspond to rows in a SQL table. In this extension, an
+[[yii\elasticsearch\ActiveRecord|ActiveRecord]] represents a document in an index. The operation of saving a document
+into an index is called indexing.
+
+The schema or structure of a document is defined in the so-called mapping. A mapping defines document fields, which
+correspond to columns in SQL. In Elasticsearch the primary key field is special, because it always exists and its
+name and structure can not be changed. Other fields are fully configurable.
+
+
+## Mapping fields beforehand
+
+Even though new fields will be created on the fly when documents are indexed, it is considered good practice
 to define a mapping before indexing documents.
 
-Generally, once an attribute is defined, it is not possible to change its type (for example, go from integer to string).
+Generally, once an attribute is defined, it is not possible to change its type. For example if a text field is configured to use the English language analyzer, it is not possible to switch to a different language without reindexing every document in the index.
 Certain limited modifications to mapping can be applied on the fly. See
 [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html#updating-field-mappings)
 for more info.
