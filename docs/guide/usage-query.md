@@ -1,13 +1,12 @@
-Using the Query
-===============
+# Using the Query
 
 The [[yii\elasticsearch\Query]] class is generally compatible with its [[yii\db\Query|parent query class]], well-described in the
 [guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/db-query-builder.md).
 
 The differences are outlined below.
 
-- As Elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()` and `union()`.
-  Sorting, limit, offset and conditional where are all supported (with certain limitations).
+- As Elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()`, and `union()`.
+  Sorting, `limit()`, `offset()`, `limit()`, and `where()` are all supported (with certain limitations).
 
 - [[yii\elasticsearch\Query::from()|from()]] does not select the tables, but the
   [index](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index)
@@ -25,8 +24,8 @@ Check out the [Query DSL](https://www.elastic.co/guide/en/elasticsearch/referenc
 The [[yii\elasticsearch\Query]] class provides the usual methods for executing queries: [[yii\elasticsearch\Query::one()|one()]] and
 [[yii\elasticsearch\Query::all()|all()]]. They return only the search results (or a single result).
 
-There is also the [[yii\elasticsearch\Query::search()|search()]] method that returns all of the metadata retrieved from Elasticsearch,
-including aggregations.
+There is also the [[yii\elasticsearch\Query::search()|search()]] method that returns both the search results, and all of the
+metadata retrieved from Elasticsearch, including aggregations.
 
 The extension fully supports the highly efficient scroll mode, that allows to retrieve large results sets. See
 [[yii\elasticsearch\Query::batch()|batch()]] and [[yii\elasticsearch\Query::each()|each()]] for more information.
