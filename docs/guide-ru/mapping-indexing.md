@@ -1,6 +1,5 @@
 # Структура данных и индексы
 
-
 ## Сравнение с SQL
 
 [В документации Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/_mapping_concepts_across_sql_and_elasticsearch.html) подробно описаны ключевые понятия Elasticsearch и баз данных SQL, и как они соответствуют друг другу. Рассмотрим основное.

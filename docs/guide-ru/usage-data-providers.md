@@ -1,52 +1,53 @@
-Работа с провайдерами данных
-===========================
+# Работа с провайдерами данных
 
-Вы можете использовать [[\yii\data\ActiveDataProvider]] с [[\yii\elasticsearch\Query]] и [[\yii\elasticsearch\ActiveQuery]]:
+В расширении есть свой улучшенный и оптимизированный класс [[\yii\elasticsearch\ActiveDataProvider|ActiveDataProvider]].
+По сравнению с базовым классом, выполнены такие улучшения:
 
-```php
-use yii\data\ActiveDataProvider;
-use yii\elasticsearch\Query;
+- Общее количество записей получается из того же запроса, что и сами записи.
+- Результаты агрегации доступны как свойство провайдера данных.
 
-$query = new Query();
-$query->from('yiitest', 'user');
-$provider = new ActiveDataProvider([
-    'query' => $query,
-    'pagination' => [
-        'pageSize' => 10,
-    ]
-]);
-$models = $provider->getModels();
-```
+Хотя запросы [[\yii\elasticsearch\Query]] и [[\yii\elasticsearch\ActiveQuery]] совместимы со стандартным классом
+[[\yii\data\ActiveDataProvider]], использовать его с ними нежелательно.
 
-```php
-use yii\data\ActiveDataProvider;
-use app\models\User;
+> ВАЖНО: Поскольку провайдер получает и модели, и их общее количество одним запросом, этот запрос
+> выполняется уже после того, как наложены ограничения постраничного вывода. Из-за этого невозможно
+> убедиться, что запрашиваемая страница действительно существует. По этой причине в провайдере
+> автоматически сбрасывается параметр [[yii\data\Pagination::$validatePage]].
 
-$provider = new ActiveDataProvider([
-    'query' => User::find(),
-    'pagination' => [
-        'pageSize' => 10,
-    ]
-]);
-$models = $provider->getModels();
-```
 
-Однако использование [[\yii\data\ActiveDataProvider]] с включенным разбиением на страницы неэффективно, так как для выполнения вычисления дополнительных запросов требуется выполнить лишний дополнительный запрос. Также он не сможет предоставить вам доступ к результатам агрегирования запросов. Вместо этого вы можете использовать `yii\elasticsearch\ActiveDataProvider`. Это дает возможность формировать общее количество элементов с помощью запроса 'meta' - информации и извлечения результатов агрегирования:
+## Примеры использования
 
 ```php
 use yii\elasticsearch\ActiveDataProvider;
 use yii\elasticsearch\Query;
 
+// С классом Query
 $query = new Query();
-$query->from('yiitest', 'user')
-    ->addAggregation('foo', 'terms', []);
-$provider = new ActiveDataProvider([
+$query->from('customer');
+
+// Можно использовать и ActiveQuery
+// $query = Customer::find();
+
+$query->addAggregate(['date_histogram' => [
+    'field' => 'registered_at',
+    'calendar_interval' => 'month',
+]]);
+
+$query->addSuggester('customer_name', [
+    'text' => 'Hans',
+    'term' => [
+        'field' => 'customer_name',
+    ]
+]);
+
+$dataProvider = new ActiveDataProvider([
     'query' => $query,
     'pagination' => [
         'pageSize' => 10,
     ]
 ]);
-$models = $provider->getModels();
-$aggregations = $provider->getAggregations();
-$fooAggregation = $provider->getAggregation('foo');
+
+$models = $dataProvider->getModels();
+$aggregations = $dataProvider->getAggregations();
+$suggestion = $dataProvider->getSuggestions();
 ```

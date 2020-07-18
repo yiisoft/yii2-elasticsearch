@@ -1,5 +1,4 @@
-Working with data providers
-===========================
+# Working with data providers
 
 The extension comes with its own enhanced and optimized [[\yii\elasticsearch\ActiveDataProvider|ActiveDataProvider]] class.
 The enhancements include:

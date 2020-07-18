@@ -1,5 +1,4 @@
-Installation
-============
+# Installation
 
 ## Requirements
 

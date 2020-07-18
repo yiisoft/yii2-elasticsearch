@@ -1,6 +1,4 @@
-Mapping & Indexing
-==================
-
+# Mapping & Indexing
 
 ## Comparison with SQL
 
