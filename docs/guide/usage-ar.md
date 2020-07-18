@@ -1,8 +1,9 @@
-Using the ActiveRecord
-======================
+# Using the ActiveRecord
 
-For general information on how to use yii's ActiveRecord please refer to the
-[guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/db-active-record.md).
+Elasticsearch ActiveRecord is very similar to the database ActiveRecord as described in the
+[guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md).
+
+Most of its limitations and differences are derived from the [[yii\elasticsearch\Query]] implementation.
 
 For defining an Elasticsearch ActiveRecord class your record class needs to extend from [[yii\elasticsearch\ActiveRecord]]
 and implement at least the [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] method to define the attributes
@@ -26,11 +27,6 @@ You may override [[yii\elasticsearch\ActiveRecord::index()|index()]] and [[yii\e
 to define the index and type this record represents.
 
 > NOTE: Type is ignored for Elasticsearch 7.x and above. See [Data Mapping & Indexing](mapping-indexing.md) for more information.
-
-Elasticsearch ActiveRecord is very similar to the database ActiveRecord as described in the
-[guide](https://github.com/yiisoft/yii2/blob/master/docs/guide/active-record.md).
-
-Most of its limitations and differences are derived from the [[yii\elasticsearch\Query]] implementation.
 
 
 ## Usage examples
@@ -77,7 +73,7 @@ for new records. Note that the key attribute is a string and is limited to 512 b
 [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html)
 for more information.
 
-In elasticsearch, the name of the primary key is `_id`, and [[yii\elasticsearch\ActiveRecord]] provides getter and setter
+In Elasticsearch, the name of the primary key is `_id`, and [[yii\elasticsearch\ActiveRecord]] provides getter and setter
 methods to access it as a property. There is no need to add it to [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]].
 
 
@@ -95,13 +91,39 @@ on keyword fields.
 
 ## Defining relations
 
-It is possible to define relations from Elasticsearch ActiveRecords to normal ActiveRecord classes and vice versa. However, [[yii\elasticsearch\ActiveQuery::via()|Via]]-relations can not be defined via a table as there are no tables in Elasticsearch.
-You can only define relations via other records.
+It is possible to define relations from Elasticsearch ActiveRecords to other Elasticsearch and non-Elasticsearch ActiveRecord
+classes and vice versa. However, [[yii\elasticsearch\ActiveQuery::via()|Via]]-relations can not be defined using a table as
+there are no tables in Elasticsearch. You can only define such relations using other relations.
 
-> **NOTE:** Elasticsearch limits the number of records returned by any query to 10 records by default.
-> If you expect to get more records you should specify limit explicitly in query **and also** relation definition.
-> This is also important for relations that use via() so that if via records are limited to 10
-> the relations records can also not be more than 10.
+```php
+class Customer extends yii\elasticsearch\ActiveRecord
+{
+    // Every customer has multiple orders, every order has exactly one invoice
+
+    public function getOrders()
+    {
+        // This relation gets up to 100 most recent orders of current customer
+        return $this->hasMany(Order::className(), ['customer_id' => '_id'])
+                    ->orderBy(['created_at' => SORT_DESC])
+                    ->limit(100); // override the default limit of 10
+    }
+
+    public function getInvoices()
+    {
+        // This via-relation works by fetching the related "orders"
+        // models first. This query also needs a limit, but it makes
+        // no sense to make that limit different from the underlying
+        // relation.
+        return $this->hasMany(Invoice::className(), ['_id' => 'order_id'])
+                    ->via('orders')->limit(100);
+    }
+}
+```
+
+> **NOTE:** Elasticsearch limits the number of records returned by any query to 10 records by default. This applies
+> to queries executed when getting related models. If you expect to get more records you should specify the limit explicitly
+> in relation definition. This is also important for [[yii\elasticsearch\ActiveQuery::via()|via]]-relations
+> to set the limit both in the relation itself as well as the underlying model that is ised as an intermediary.
 
 
 ## Scalar and array attributes
@@ -132,7 +154,7 @@ ES query DSL is notorious for its verbosity, and these oversized queries soon be
 
 The usual approach with SQL ActiveRecord classes is to create scopes using methods in the query class that modify
 the query itself. This does not work so well with Elasticsearch, so the recommended approach is to create static
-functions that return building blocks of the query, then combine them.
+methods that return building blocks of the query, then combine them.
 
 ```php
 class CustomerQuery extends ActiveQuery
