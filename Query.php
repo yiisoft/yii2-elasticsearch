@@ -76,7 +76,6 @@ class Query extends Component implements QueryInterface
      * @see source
      */
     public $storedFields;
-
     /**
      * @var array the scripted fields being retrieved from the documents.
      * Example:
@@ -104,7 +103,6 @@ class Query extends Component implements QueryInterface
      * @see source
      */
     public $scriptFields;
-
     /**
      * @var array this option controls how the `_source` field is returned from
      * the documents. For example, `['id', 'name']` means that only the `id`
@@ -118,7 +116,6 @@ class Query extends Component implements QueryInterface
      * @see fields
      */
     public $source;
-
     /**
      * @var string|array The index to retrieve data from. This can be a string
      * representing a single index or a an array of multiple indexes. If this
@@ -126,7 +123,6 @@ class Query extends Component implements QueryInterface
      * @see from()
      */
     public $index;
-
     /**
      * @var string|array The type to retrieve data from. This can be a string
      * representing a single type or a an array of multiple types. If this is
@@ -134,7 +130,6 @@ class Query extends Component implements QueryInterface
      * @see from()
      */
     public $type;
-
     /**
      * @var integer A search timeout, bounding the search request to be
      * executed within the specified time value and bail with the hits
@@ -143,21 +138,18 @@ class Query extends Component implements QueryInterface
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#global-search-timeout
      */
     public $timeout;
-
     /**
      * @var array|string The query part of this search query. This is an array
      * or json string that follows the format of the elasticsearch
      * [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
      */
     public $query;
-
     /**
      * @var array|string The filter part of this search query. This is an array
      * or json string that follows the format of the elasticsearch
      * [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
      */
     public $filter;
-
     /**
      * @var string|array The `post_filter` part of the search query for
      * differentially filter search results and aggregations.
@@ -165,40 +157,34 @@ class Query extends Component implements QueryInterface
      * @since 2.0.5
      */
     public $postFilter;
-
     /**
      * @var array The highlight part of this search query. This is an array that allows to highlight search results
      * on one or more fields.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
      */
     public $highlight;
-
     /**
      * @var array List of aggregations to add to this query.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
      */
     public $aggregations = [];
-
     /**
      * @var array the 'stats' part of the query. An array of groups to maintain
      * a statistics aggregation for.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html#stats-groups
      */
     public $stats = [];
-
     /**
      * @var array list of suggesters to add to this query.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      */
     public $suggest = [];
-
     /**
      * @var array list of collapse to add to this query.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
      * @since 2.1.0
      */
     public $collapse = [];
-
     /**
      * @var float Exclude documents which have a _score less than the minimum
      * specified in min_score
@@ -206,20 +192,19 @@ class Query extends Component implements QueryInterface
      * @since 2.0.4
      */
     public $minScore;
-
     /**
      * @var array list of options that will passed to commands created by this query.
      * @see Command::$options
      * @since 2.0.4
      */
     public $options = [];
-
     /**
      * @var bool Enables explanation for each hit on how its score was computed.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-explain.html
      * @since 2.0.5
      */
     public $explain;
+
 
     /**
      * @inheritdoc

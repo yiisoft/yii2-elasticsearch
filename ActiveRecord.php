@@ -53,8 +53,8 @@ use yii\helpers\StringHelper;
  * @property float $score Returns the score of this record when it was retrieved via a [[find()]] query.
  * This property is read-only.
  * @property array|null $explanation An explanation for each hit on how its score was computed.
-* This property is read-only.
-
+ * This property is read-only.
+ *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
@@ -65,6 +65,7 @@ class ActiveRecord extends BaseActiveRecord
     private $_version;
     private $_highlight;
     private $_explanation;
+
 
     /**
      * Returns the database connection used by this AR class.

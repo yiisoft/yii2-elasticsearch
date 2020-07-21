@@ -1,25 +1,25 @@
 Yii Framework 2 Elasticsearch extension Change Log
 ==================================================
 
-2.1.0 under development
------------------------
+2.1.0 July 21, 2020
+-------------------
 
-- Enh #272: Add Elasticsearch 7 compatibility (beowulfenator)
-- Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
 - Bug #161: Changed yii\base\Object to yii\base\BaseObject (sashsvamir)
-- Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
-- Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
-- Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
-- Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
-- Enh #222: Added collapse support (walkskyer)
-- Chg #269: Replace InvalidParamException with InvalidArgumentException (Julian-B90)
-- Bug #191: Fixed error when calling `column('_id')` in `ActiveQuery` (pvassiliou)
 - Bug #171: Allow to have both `query()` and `where()` in a query (beowulfenator)
 - Bug #176: Allow very long scroll id by passing scroll id in request body (russianlagman)
-- Bug #239: Make sure that `ElasticsearchTarget` consistently logs message as text (beowufenator)
-- Enh #156: Added suggester support to `ActiveDataProvider` (Julian-B90)
+- Bug #180: Fixed `count()` compatibility with PHP 7.2 to not call it on scalar values (cebe)
+- Bug #191: Fixed error when calling `column('_id')` in `ActiveQuery` (pvassiliou)
 - Bug #216: Updated `suggest()` command to support Elasticsearch 6.5+ (beowulfenator)
+- Bug #239: Make sure that `ElasticsearchTarget` consistently logs message as text (beowufenator)
+- Bug: (CVE-2018-8074): Fixed possibility of manipulated condition when unfiltered input is passed to `ActiveRecord::findOne()` or `findAll()` (cebe)
+- Enh #112: Added support for Elasticsearch 5.0. Minimum requirement is also now Elasticsearch 5.0 (holycheater, beowulfenator, i-lie)
 - Enh #136: Added docs on error handling in queries (beowulfenator)
+- Enh #156: Added suggester support to `ActiveDataProvider` (Julian-B90)
+- Enh #222: Added collapse support (walkskyer)
+- Enh #272: Add Elasticsearch 7 compatibility (beowulfenator)
+- Chg #269: Replace InvalidParamException with InvalidArgumentException (Julian-B90)
+- Chg: Removed `Command::getIndexStatus()` and added `getIndexStats()` and `getIndexRecoveryStats()` to reflect changes in Elasticsearch 5.0 (cebe)
+- Chg: Search queries that result in a 404 error due to missing indices are now no longer silently interpreted as empty result, but will throw an exception (cebe)
 
 
 2.0.7 June 01, 2020

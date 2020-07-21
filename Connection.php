@@ -34,7 +34,6 @@ class Connection extends Component
      * @var boolean whether to autodetect available cluster nodes on [[open()]]
      */
     public $autodetectCluster = true;
-
     /**
      * @var array The Elasticsearch cluster nodes to connect to.
      *
@@ -59,12 +58,10 @@ class Connection extends Component
     public $nodes = [
         ['http_address' => 'inet[/127.0.0.1:9200]'],
     ];
-
     /**
      * @var string the active node. Key of one of the [[nodes]]. Will be randomly selected on [[open()]].
      */
     public $activeNode;
-
     /**
      * @var array Authentication data used to connect to the Elasticsearch node.
      *
@@ -77,7 +74,6 @@ class Connection extends Component
      * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
      */
     public $auth = [];
-
     /**
      * Elasticsearch has no knowledge of protocol used to access its nodes. Specifically, cluster autodetection request
      * returns node hosts and ports, but not the protocols to access them. Therefore we need to specify a default protocol here,
@@ -87,21 +83,18 @@ class Connection extends Component
      * @since 2.0.5
      */
     public $defaultProtocol = 'http';
-
     /**
      * @var float timeout to use for connecting to an Elasticsearch node.
      * This value will be used to configure the curl `CURLOPT_CONNECTTIMEOUT` option.
      * If not set, no explicit timeout will be set for curl.
      */
     public $connectionTimeout = null;
-
     /**
      * @var float timeout to use when reading the response from an Elasticsearch node.
      * This value will be used to configure the curl `CURLOPT_TIMEOUT` option.
      * If not set, no explicit timeout will be set for curl.
      */
     public $dataTimeout = null;
-
     /**
      * @var integer version of the domain-specific language to use with the server.
      * This must be set to the major version of the Elasticsearch server in use, e.g. `5` for Elasticsearch 5.x.x,

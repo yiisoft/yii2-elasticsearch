@@ -21,6 +21,7 @@ use yii\db\ActiveQueryInterface;
  *
  * @property array $aggregations All aggregations results. This property is read-only.
  * @property array $queryResults Full query results.
+ * @property array $suggestions All suggestions results. This property is read-only.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0.5
