@@ -13,7 +13,6 @@ this is not recommended.
   after pagination limit applying, which eliminates ability to verify if requested page number actually exist.
   Data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
 
-
 ## Usage examples
 
 ```php
@@ -49,4 +48,13 @@ $dataProvider = new ActiveDataProvider([
 $models = $dataProvider->getModels();
 $aggregations = $dataProvider->getAggregations();
 $suggestion = $dataProvider->getSuggestions();
+```
+
+## Breaking Changes in ES > 7.0.0
+[track_total_hits defualts to 10000](https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking-changes-7.0.html#track-total-hits-10000-default)
+When you want all results in the `hits.total.value` then add 
+```php
+$query = new Query();
+$query->from('customer');
+$query->addOptions(['track_total_hits' => 'true']);
 ```
