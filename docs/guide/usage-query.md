@@ -65,7 +65,6 @@ The query itself can also fail for a number of reasons (connectivity issues, syn
 in an exception.
 
 
-
 ## Error handling in bulk requests
 
 In Elasticsearch a [bulk request](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) performs
@@ -76,3 +75,22 @@ does not cause the whole bulk request to fail. If it is important to know if any
 the [[yii\elasticsearch\BulkCommand::execute()|result of the bulk request]] needs to be checked.
 
 The bulk request itself can also fail, for example, because of connectivity issues, but that will result in an exception.
+
+
+## Document counts in ES > 7.0.0
+
+As of Elasticsearch 7.0.0, for result sets over 10 000 hits, document counts (`total_hits`) are [no longer exact by
+default](https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking-changes-7.0.html#track-total-hits-10000-default).
+In other words, if the result set contains more than 10 000 documents, `total_hits` is reported as 10 000, and if it is less,
+then it is reported exactly. This results in a performance improvement.
+
+The `track_total_hits` option can be used to change this behavior. If it is set to `'true'`, exact document document count
+will always be returned, and an integer value overrides the default threshold value of 10 000.
+
+```
+$query = new Query();
+$query->from('customer');
+
+// Note the literal string 'true', not a boolean value!
+$query->addOptions(['track_total_hits' => 'true']);
+```
