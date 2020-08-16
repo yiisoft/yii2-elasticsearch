@@ -64,8 +64,6 @@ To get extended data, including shard statictics, use the [[yii\elasticsearch\Qu
 The query itself can also fail for a number of reasons (connectivity issues, syntax error, etc.) but that will result
 in an exception.
 
-
-
 ## Error handling in bulk requests
 
 In Elasticsearch a [bulk request](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) performs
@@ -76,3 +74,12 @@ does not cause the whole bulk request to fail. If it is important to know if any
 the [[yii\elasticsearch\BulkCommand::execute()|result of the bulk request]] needs to be checked.
 
 The bulk request itself can also fail, for example, because of connectivity issues, but that will result in an exception.
+
+## Breaking Changes in ES > 7.0.0
+[track_total_hits defualts to 10000](https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking-changes-7.0.html#track-total-hits-10000-default)
+When you want all results in the `hits.total.value` then add 
+```php
+$query = new Query();
+$query->from('customer');
+$query->addOptions(['track_total_hits' => 'true']);
+```
