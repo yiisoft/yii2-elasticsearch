@@ -61,7 +61,7 @@ to `false`. In that case an active node will be randomly selected from the nodes
 >
 > It may also be useful to disable cluster autodetection for performance reasons. If a cluster has a single
 > dedicated [coordinating-only node](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html#coordinating-only-node),
-> it makes sense to direct all requests to that node. Is a cluster contains only a few nodes and their addresses
+> it makes sense to direct all requests to that node. If a cluster contains only a few nodes and their addresses
 > are known, it may be useful to specify them explicitly.
 
 You should set the version of the domain-specific language the extension will use to communicate with the server.
