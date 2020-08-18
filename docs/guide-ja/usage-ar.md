@@ -1,13 +1,87 @@
-アクティブレコードを使う
-========================
+# アクティブレコードを使う
 
-Yii のアクティブレコードの使用方法に関する一般的な情報については、[ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide-ja/db-active-record.md) を参照してください。
+Elasticsearch の アクティブレコードは [ガイド](https://github.com/yiisoft/yii2/blob/master/docs/guide-ja/db-active-record.md)
+で述べられているデータベースのアクティブレコードと非常によく似ています。
+
+その制限や相違のほとんどは [[yii\elasticsearch\Query]] の実装に由来するものです。
 
 Elasticsearch のアクティブレコードを定義するためには、あなたのレコード・クラスを [[yii\elasticsearch\ActiveRecord]] から拡張して、
-最低限、レコードの属性を定義するための [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] メソッドを実装する必要があります。
-Elasticsearch ではプライマリ・キーの扱いが通常と異なります。
+最低限、レコードの属性を定義するための [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]]
+メソッドを実装する必要があります。
+
+> NOTE: プライマリ・キーの属性 (`_id`) を属性に含め**ない**ことが重要です。
+
+```php
+class Customer extends yii\elasticsearch\ActiveRecord
+{
+    // クラスの他の属性とメソッド
+    // ...
+    public function attributes()
+    {
+        return ['first_name', 'last_name', 'order_ids', 'email', 'registered_at', 'updated_at', 'status', 'is_active'];
+    }
+}
+```
+
+[[yii\elasticsearch\ActiveRecord::index()|index()]] と [[yii\elasticsearch\ActiveRecord::type()|type()]]
+をオーバーライドして、インデクスとこのレコードが表す型を定義することが出来ます。
+
+> NOTE: Type は Elasticsearch 7.x 以上では無視されます。詳しくは [データのマッピングとインデクシング](mapping-indexing.md) を参照して下さい。
+
+
+## 使用例
+
+```php
+// 新しいレコードを作成する
+$customer = new Customer();
+$customer->_id = 1; // プライマリ・キーの設定は新しいレコードに対してのみ許容される
+$customer->last_name = 'Doe'; // 属性は一つ一つ設定してもよいし
+$customer->attributes = ['first_name' => 'Jane', 'email' => 'janedoe@example.com']; // まとめて設定してもよい
+$customer->save();
+
+// プライマリ・キーを使ってレコードを取得する
+$customer = Customer::get(1); // PK でレコードを取得
+$customer = Customer::findOne(1); // これでもよい
+$customers = Customer::mget([1,2,3]); // PK で複数のレコードを取得
+$customers = Customer::findAll([1, 2, 3]); // これでもよい
+
+// 単純な条件を使ってレコードを検索する
+$customer = Customer::find()->where(['first_name' => 'John', 'last_name' => 'Smith'])->one();
+
+// クエリ DSL を使ってレコードを検索する
+// (https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html を参照)
+$articles = Article::find()->query(['match' => ['title' => 'yii']])->all();
+
+$articles = Article::find()->query([
+    'bool' => [
+        'must' => [
+            ['term' => ['is_active' => true]],
+            ['terms' => ['email' => ['johnsmith@example.com', 'janedoe@example.com']]]
+        ]
+    ]
+])->all();
+```
+
+## プライマリ・キー
+
+伝統的な SQL データベースでは、カラムまたはカラムのセットをプライマリ・キーとして選んだり、更にはプライマリ・キーを持たないテーブルを作ったり出来ますが、
+Elasticsearch ではプライマリ・キーをドキュメントの他のフィールドとは分けて保存します。
+プライマリ・キーはドキュメントの構造の一部をなすものではなく、一旦ドキュメントがインデクスに保存されると変更することが出来ないものになります。
+
+新しいドキュメントに対しては Elasticsearch がユニークなプライマリ・キーを生成することも出来ますが、新しいレコードに対して明示的にプライマリ・キーを指定することも出来ます。
+プライマリ・キーの属性は文字列であり、512 バイトに制限されていることに注意して下さい。
+詳細は [Elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html)
+を参照して下さい。
+
+Elasticsearch ではプライマリ・キーの名前は `_id` です。[[yii\elasticsearch\ActiveRecord]] がゲッターとセッターのメソッドを提供しているため、プロパティとしてアクセスすることが可能です。
+プライマリ・キーは [[yii\elasticsearch\ActiveRecord::attributes()|attributes()]] に追加する必要はありません。
+
+
+## 外部キー
+
+ます。す。扱いが通常と異なります。
 というのは、プライマリ・キー (elasticsearch の用語では `_id` フィールド) が、デフォルトでは属性のうちに入らないからです。
-ただし、`_id` フィールドを属性に含めるための [パス・マッピング](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を定義することは出来ます。
+ただし、`_id` フィールドを属性に含めるための [パス・マッピング]() を定義することは出来ます。
 パス・マッピングの定義の仕方については、[elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-id-field.html) を参照してください。
 document または record の `_id` フィールドは、[[yii\elasticsearch\ActiveRecord::getPrimaryKey()|getPrimaryKey()]]
 および [[yii\elasticsearch\ActiveRecord::setPrimaryKey()|setPrimaryKey()]] を使ってアクセスすることが出来ます。
