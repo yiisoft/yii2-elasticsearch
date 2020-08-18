@@ -1,8 +1,7 @@
-Elasticsearch デバッグ・パネルを使う
-------------------------------------
+# Elasticsearch デバッグ・パネルを使う
 
-Yii 2 elasticsearch エクステンションは、yii のデバッグ・モジュールと統合可能な `DebugPanel` を提供しています。
-これは、実行された elasticsearch のクエリを表示するだけでなく、
+Yii 2 Elasticsearch エクステンションは、yii のデバッグ・モジュールと統合可能な `DebugPanel` を提供しています。
+これは、実行された Elasticsearch のクエリを表示するだけでなく、
 クエリを実行して結果を表示することも出来ます。
 
 `DebugPanel` を有効にするためには、下記の構成をアプリケーションの構成情報に追加してください
@@ -24,4 +23,4 @@ Yii 2 elasticsearch エクステンションは、yii のデバッグ・モジ�
     // ...
 ```
 
-![elasticsearch DebugPanel](images/debug.png)
+![Elasticsearch デバッグ・パネル](images/debug.png)

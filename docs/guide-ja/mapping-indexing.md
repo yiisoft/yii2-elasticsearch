@@ -2,64 +2,64 @@
 
 ## SQL との比較
 
-[Elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/_mapping_concepts_across_sql_and_elasticsearch.html) が Elasticsearch と SQL の概念について広範囲にわたって解説しています。
+[Elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/_mapping_concepts_across_sql_and_elasticsearch.html) では Elasticsearch と SQL の概念について広範囲にわたって解説しています。
 私たちは基本に注力しましょう。
 
-Elasticsearch クラスタは一つ以上の Elasticsearch インスタンスから構成されます。リクエストはそのうちの一つのインスタンスに送られます。
-which propagates the query to other instances in the cluster, collects results, and then returns them to the client.
-Therefore a cluster or an instance that represents it roughly correspond to a SQL database.
+Elasticsearch クラスタは一つ以上の Elasticsearch インスタンスから構成されます。リクエストはクラスタ内の一つのインスタンスに送られます。
+そのインスタンスがクラスタ内の他のインスタンスにクエリを伝播し、結果を収集し、そしてクライアントに結果を返します。
+従って、大まかに言えば、クラスタまたはクラスタを代表するインスタンスが SQL データベースに相当します。
 
-In Elasticsearch data is stored in indices. An index corresponds to a SQL table.
+Elasticsearch ではデータはインデクスに保存されます。インデクスが SQL のテーブルに相当します。
 
-An index contains documents. Documents correspond to rows in a SQL table. In this extension, an
-[[yii\elasticsearch\ActiveRecord|ActiveRecord]] represents a document in an index. The operation of saving a document
-into an index is called indexing.
+インデクスはドキュメントを保持します。ドキュメントが SQL テーブルの行に相当します。
+このエクステンションでは [[yii\elasticsearch\ActiveRecord|ActiveRecord]] はインデクス内のドキュメントを表現します。
+ドキュメントをインデクスに保存する操作はインデクシングと呼ばれます。
 
-The schema or structure of a document is defined in the so-called mapping. A mapping defines document fields, which
-correspond to columns in SQL. In Elasticsearch the primary key field is special, because it always exists and its
-name and structure can not be changed. Other fields are fully configurable.
-
-
-## Mapping fields beforehand
-
-Even though new fields will be created on the fly when documents are indexed, it is considered good practice
-to define a mapping before indexing documents.
-
-Generally, once an attribute is defined, it is not possible to change its type. For example if a text field is configured to use the English language analyzer, it is not possible to switch to a different language without reindexing every document in the index.
-Certain limited modifications to mapping can be applied on the fly. See
-[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html#updating-field-mappings)
-for more info.
+ドキュメントのスキーマと言うか構造がいわゆるマッピングで定義されます。マッピングが定義するドキュメントのフィールドが SQL のカラムに相当します。
+Elasticsearch ではプライマリ・キー・フィールドは特別扱いです。というのは、それを省略することは出来ず、名前も構造も変更できないからです。
+その他のフィールドは全面的に構成可能です。
 
 
-## Document types
+## フィールドの事前マッピング
 
-Originally, Elasticsearch was designed to store documents with different structure in the same index. To handle this,
-a concept of "type" was introduced. However, this approach soon fell out of favor. As a result, types have been
-[removed from Elasticsearch 7.x](https://www.elastic.co/guide/en/elasticsearch/reference/current/removal-of-types.html).
+ドキュメントをインデクスするときに動的に新しいフィールドを作成することは可能ですが、
+ドキュメントをインデクスする前にマッピングを定義する方が良い慣習であると考えられています。
 
-Currently, best practice is to have only one type per index. Technically, if the extension is configured for
-Elasticsearch 7 or above, [[yii\elasticsearch\ActiveRecord::type()|type()]] is ignored, and implicitly replaced with
-`_doc` where required by the API.
+一般的には、属性は一旦定義されると、その型を変更することは不可能です。例えば、あるテキスト・フィールドが英語の言語分析器を使用するように構成されている場合、別の言語に切り替えることはインデクス中の全てのドキュメントを再インデクスしない限りは不可能です。
+ただし、限定的ですが、マッピングの動的な変更が可能な場合もあります。
+詳細は [Elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html#updating-field-mappings)
+を参照して下さい。
 
 
-## Creating helper methods
+## ドキュメントの型
 
-Our recommendation is to create several static methods in your [[yii\elasticsearch\ActiveRecord|ActiveRecord]] model
-that deal with index creation and updates. Here is one example of how this can be done.
+元来、Elasticsearch は異なる構造のドキュメントを同じインデクスに保存できるように設計されました。その処理のために「型」の概念が導入されたのです。
+しかし、このアプローチはすぐに人気を失いました。結果として、「型」は
+[Elasticsearch 7.x で削除されました](https://www.elastic.co/guide/en/elasticsearch/reference/current/removal-of-types.html)。
+
+現在では、インデクスごとに型を一つだけ持つのがベスト・プラクティスです。
+技術的なことを言えば、このエクステンションが Elasticsearch 7 以上のために構成されている場合、
+[[yii\elasticsearch\ActiveRecord::type()|type()]] は無視されて、API によって「型」が要求される場所では暗黙の内に `_doc` に置き換えられます。
+
+
+## ヘルパ・メソッドを作成する
+
+私たちが推奨するのは、インデクスの作成と更新を扱う幾つかのスタティックなメソッドを [[yii\elasticsearch\ActiveRecord|ActiveRecord]] モデルに作成することです。
+以下に、どのようにしてそれが可能か、一例を示します。
 
 ```php
 class Customer extends yii\elasticsearch\ActiveRecord
 {
-    // Other class attributes and methods go here
+    // クラスの他の属性とメソッド
     // ...
 
     /**
-     * @return array This model's mapping
+     * @return array このモデルのマッピングを返す
      */
     public static function mapping()
     {
         return [
-            // Field types: https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#field-datatypes
+            // フィールドの型: https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#field-datatypes
             'properties' => [
                 'first_name'     => ['type' => 'text'],
                 'last_name'      => ['type' => 'text'],
@@ -74,7 +74,7 @@ class Customer extends yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Set (update) mappings for this model
+     * このモデルのマッピングを設定（更新）する
      */
     public static function updateMapping()
     {
@@ -84,7 +84,7 @@ class Customer extends yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Create this model's index
+     * このモデルのインデクスを作成する
      */
     public static function createIndex()
     {
@@ -98,7 +98,7 @@ class Customer extends yii\elasticsearch\ActiveRecord
     }
 
     /**
-     * Delete this model's index
+     * このモデルのインデクスを削除する
      */
     public static function deleteIndex()
     {
@@ -109,84 +109,9 @@ class Customer extends yii\elasticsearch\ActiveRecord
 }
 ```
 
-To create the index with proper mappings, call `Customer::createIndex()`. If you have changed the mapping in a way that
-allows mapping update (e.g. created a new property), call `Customer::updateMapping()`.
+正しいマッピングでインデクスを作成するためには、`Customer::createIndex()` を呼びます。
+マッピングの更新が許容される仕方でマッピングを変更した場合は、`Customer::updateMapping()` を呼びます。
 
-However, if you have changed a property (e.g. went from `string` to `date`), Elasticsearch will not be able to update
-the mapping. In this case you need to delete your index (by calling `Customer::deleteIndex()`), create it anew with updated
-mapping (by calling `Customer::createIndex()`), and then repopulate it with data.
-
-
-## インデックスとマッピングを生成する
-
-Elasticsearch のマッピングを漸進的に更新することは常に可能であるとは限りません。ですから、あなたのモデルの中に、インデックスの生成と更新を扱ういくつかの静的なメソッドを作っておくというのは、良いアイデアです。どのようにすればそれが出来るかの一例を次に示します。
-
-```php
-Class Book extends yii\elasticsearch\ActiveRecord
-{
-    // クラスのその他の属性とメソッド
-    // ...
-
-    /**
-     * @return array このモデルのマッピングを返す
-     */
-    public static function mapping()
-    {
-        return [
-            static::type() => [
-                'properties' => [
-                    'name'           => ['type' => 'text'],
-                    'author_name'    => ['type' => 'text'],
-                    'publisher_name' => ['type' => 'text'],
-                    'created_at'     => ['type' => 'long'],
-                    'updated_at'     => ['type' => 'long'],
-                    'status'         => ['type' => 'long'],
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * このモデルのマッピングを設定(更新)する
-     */
-    public static function updateMapping()
-    {
-        $db = static::getDb();
-        $command = $db->createCommand();
-        $command->setMapping(static::index(), static::type(), static::mapping());
-    }
-
-    /**
-     * このモデルのインデックスを生成する
-     */
-    public static function createIndex()
-    {
-        $db = static::getDb();
-        $command = $db->createCommand();
-        $command->createIndex(static::index(), [
-            //'settings' => [ /* ... */ ],
-            'mappings' => static::mapping(),
-            //'warmers' => [ /* ... */ ],
-            //'aliases' => [ /* ... */ ],
-            //'creation_date' => '...'
-        ]);
-    }
-
-    /**
-     * このモデルのインデックスを削除する
-     */
-    public static function deleteIndex()
-    {
-        $db = static::getDb();
-        $command = $db->createCommand();
-        $command->deleteIndex(static::index(), static::type());
-    }
-}
-```
-
-適切なマッピングでインデックスを生成するためには、`Book::createIndex()` を呼びます。マッピングの更新を許すような仕方でマッピングを変更した場合 (例えば、新しいプロパティを作成した場合など) は、`Book::updateMapping()` を呼びます。
-
-しかし、プロパティを変更した場合 (例えば、`string` から `date` に変えた場合など) は、Elasticsearch はマッピングを更新することが出来ません。この場合は、インデックスを削除し (`Book::deleteIndex()` を呼びます)、更新されたマッピングでインデックスを新規に作成し (`Book::createIndex()` を呼びます)、そして、データを投入しなければなりません。
-
-## インデクシング
-TBD
+しかし、プロパティを変更（例えば `string` から `date` へ) した場合は、Elasticsearch はマッピングを更新することが出来ません。
+この場合は、(`Customer::deleteIndex()` を呼んで) インデクスを削除し、(`Customer::createIndex()` を呼んで) 更新後のマッピングでインデクスを再作成して、
+それからデータを再投入する必要があります。
