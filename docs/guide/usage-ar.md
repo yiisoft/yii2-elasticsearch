@@ -122,8 +122,8 @@ class Customer extends yii\elasticsearch\ActiveRecord
 
 > **NOTE:** Elasticsearch limits the number of records returned by any query to 10 records by default. This applies
 > to queries executed when getting related models. If you expect to get more records you should specify the limit explicitly
-> in relation definition. This is also important for [[yii\elasticsearch\ActiveQuery::via()|via]]-relations
-> to set the limit both in the relation itself as well as the underlying model that is ised as an intermediary.
+> in relation definition. It is also important for [[yii\elasticsearch\ActiveQuery::via()|via]]-relations
+> to set the proper limit both in the relation itself as well as the underlying relation that is used as an intermediary.
 
 
 ## Scalar and array attributes
@@ -205,7 +205,7 @@ $customers = Customer::find()->query([
 helps provide aggregated data based on a search query. It is based on simple building blocks called aggregations,
 that can be composed in order to build complex summaries of the data.
 
-As an example, let's determine how many customers registered each month.
+As an example, let's determine how many customers have been registered each month.
 
 ```php
 $searchResult = Customer::find()->addAggregate('customers_by_date', [

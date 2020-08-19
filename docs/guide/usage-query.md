@@ -84,7 +84,7 @@ default](https://www.elastic.co/guide/en/elasticsearch/reference/current/breakin
 In other words, if the result set contains more than 10 000 documents, `total_hits` is reported as 10 000, and if it is less,
 then it is reported exactly. This results in a performance improvement.
 
-The `track_total_hits` option can be used to change this behavior. If it is set to `'true'`, exact document document count
+The `track_total_hits` option can be used to change this behavior. If it is set to `'true'`, exact document count
 will always be returned, and an integer value overrides the default threshold value of 10 000.
 
 ```
