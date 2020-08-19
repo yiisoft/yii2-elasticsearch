@@ -152,7 +152,9 @@ public function arrayAttributes()
 どのようなクエリでも、Elasticsearch のクエリ DSL を使って作成して `ActiveRecord::query()` メソッドに渡すことが出来ます。
 しかし、ES のクエリ DSL は冗長さで悪名高いものです。長すぎるクエリは、すぐに管理できないものになってしまいます。
 
-クエリをもっと保守しやすくする方法があります。SQL ベースの `ActiveRecord` のために定義されているようなクエリクラスを定義することから始めましょう。
+SQL のアクティブレコード・クラスでのよくある対応策は、クエリそのものを修正するクエリ・クラスのメソッドを使うスコープを作るという方法です。
+しかし、この手法は Elasticsearch ではあまりうまく働きません。推奨される対応策は、
+クエリの構成ブロックを返すスタティックなメソッドを作り、構成ブロックを組み合わせてクエリを作るという方法です。
 
 ```php
 class CustomerQuery extends ActiveQuery
@@ -178,13 +180,14 @@ class CustomerQuery extends ActiveQuery
 
 ```
 
-こうすれば、これらのクエリ・コンポーネントを、結果となるクエリやフィルタを組み上げるために使用することが出来ます。
+こうすれば、これらのサブ・クエリを使ってクエリを組み上げることが出来ます。
 
 ```php
-$customers = Customer::find()->filter([
-    CustomerQuery::registrationDateRange('2016-01-01', '2016-01-20'),
-])->query([
+$customers = Customer::find()->query([
     'bool' => [
+        'must' => [
+            CustomerQuery::registrationDateRange('2016-01-01', '2016-01-20')
+        ],
         'should' => [
             CustomerQuery::name('John'),
             CustomerQuery::address('London'),
@@ -198,29 +201,60 @@ $customers = Customer::find()->filter([
 
 ## 集合 (Aggregations)
 
-[集合フレームワーク](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) が、検索クエリに基づいた集合データを提供するのを助けてくれます。これは集合 (aggregation) と呼ばれる単純な構成要素に基づくもので、複雑なデータの要約を構築するために作成することが出来るものです。
+[集合フレームワーク](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) が、
+検索クエリに基づいた集合データを提供するのを助けてくれます。
+これは集合 (aggregation) と呼ばれる単純な構成要素に基づくもので、複雑なデータの要約を構築するために作成することが出来るものです。
 
-以前に定義された `Customer` クラスを使って、毎日何人の顧客が登録されているかを検索しましょう。そうするために `terms` 集合を使います。
-
+例として、毎月何人の顧客が登録されているかを検索しましょう。
 
 ```php
-$aggData = Customer::find()->addAggregate('customers_by_date', [
-    'terms' => [
-        'field' => 'registration_date',
-        'order' => ['_count' => 'desc'],
-        'size' => 10, // 登録日の上位 10
+$searchResult = Customer::find()->addAggregate('customers_by_date', [
+    'date_histogram' => [
+        'field' => 'registered_at',
+        'calendar_interval' => 'month',
     ],
-])->search(null, ['search_type' => 'count']);
+])->limit(0)->search();
 
-```                    
-
-この例では、集合の結果だけを特にリクエストしています。データを更に処理するために次のコードを使います。
-
-```php
-$customersByDate = ArrayHelper::map($aggData['aggregations']['customers_by_date']['buckets'], 'key', 'doc_count');
+$customersByDate = ArrayHelper::map($searchResult['aggregations']['customers_by_date']['buckets'], 'key_as_string', 'doc_count');
 ```
 
-これで `$customersByDate` に、ユーザー登録数の最も多い日付け上位 10 個が入ります。
+この例では [[yii\elasticsearch\ActiveQuery::one()|one()]] や [[yii\elasticsearch\ActiveQuery::all()|all()]]
+の代りに [[yii\elasticsearch\ActiveQuery::search()|search()]] が使われていることに注目して下さい。
+`search()` メソッドはモデルを返すだけでなく、クエリのメタデータ（シャードの統計情報、集合など）を返します。
+集合を使用する場合、検索結果（該当するレコード）そのものは意味を持たないことがよくあります。
+まさにそのために、ここでは [[yii\elasticsearch\ActiveQuery::limit()|limit(0)]] を使ってメタデータだけを返すようにしているのです。
+
+処理後の `$customersByDate` には次のようなデータが入ります。
+```php
+[
+    '2020-01-01' => 5,
+    '2020-02-01' => 3,
+    '2020-03-01' => 17,
+]
+```
+
+## Suggesters
+
+ときとして、インデクス内に存在する検索クエリと同じような検索語を提案する必要がある場合があります。
+例えば、ある名前について別のつづり方が知られている場合に、それが分れば役に立つことがあるでしょう。
+下記の例を見て下さい。また、更なる詳細は [Elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) を参照して下さい。
+
+```php
+$searchResult = Customer::find()->limit(0)
+->addSuggester('customer_name', [
+    'text' => 'Hans',
+    'term' => [
+        'field' => 'name',
+    ]
+])->search();
+
+// limit(0) を指定すれば、検索結果そのものを返すことを抑止して
+// 提案だけが返されることに留意。
+
+$suggestions = ArrayHelper::map($searchResult["suggest"]["customer_name"], 'text', 'options');
+$names = ArrayHelper::getColumn($suggestions['Hans'], 'text');
+// $names == ['Hanns', 'Hannes', 'Hanse', 'Hansi']
+```
 
 
 ## オブジェクトにマップされた属性の異常な振る舞いについて
