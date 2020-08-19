@@ -205,7 +205,7 @@ $customers = Customer::find()->query([
 helps provide aggregated data based on a search query. It is based on simple building blocks called aggregations,
 that can be composed in order to build complex summaries of the data.
 
-As an example, let's determine how many customers registered each month.
+As an example, let's determine how many customers have been registered each month.
 
 ```php
 $searchResult = Customer::find()->addAggregate('customers_by_date', [

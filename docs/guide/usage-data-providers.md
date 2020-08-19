@@ -11,7 +11,7 @@ this is not recommended.
 
 > NOTE: The data provider fetches result models and total count using single Elasticsearch query, so results total count will be fetched
   after pagination limit applying, which eliminates ability to verify if requested page number actually exist.
-  Data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
+  The data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
 
 
 ## Usage examples
