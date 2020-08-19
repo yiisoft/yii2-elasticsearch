@@ -1,5 +1,4 @@
-データ・プロバイダを扱う
-========================
+# データ・プロバイダを扱う
 
 [[\yii\elasticsearch\Query]] や [[\yii\elasticsearch\ActiveQuery]] を [[\yii\data\ActiveDataProvider]] で使用することが出来ます。
 
