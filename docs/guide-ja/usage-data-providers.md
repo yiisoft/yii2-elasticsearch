@@ -1,54 +1,52 @@
 # データ・プロバイダを扱う
 
-[[\yii\elasticsearch\Query]] や [[\yii\elasticsearch\ActiveQuery]] を [[\yii\data\ActiveDataProvider]] で使用することが出来ます。
+このエクステンションは、機能拡張され最適化された独自の [[\yii\elasticsearch\ActiveDataProvider|ActiveDataProvider]] クラスを提供します。
+機能拡張は下記を含みます:
 
-```php
-use yii\data\ActiveDataProvider;
-use yii\elasticsearch\Query;
+- レコードの総数は、独立のクエリによらず、レコードそのものを取得するクエリによって同時に取得されます。
+- 集合(Aggregation) データがデータプロバイダーのプロパティとして提供されます。
 
-$query = new Query();
-$query->from('yiitest', 'user');
-$provider = new ActiveDataProvider([
-    'query' => $query,
-    'pagination' => [
-        'pageSize' => 10,
-    ]
-]);
-$models = $provider->getModels();
-```
+[[\yii\elasticsearch\Query]] と [[\yii\elasticsearch\ActiveQuery]] を [[\yii\data\ActiveDataProvider]] とともに使うことも可能ですが、
+それは推奨されません。
 
-```php
-use yii\data\ActiveDataProvider;
-use app\models\User;
+> NOTE: このデータプロバイダーは検索結果のモデルと総数を単一の Elasticsearch クエリを使って取得します。
+  すなわち、検索結果の総数はページネーションの limit が適用された後に取得されますので、要求するページが実際に存在するかどうかを確かめる方法はありません。
+  このため、データプロバイダーは [[yii\data\Pagination::$validatePage]] を自動的に無効に設定します。
 
-$provider = new ActiveDataProvider([
-    'query' => User::find(),
-    'pagination' => [
-        'pageSize' => 10,
-    ]
-]);
-$models = $provider->getModels();
-```
 
-ただし、ページネーションを有効にして [[\yii\data\ActiveDataProvider]] を使用するのは非効率的です。
-何故なら、ページネーションのためには、総アイテム数を取得するための余計なクエリが追加で必要になるからです。
-また、クエリの集合 (Aggregations) の結果にアクセスすることも出来ません。代りに、 `yii\elasticsearch\ActiveDataProvider` を使うことが出来ます。
-こちらであれば、'meta' 情報のクエリを使って総アイテム数を準備したり、集合の結果を取得したりすることが出来ます。
+## 使用例
 
 ```php
 use yii\elasticsearch\ActiveDataProvider;
 use yii\elasticsearch\Query;
 
+// Query を使う
 $query = new Query();
-$query->from('yiitest', 'user')
-    ->addAggregation('foo', 'terms', []);
-$provider = new ActiveDataProvider([
+$query->from('customer');
+
+// ActiveQuery を使うことも出来る
+// $query = Customer::find();
+
+$query->addAggregate(['date_histogram' => [
+    'field' => 'registered_at',
+    'calendar_interval' => 'month',
+]]);
+
+$query->addSuggester('customer_name', [
+    'text' => 'Hans',
+    'term' => [
+        'field' => 'customer_name',
+    ]
+]);
+
+$dataProvider = new ActiveDataProvider([
     'query' => $query,
     'pagination' => [
         'pageSize' => 10,
     ]
 ]);
-$models = $provider->getModels();
-$aggregations = $provider->getAggregations();
-$fooAggregation = $provider->getAggregation('foo');
+
+$models = $dataProvider->getModels();
+$aggregations = $dataProvider->getAggregations();
+$suggestion = $dataProvider->getSuggestions();
 ```
