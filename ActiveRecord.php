@@ -853,7 +853,7 @@ class ActiveRecord extends BaseActiveRecord
         $n = 0;
         $errors = [];
         foreach ($response['items'] as $item) {
-            if (isset($item['delete']['status']) && $item['delete']['status'] == 200) {
+            if (isset($item['delete']['status']) && ($item['delete']['status'] == 200 || $item['delete']['status'] == 404)) {
                 if (isset($item['delete']['found']) && $item['delete']['found']) {
                     # ES5 uses "found"
                     $n++;
