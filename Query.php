@@ -450,9 +450,10 @@ class Query extends Component implements QueryInterface
         if ($this->emulateExecution) {
             return 0;
         }
-        // performing a query with return size of 0, is equal to getting result stats such as count
+        // performing a query with return size of 0 and track_total_hits enabled, is equal to getting result stats such as count
         // https://www.elastic.co/guide/en/elasticsearch/reference/5.6/breaking_50_search_changes.html#_literal_search_type_literal
-        $result = $this->createCommand($db)->search(['size' => 0]);
+        // https://www.elastic.co/guide/en/elasticsearch/reference/master/search-your-data.html#track-total-hits
+        $result = $this->createCommand($db)->search(['size' => 0, 'track_total_hits' => 'true']);
 
         // since ES7 totals are returned as array (with count and precision values)
         if (isset($result['hits']['total'])) {
