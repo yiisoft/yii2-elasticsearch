@@ -4,7 +4,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 2.1.1 under development
 -----------------------
 
-- no changes in this release.
+- Bug #298: Fixed ElasticSearch performance when passing `false` to `Query::source()` (rhertogh)
 
 
 2.1.0 July 21, 2020
