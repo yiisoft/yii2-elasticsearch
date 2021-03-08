@@ -724,13 +724,13 @@ class Query extends Component implements QueryInterface
     /**
      * Sets the source filtering, specifying how the `_source` field of the
      * document should be returned.
-     * @param array $source the source patterns to be selected.
+     * @param array|string|null|false $source the source patterns to be selected.
      * @return $this the query object itself
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-source-filtering.html
      */
     public function source($source)
     {
-        if (is_array($source) || $source === null) {
+        if (is_array($source) || $source === null  || $source === false) {
             $this->source = $source;
         } else {
             $this->source = func_get_args();
