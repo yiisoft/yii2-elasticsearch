@@ -4,7 +4,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 2.1.1 under development
 -----------------------
 
-- no changes in this release.
+- Bug #297: Fixed `Query::count()` when index contains more then 10.000 documents (rhertogh)
 
 
 2.1.0 July 21, 2020
