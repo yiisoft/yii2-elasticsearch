@@ -4,6 +4,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 2.1.1 under development
 -----------------------
 
+- Bug #298: Fixed ElasticSearch performance when passing `false` to `Query::source()` (rhertogh)
 - Bug #297: Fixed `Query::count()` when index contains more then 10,000 documents (rhertogh)
 
 
