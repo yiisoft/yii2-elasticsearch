@@ -29,6 +29,12 @@ use yii\db\ActiveQueryInterface;
 class ActiveDataProvider extends \yii\data\ActiveDataProvider
 {
     /**
+     * {@inheritdoc}
+     * @since 2.1.1
+     */
+    public $connectionClass = 'yii\elasticsearch\Connection';
+
+    /**
      * @var array the full query results.
      */
     private $_queryResults;
@@ -102,7 +108,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function prepareModels()
     {
@@ -132,7 +138,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function prepareTotalCount()
     {
@@ -148,7 +154,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function prepareKeys($models)
     {
@@ -176,7 +182,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function refresh()
     {
