@@ -288,7 +288,7 @@ class Connection extends Component
      */
     public function getQueryBuilder()
     {
-        return new QueryBuilder($this);
+        return Yii::createObject(QueryBuilder::class, [$this]);
     }
 
     /**
