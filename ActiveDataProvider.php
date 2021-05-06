@@ -19,9 +19,9 @@ use yii\db\ActiveQueryInterface;
  * count will be fetched after pagination limit applying, which eliminates ability to verify if requested page number
  * actually exist. Data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
  *
- * @property array $aggregations All aggregations results. This property is read-only.
+ * @property-read array $aggregations All aggregations results. This property is read-only.
  * @property array $queryResults Full query results.
- * @property array $suggestions All suggestions results. This property is read-only.
+ * @property-read array $suggestions All suggestions results. This property is read-only.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0.5
