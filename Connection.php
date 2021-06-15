@@ -8,6 +8,7 @@
 namespace micetm\elasticsearch;
 
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
@@ -597,5 +598,21 @@ class Connection extends Component
     public function getClusterState()
     {
         return $this->get(['_cluster', 'state']);
+    }
+
+
+    /**
+     * Creates a bulk command for execution.
+     * @param array $config the configuration for the [[BulkCommand]] class
+     * @return MsearchCommand the DB command
+     * @since 2.0.5
+     */
+    public function createMsearchCommand($config = [])
+    {
+        $this->open();
+        $config['db'] = $this;
+        $command = new MsearchCommand($config);
+
+        return $command;
     }
 }
