@@ -78,7 +78,7 @@ class BulkCommand extends Component
         } else {
             $body = $this->actions;
         }
-
+        $this->actions = null;
         return $this->db->post($endpoint, $this->options, $body);
     }
 
