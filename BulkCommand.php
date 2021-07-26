@@ -48,7 +48,7 @@ class BulkCommand extends Component
     /**
      * Executes the bulk command.
      * @return mixed
-     * @throws yii\base\InvalidCallException
+     * @throws \yii\base\InvalidCallException
      */
     public function execute()
     {
@@ -84,7 +84,9 @@ class BulkCommand extends Component
 
     /**
      * Adds an action to the command. Will overwrite existing actions if they are specified as a string.
-     * @param array $action Action expressed as an array (will be encoded to JSON automatically).
+     * @param array $line1 First action expressed as an array (will be encoded to JSON automatically).
+     * @param array|null $line2 Second action expressed as an array (will be encoded to JSON automatically).
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/7.x/docs-bulk.html
      */
     public function addAction($line1, $line2 = null)
     {
@@ -102,9 +104,9 @@ class BulkCommand extends Component
     /**
      * Adds a delete action to the command.
      * @param string $id Document ID
-     * @param string $index Index that the document belogs to. Can be set to null if the command has
+     * @param string|null $index Index that the document belongs to. Can be set to null if the command has
      * a default index ([[BulkCommand::$index]]) assigned.
-     * @param string $type Type that the document belogs to. Can be set to null if the command has
+     * @param string|null $type Type that the document belongs to. Can be set to null if the command has
      * a default type ([[BulkCommand::$type]]) assigned.
      */
     public function addDeleteAction($id, $index = null, $type = null)
