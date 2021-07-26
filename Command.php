@@ -132,7 +132,7 @@ class Command extends Component
     /**
      * Inserts a document into an index
      * @param string $index Index that the document belongs to.
-     * @param string|null $type  ype that the document belongs to.
+     * @param string|null $type Type that the document belongs to.
      * @param string|array $data json string or array of data to store
      * @param string|null $id the documents id. If not specified Id will be automatically chosen
      * @param array $options URL options
@@ -300,7 +300,7 @@ class Command extends Component
     /**
      * creates an index
      * @param string $index Index that the document belongs to.
-     * @param null $configuration
+     * @param null|array $configuration
      * @return mixed
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
