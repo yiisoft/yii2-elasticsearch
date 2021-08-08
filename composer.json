@@ -21,7 +21,8 @@
         "yiisoft/yii2": "~2.0.14",
         "ext-curl": "*",
         "ext-json": "*",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "paragonie/random_compat": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.27|~5.7.21|^6.2"
