@@ -4,7 +4,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 2.1.2 under development
 -----------------------
 
-- Enh: Use `random_int()` when choosing connection (samdark)
+- Enh #18817: Use `random_int()` when choosing connection (samdark)
 
 
 2.1.1 May 06, 2021
