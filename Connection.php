@@ -213,7 +213,7 @@ class Connection extends Component
     protected function selectActiveNode()
     {
         $keys = array_keys($this->nodes);
-        $this->activeNode = $keys[rand(0, count($keys) - 1)];
+        $this->activeNode = $keys[random_int(0, count($keys) - 1)];
     }
 
     /**
