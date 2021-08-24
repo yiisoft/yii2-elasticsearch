@@ -71,7 +71,7 @@ class Connection extends Component
      *  - `password`: the password for authentication.
      *
      * Array either MUST contain both username and password on not contain any authentication credentials.
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#_example_configuring_http_basic_auth
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html
      */
     public $auth = [];
     /**
