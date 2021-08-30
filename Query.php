@@ -246,7 +246,9 @@ class Query extends Component implements QueryInterface
         if ($this->emulateExecution) {
             return [];
         }
-        $result = $this->createCommand($db)->search();
+        $result = $this->createCommand($db)->search([
+            'track_scores' => 'true'
+        ]);
         if ($result === false) {
             throw new Exception('Elasticsearch search query failed.');
         }
