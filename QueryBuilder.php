@@ -56,6 +56,9 @@ class QueryBuilder extends BaseObject
         if ($query->runtimeMappings !== null) {
             $parts['runtime_mappings'] = $query->runtimeMappings;
         }
+        if ($query->fields !== null) {
+            $parts['fields'] = $query->fields;
+        }
 
         if ($query->source !== null) {
             $parts['_source'] = $query->source;
