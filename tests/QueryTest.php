@@ -451,4 +451,30 @@ class QueryTest extends TestCase
 
         $this->assertCount(5, $result['customer_name'][0]['options']);
     }
+
+    public function testRuntimeMappings()
+    {
+        $query = new Query();
+        $query->from('query-test', 'user');
+
+        $query->runtimeMappings([
+            'name_email' => [
+                'type' => 'keyword',
+                'script' => "emit(doc['name'].value + ':' + doc['email'].value)",
+            ],
+        ]);
+        $this->assertEquals([
+            'name_email' => [
+                'type' => 'keyword',
+                'script' => "emit(doc['name'].value + ':' + doc['email'].value)",
+            ],
+        ], $query->runtimeMappings);
+
+        $query->fields(['name_email']);
+        $this->assertEquals(['name_email'], $query->fields);
+
+        $result = $query->search($this->getConnection());
+        $this->assertArrayHasKey('name_email', $result['hits']['hits'][0]['fields']);
+        $this->assertEquals($result['hits']['hits'][0]['fields']['name_email'][0], 'user1:user1@example.com');
+    }
 }
