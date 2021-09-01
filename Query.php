@@ -123,7 +123,7 @@ class Query extends Component implements QueryInterface
      * ```
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime-mapping-fields.html
-     * @see $runtimeMappings()
+     * @see runtimeMappings()
      * @see source
      */
     public $runtimeMappings;
