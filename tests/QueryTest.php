@@ -454,20 +454,9 @@ class QueryTest extends TestCase
 
     public function testRuntimeMappings()
     {
-        // Check Elasticsearch version
+        // Check that Elasticsearch is version 7.11.0 or later before running this test
         $elasticsearchInfo = $this->getConnection()->get('/');
-        preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $elasticsearchInfo['version']['number'], $matches);
-
-        if (empty($matches) || count($matches) < 4) {
-            return;
-        }
-
-        // Runtime Mappings require Elasticsearch Version 7.11 or newer
-        if (intval($matches[1]) < 7) {
-            return;
-        }
-
-        if (intval($matches[2]) < 11) {
+        if(!version_compare($elasticsearchInfo['version']['number'], '7.11.0', '>=')) {
             return;
         }
 
