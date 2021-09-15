@@ -104,7 +104,7 @@ class Query extends Component implements QueryInterface
      */
     public $scriptFields;
     /**
-     * @var array A runtime field is a field that is evaluated at query time
+     * @var array An array of runtime fields evaluated at query time
      * Example:
      * ```php
      * $query->$runtimeMappings = [
