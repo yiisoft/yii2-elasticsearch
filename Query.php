@@ -104,6 +104,38 @@ class Query extends Component implements QueryInterface
      */
     public $scriptFields;
     /**
+     * @var array An array of runtime fields evaluated at query time
+     * Example:
+     * ```php
+     * $query->$runtimeMappings = [
+     *     'value_times_two' => [
+     *         'type' => 'double',
+     *         'script' => "emit(doc['my_field_name'].value * 2)",
+     *     ],
+     *     'value_times_factor' => [
+     *         'type' => 'double',
+     *         'script' => "emit(doc['my_field_name'].value * factor)",
+     *         'params' => [
+     *             'factor' => 2.0
+     *         ],
+     *     ],
+     * ]
+     * ```
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime-mapping-fields.html
+     * @see runtimeMappings()
+     * @see source
+     */
+    public $runtimeMappings;
+    /**
+     * @var array Use the fields parameter to retrieve the values of runtime fields.  Runtime fields won’t display in
+     * _source, but the fields API works for all fields, even those that were not sent as part of the original _source.
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime-retrieving-fields.html
+     * @see fields()
+     * @see fields
+     */
+    public $fields;
+    /**
      * @var array this option controls how the `_source` field is returned from
      * the documents. For example, `['id', 'name']` means that only the `id`
      * and `name` field should be returned from `_source`.  If not set, it
@@ -450,7 +482,7 @@ class Query extends Component implements QueryInterface
         if ($this->emulateExecution) {
             return 0;
         }
-        
+
         $command = $this->createCommand($db);
 
         // performing a query with return size of 0, is equal to getting result stats such as count
@@ -728,6 +760,38 @@ class Query extends Component implements QueryInterface
             $this->scriptFields = $fields;
         } else {
             $this->scriptFields = func_get_args();
+        }
+        return $this;
+    }
+
+    /**
+     * Sets the runtime mappings for this query
+     * @param $mappings
+     * @return $this the query object itself
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime.html
+     */
+    public function runtimeMappings($mappings)
+    {
+        if (is_array($mappings) || $mappings === null) {
+            $this->runtimeMappings = $mappings;
+        } else {
+            $this->runtimeMappings = func_get_args();
+        }
+        return $this;
+    }
+
+    /**
+     * Sets the runtime fields to retrieve from the documents.
+     * @param array $fields the fields to be selected.
+     * @return $this the query object itself
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime-retrieving-fields.html
+     */
+    public function fields($fields)
+    {
+        if (is_array($fields) || $fields === null) {
+            $this->fields = $fields;
+        } else {
+            $this->fields = func_get_args();
         }
         return $this;
     }
