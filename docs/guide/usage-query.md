@@ -94,3 +94,30 @@ $query->from('customer');
 // Note the literal string 'true', not a boolean value!
 $query->addOptions(['track_total_hits' => 'true']);
 ```
+
+## Runtime Fields/Mappings in ES >= 7.11
+
+Runtime Fields are fields that can be dynamically generated at query time by supplying a script similar to `script_fields`.
+The major difference being that the value of a Runtime Field can be used in search queries, aggregations, filtering, and 
+sorting.
+
+Any Runtime Field values that you want to be included in the search results must be added to the `field` array by passing
+an array of field names using the `fields()` method. 
+
+Example for fetching users' full names by concatenating the `first_name` and `last_name` fields from the index and 
+sorting them alphabetically.
+```php
+$results = (new yii\elasticsearch\Query())
+    ->from('users')
+    ->runtimeMappings([
+        'full_name' => [
+            'type' => 'keyword',
+            'script' => "emit(doc['first_name'].value + ' ' + doc['last_name'].value)",
+        ],
+    ])
+    ->fields(['full_name'])
+    ->orderBy(['full_name' => SORT_ASC])
+    ->search($connection);
+```
+
+For more information concerning `type` and `script` please see [Elastic's Runtime Field Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime.html)
