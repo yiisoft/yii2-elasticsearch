@@ -205,6 +205,8 @@ class QueryBuilder extends BaseObject
             '>' => 'buildHalfBoundedRangeCondition',
             'gte' => 'buildHalfBoundedRangeCondition',
             '>=' => 'buildHalfBoundedRangeCondition',
+            'match' => 'buildMatchCondition',
+            'match_phrase' => 'buildMatchCondition',
         ];
 
         if (empty($condition)) {
@@ -460,6 +462,28 @@ class QueryBuilder extends BaseObject
 
     private function buildLikeCondition($operator, $operands)
     {
-        throw new NotSupportedException('like conditions are not supported by Elasticsearch.');
+        $filter = [
+            'wildcard' => [ $operands[0] => $operands[1] ]
+        ];
+
+        switch ($operator) {
+            case 'like':
+                return $filter;
+            case 'not like':
+                return [
+                    'bool' => [
+                        'must_not' => $filter,
+                    ]
+                ];
+            default:
+                throw new InvalidArgumentException("Operator '$operator' is not implemented.");
+        }
+    }
+
+    private function buildMatchCondition($operator, $operands)
+    {
+        return [
+            $operator => [ $operands[0] => $operands[1] ]
+        ];
     }
 }

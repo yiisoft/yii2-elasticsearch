@@ -280,4 +280,32 @@ class QueryBuilderTest extends TestCase
         ]);
         $this->assertEquals($expected, $result);
     }
+
+    public function testBuildMatchCondition()
+    {
+        $result = (new Query())
+            ->from('builder-test', 'article')
+            ->where(['match', 'title', 'yii'])
+            ->search($this->getConnection());
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
+    }
+
+    public function testBuildLikeCandidate()
+    {
+        $result = (new Query())
+            ->from('builder-test', 'article')
+            ->where(['like', 'title', '*yii*'])
+            ->search($this->getConnection());
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(3, $total);
+
+
+        $result = (new Query())
+            ->from('builder-test', 'article')
+            ->where(['not like', 'title', '*yii*'])
+            ->search($this->getConnection());
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(1, $total);
+    }
 }
