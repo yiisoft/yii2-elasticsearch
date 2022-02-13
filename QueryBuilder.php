@@ -462,19 +462,30 @@ class QueryBuilder extends BaseObject
 
     private function buildLikeCondition($operator, $operands)
     {
-        $filter = [
-            'wildcard' => [ $operands[0] => $operands[1] ]
-        ];
+        if (!is_array($operands[1])) {
+            $values = [$operands[1]];
+        } else {
+            $values = $operands[1];
+        }
+
+        $escape = ['*'];
+        if (isset($operands[2])) {
+            $escape = $operands[2];
+        }
+
+        $filters = [];
+        foreach ($values as $value) {
+            $value = empty($escape) ? $value : ('*' . strtr($value, $escape) . '*');
+            $filters[] = [
+                'wildcard' => [ $operands[0] => $value ]
+            ];
+        }
 
         switch ($operator) {
             case 'like':
-                return $filter;
+                return count($filters) > 1 ? ['bool' => ['must' => $filters]] : $filters;
             case 'not like':
-                return [
-                    'bool' => [
-                        'must_not' => $filter,
-                    ]
-                ];
+                return ['bool' => ['must_not' => $filters]];
             default:
                 throw new InvalidArgumentException("Operator '$operator' is not implemented.");
         }

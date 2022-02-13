@@ -295,15 +295,31 @@ class QueryBuilderTest extends TestCase
     {
         $result = (new Query())
             ->from('builder-test', 'article')
-            ->where(['like', 'title', '*yii*'])
+            ->where(['like', 'title', 'yii'])
             ->search($this->getConnection());
         $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
         $this->assertEquals(3, $total);
 
+        $result = (new Query())
+            ->from('builder-test', 'article')
+            ->where(['like', 'title', 'yii*', false])
+            ->search($this->getConnection());
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(2, $total);
 
         $result = (new Query())
             ->from('builder-test', 'article')
-            ->where(['not like', 'title', '*yii*'])
+            ->where(['like', 'title', ['yii', 'symfony']])
+            ->search($this->getConnection());
+        $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
+        $this->assertEquals(4, $total);
+    }
+
+    public function testBuildNotLikeCandidate()
+    {
+        $result = (new Query())
+            ->from('builder-test', 'article')
+            ->where(['not like', 'title', ['yii', 'test']])
             ->search($this->getConnection());
         $total = is_array($result['hits']['total']) ? $result['hits']['total']['value'] : $result['hits']['total'];
         $this->assertEquals(1, $total);
