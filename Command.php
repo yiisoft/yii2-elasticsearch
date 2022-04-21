@@ -288,7 +288,9 @@ class Command extends Component
             unset($options["detect_noop"]);
         }
 
-        if ($this->db->dslVersion >= 7) {
+        if ($this->db->dslVersion >= 8) {
+            return $this->db->post([$index, '_update', $id ], $options, Json::encode($body));
+        } elseif ($this->db->dslVersion == 7) {
             return $this->db->post([$index, '_doc', $id, '_update'], $options, Json::encode($body));
         } else {
             return $this->db->post([$index, $type, $id, '_update'], $options, Json::encode($body));
