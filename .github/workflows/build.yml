@@ -39,7 +39,7 @@ jobs:
     services:
       elasticsearch:
         image: elasticsearch:${{ matrix.es-version }}
-        env: ${{[matrix.env-var]}}
+        env: ${{ matrix.env-var }}
 
         ports:
           - 9200:9200
