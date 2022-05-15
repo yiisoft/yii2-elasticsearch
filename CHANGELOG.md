@@ -5,6 +5,9 @@ Yii Framework 2 Elasticsearch extension Change Log
 -----------------------
 
 - Enh #311: Added support for runtime mappings in Elasticsearch 7.11+ (mabentley85)
+- Enh #323: Updated API calls for compatibility with Elastcisearch 8+ (tehmaestro)
+- Enh #323: Improved github testing workflow (terabytesoftw)
+- Enh #318: Added "match" and "match_phrase" queries to query builder (Barton0403)
 
 
 2.1.2 August 09, 2021
