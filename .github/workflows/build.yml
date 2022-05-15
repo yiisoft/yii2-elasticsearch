@@ -35,8 +35,10 @@ jobs:
       elasticsearch:
         image: elasticsearch:${{ matrix.es-version }}
         env:
-          transport.host: 127.0.0.1
           http.publish_host: 127.0.0.1
+          indices.id_field_data.enabled: true
+          transport.host: 127.0.0.1
+          xpack.security.enabled: false
         ports:
           - 9200:9200
 
@@ -59,6 +61,3 @@ jobs:
 
       - name: Run tests with phpunit
         run: ES_VERSION=${{ matrix.es-version }} vendor/bin/phpunit
-        env:
-          indices.id_field_data.enabled: true
-          xpack.security.enabled": false
