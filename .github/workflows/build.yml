@@ -14,74 +14,50 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
       matrix:
         php-version:
-          - "5.6"
-          - "7.0"
-          - "7.1"
-          - "7.2"
-          - "7.3"
-          - "7.4"
+          - 5.6
+          - 7.0
+          - 7.1
+          - 7.2
+          - 7.3
+          - 7.4
 
         es-version:
-          - "7.14.0"
-          - "7.7.0"
-          - "6.8.9"
-          - "5.6.16"
-
-    services:
-      elasticsearch:
-        image: elasticsearch:${{ matrix.es-version }}
-        env:
-          "transport.host": "127.0.0.1"
-          "http.publish_host": "127.0.0.1"
-        ports:
-          - 9200:9200
+          - 8.1.3
+          - 7.14.0
+          - 7.7.0
+          - 6.8.9
+          - 5.6.16
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Service elastisearch 8.1.3.
+        if: matrix.es-version == '8.1.3'
+        run: |
+          docker network create somenetwork
+          docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" -e "indices.id_field_data.enabled=true" -e "xpack.security.enabled=false" elasticsearch:${{ matrix.es-version }}
 
-      - name: Setup cache environment
-        id: cache-env
-        uses: shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: ${{ env.extensions }}
-          key: ${{ env.key }}
+      - name: Service elastisearch < 8.1.3.
+        if: matrix.es-version != '8.1.3'
+        run: |
+          docker network create somenetwork
+          docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" elasticsearch:${{ matrix.es-version }}
 
-      - name: Cache extensions
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.cache-env.outputs.dir }}
-          key: ${{ steps.cache-env.outputs.key }}
-          restore-keys: ${{ steps.cache-env.outputs.key }}
+      - name: Checkout.
+        uses: actions/checkout@v3
 
-      - name: Install PHP with extensions
+      - name: Install PHP with extensions.
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.extensions }}
           ini-values: date.timezone='UTC'
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
-
-      - name: Install dependencies with composer
+      - name: Install dependencies with composer.
         run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader
 
-      - name: Wait for Elasticsearch server to start
+      - name: Wait for Elasticsearch server to start.
         run: wget --retry-connrefused --waitretry=3 --timeout=30 -t 10 -O /dev/null http://127.0.0.1:9200
 
-      - name: Run tests with phpunit
+      - name: Run tests with phpunit.
         run: ES_VERSION=${{ matrix.es-version }} vendor/bin/phpunit
