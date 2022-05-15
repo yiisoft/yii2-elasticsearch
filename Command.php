@@ -202,7 +202,7 @@ class Command extends Component
         $body = Json::encode(['ids' => array_values($ids)]);
 
         if ($this->db->dslVersion >= 7) {
-            return $this->db->get([$index, '_doc', '_mget'], $options, $body);
+            return $this->db->get([$index, '_mget'], $options, $body);
         } else {
             return $this->db->get([$index, $type, '_mget'], $options, $body);
         }
@@ -289,7 +289,7 @@ class Command extends Component
         }
 
         if ($this->db->dslVersion >= 7) {
-            return $this->db->post([$index, '_doc', $id, '_update'], $options, Json::encode($body));
+            return $this->db->post([$index, '_update', $id], $options, Json::encode($body));
         } else {
             return $this->db->post([$index, $type, $id, '_update'], $options, Json::encode($body));
         }

@@ -78,7 +78,11 @@ class ElasticsearchTarget extends Target
     {
         $messages = array_map([$this, 'prepareMessage'], $this->messages);
         $body = implode("\n", $messages) . "\n";
-        $this->db->post([$this->index, $this->type, '_bulk'], $this->options, $body);
+        if ($this->db->dslVersion >= 7) {
+            $this->db->post([$this->index, '_bulk'], $this->options, $body);
+        } else {
+            $this->db->post([$this->index, $this->type, '_bulk'], $this->options, $body);
+        }
     }
 
     /**
