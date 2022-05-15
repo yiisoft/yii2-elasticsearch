@@ -35,29 +35,14 @@ jobs:
       elasticsearch:
         image: elasticsearch:${{ matrix.es-version }}
         env:
-          transport.host": 127.0.0.1
-          http.publish_host": 127.0.0.1
+          transport.host: 127.0.0.1
+          http.publish_host: 127.0.0.1
         ports:
           - 9200:9200
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup cache environment
-        id: cache-env
-        uses: shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: ${{ env.extensions }}
-          key: ${{ env.key }}
-
-      - name: Cache extensions
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.cache-env.outputs.dir }}
-          key: ${{ steps.cache-env.outputs.key }}
-          restore-keys: ${{ steps.cache-env.outputs.key }}
+        uses: actions/checkout@v3
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -65,18 +50,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.extensions }}
           ini-values: date.timezone='UTC'
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
       - name: Install dependencies with composer
         run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader
