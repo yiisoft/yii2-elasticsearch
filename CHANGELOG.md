@@ -1,7 +1,11 @@
 Yii Framework 2 Elasticsearch extension Change Log
 ==================================================
 
-2.1.3 under development
+2.1.4 under development
+-----------------------
+
+
+2.1.3 August 07, 2022
 -----------------------
 
 - Enh #311: Added support for runtime mappings in Elasticsearch 7.11+ (mabentley85)
