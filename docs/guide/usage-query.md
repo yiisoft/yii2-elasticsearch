@@ -6,7 +6,7 @@ The [[yii\elasticsearch\Query]] class is generally compatible with its [[yii\db\
 The differences are outlined below.
 
 - As Elasticsearch does not support SQL, the query API does not support `join()`, `groupBy()`, `having()`, and `union()`.
-  Sorting, `limit()`, `offset()`, `limit()`, and `where()` are all supported (with certain limitations).
+  Sorting, `offset()`, `limit()`, and `where()` are all supported (with certain limitations).
 
 - [[yii\elasticsearch\Query::from()|from()]] does not select the tables, but the
   [index](https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-index)
