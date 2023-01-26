@@ -97,6 +97,7 @@ class Connection extends Component
     public $dataTimeout = null;
     /**
      * @var array additional options used to configure curl session
+     * @since 2.1.4
      */
     public $curlOptions = [];
     /**

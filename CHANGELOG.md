@@ -3,7 +3,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 
 2.1.4 under development
 -----------------------
-
+- Enh #329: Added `curlOptions` attribute for advanced configuration of curl session (yuniorsk)
 
 2.1.3 August 07, 2022
 -----------------------
