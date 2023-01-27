@@ -96,6 +96,11 @@ class Connection extends Component
      */
     public $dataTimeout = null;
     /**
+     * @var array additional options used to configure curl session
+     * @since 2.1.4
+     */
+    public $curlOptions = [];
+    /**
      * @var integer version of the domain-specific language to use with the server.
      * This must be set to the major version of the Elasticsearch server in use, e.g. `5` for Elasticsearch 5.x.x,
      * `6` for Elasticsearch 6.x.x, and `7` for Elasticsearch 7.x.x.
@@ -453,6 +458,10 @@ class Connection extends Component
             CURLOPT_CUSTOMREQUEST  => $method,
             CURLOPT_FORBID_REUSE   => false,
         ];
+
+        if (!empty($this->curlOptions)) {
+            $options = array_merge($options, $this->curlOptions);
+        }
 
         if (!empty($this->auth) || isset($this->nodes[$this->activeNode]['auth']) && $this->nodes[$this->activeNode]['auth'] !== false) {
             $auth = isset($this->nodes[$this->activeNode]['auth']) ? $this->nodes[$this->activeNode]['auth'] : $this->auth;
