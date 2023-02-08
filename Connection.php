@@ -459,8 +459,8 @@ class Connection extends Component
             CURLOPT_FORBID_REUSE   => false,
         ];
 
-        if (!empty($this->curlOptions)) {
-            $options = array_merge($options, $this->curlOptions);
+        foreach ($this->curlOptions as $key => $value) {
+            $options[$key] = $value;
         }
 
         if (!empty($this->auth) || isset($this->nodes[$this->activeNode]['auth']) && $this->nodes[$this->activeNode]['auth'] !== false) {
