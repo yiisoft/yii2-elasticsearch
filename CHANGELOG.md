@@ -5,6 +5,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 -----------------------
 - Enh #329: Added `curlOptions` attribute for advanced configuration of curl session (yuniorsk)
 - Bug #330: Fix `curlOptions` merging (yuniorsk)
+- Bug #332: Added `[\ReturnTypeWillChange]` attribute for BatchQueryResult methods to be compatible with Iterator interface (warton)
 
 2.1.3 August 07, 2022
 -----------------------
