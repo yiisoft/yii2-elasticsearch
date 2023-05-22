@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\elasticsearch;
@@ -16,9 +16,9 @@ use yii\helpers\Json;
 /**
  * Elasticsearch Connection is used to connect to an Elasticsearch cluster version 0.20 or higher
  *
- * @property-read string $driverName Name of the DB driver. This property is read-only.
- * @property-read bool $isActive Whether the DB connection is established. This property is read-only.
- * @property-read QueryBuilder $queryBuilder This property is read-only.
+ * @property-read string $driverName Name of the DB driver.
+ * @property-read bool $isActive Whether the DB connection is established.
+ * @property-read QueryBuilder $queryBuilder
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0

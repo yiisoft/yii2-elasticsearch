@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\elasticsearch;
@@ -128,7 +128,7 @@ class Query extends Component implements QueryInterface
      */
     public $runtimeMappings;
     /**
-     * @var array Use the fields parameter to retrieve the values of runtime fields.  Runtime fields won’t display in
+     * @var array Use the fields parameter to retrieve the values of runtime fields. Runtime fields won’t display in
      * _source, but the fields API works for all fields, even those that were not sent as part of the original _source.
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime-retrieving-fields.html
      * @see fields()

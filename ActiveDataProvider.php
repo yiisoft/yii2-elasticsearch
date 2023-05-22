@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\elasticsearch;
@@ -19,9 +19,9 @@ use yii\db\ActiveQueryInterface;
  * count will be fetched after pagination limit applying, which eliminates ability to verify if requested page number
  * actually exist. Data provider disables [[yii\data\Pagination::$validatePage]] automatically because of this.
  *
- * @property-read array $aggregations All aggregations results. This property is read-only.
+ * @property-read array $aggregations All aggregations results.
  * @property array $queryResults Full query results.
- * @property-read array $suggestions All suggestions results. This property is read-only.
+ * @property-read array $suggestions All suggestions results.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0.5
