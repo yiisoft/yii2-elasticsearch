@@ -252,7 +252,7 @@ class ActiveRecord extends BaseActiveRecord
      * @param mixed $value
      * @throws \yii\base\InvalidCallException when record is not new
      * @deprecated since 2.1.0
-     */0
+     */
     public function setPrimaryKey($value)
     {
         $pk = static::primaryKey()[0];
