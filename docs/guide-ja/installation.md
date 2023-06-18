@@ -18,7 +18,7 @@ Elasticsearch 5.x, 6.x, そして 7.x のブランチでテストされていま
 
 ## Composer パッケージを取得する
 
-このエクステンションをインストールするのに推奨される方法は [composer](http://getcomposer.org/download/) によるものです。
+このエクステンションをインストールするのに推奨される方法は [composer](https://getcomposer.org/download/) によるものです。
 
 ```
 composer require --prefer-dist yiisoft/yii2-elasticsearch

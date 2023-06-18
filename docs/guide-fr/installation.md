@@ -7,7 +7,7 @@ Elasticsearch version 1.0 ou supérieure est requis.
 
 ## Installer via Composer
 
-La manière conseillée pour installer cette extension est de le faire via [composer](http://getcomposer.org/download/).
+La manière conseillée pour installer cette extension est de le faire via [composer](https://getcomposer.org/download/).
 
 Vous pouvez soit exécuter
 

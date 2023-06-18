@@ -18,7 +18,7 @@
 
 ## Установка через Composer
 
-Предпочтительный способ установки расширения - с помощью [composer](http://getcomposer.org/download/).
+Предпочтительный способ установки расширения - с помощью [composer](https://getcomposer.org/download/).
 
 ```
 composer require --prefer-dist yiisoft/yii2-elasticsearch
