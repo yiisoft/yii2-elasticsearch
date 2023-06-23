@@ -6,7 +6,7 @@
     <br>
 </p>
 
-This extension provides the [Elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the [Yii framework 2.0](http://www.yiiframework.com).
+This extension provides the [Elasticsearch](https://www.elastic.co/products/elasticsearch) integration for the [Yii framework 2.0](https://www.yiiframework.com).
 It includes basic querying/search support and also implements the `ActiveRecord` pattern that allows you to store active
 records in Elasticsearch.
 
@@ -29,7 +29,7 @@ Depending on the version of Elasticsearch you are using you need a different ver
 Installation
 ------------
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
+The preferred way to install this extension is through [composer](https://getcomposer.org/download/):
 
 
 ```
