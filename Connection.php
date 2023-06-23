@@ -108,7 +108,7 @@ class Connection extends Component
     public $dslVersion = 5;
 
     /**
-     * @var resource the curl instance returned by [curl_init()](http://php.net/manual/en/function.curl-init.php).
+     * @var resource the curl instance returned by [curl_init()](https://php.net/manual/en/function.curl-init.php).
      */
     private $_curl;
 
@@ -434,7 +434,7 @@ class Connection extends Component
             CURLOPT_USERAGENT      => 'Yii Framework ' . Yii::getVersion() . ' ' . __CLASS__,
             CURLOPT_RETURNTRANSFER => false,
             CURLOPT_HEADER         => false,
-            // http://www.php.net/manual/en/function.curl-setopt.php#82418
+            // https://www.php.net/manual/en/function.curl-setopt.php#82418
             CURLOPT_HTTPHEADER     => [
                 'Expect:',
                 'Content-Type: application/json',

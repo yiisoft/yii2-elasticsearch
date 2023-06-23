@@ -504,7 +504,7 @@ class Command extends Component
      * @return mixed
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
-     * @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
+     * @see https://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-update-settings.html
      * @since 2.0.4
      */
     public function updateSettings($index, $setting, $options = [])
