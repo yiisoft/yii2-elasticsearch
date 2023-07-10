@@ -72,8 +72,16 @@ class BulkCommand extends Component
             $body = '{}';
         } elseif (is_array($this->actions)) {
             $body = '';
+            $prettyPrintSupport = property_exists('yii\\helpers\\Json', 'prettyPrint');
+            if ($prettyPrintSupport) {
+                $originalPrettyPrint = Json::$prettyPrint;
+                Json::$prettyPrint = false; // ElasticSearch bulk API uses new lines as delimiters.
+            }
             foreach ($this->actions as $action) {
                 $body .= Json::encode($action) . "\n";
+            }
+            if ($prettyPrintSupport) {
+                Json::$prettyPrint = $originalPrettyPrint;
             }
         } else {
             $body = $this->actions;
