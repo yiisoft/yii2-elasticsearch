@@ -720,7 +720,7 @@ class ActiveRecord extends BaseActiveRecord
         foreach ($primaryKeys as $pk) {
             $script = '';
             foreach ($counters as $counter => $value) {
-                $script .= "ctx._source.{$counter} += params.{$counter};\n";
+                $script .= "ctx._source.{$counter} = (ctx._source.{$counter} == null ? 0 : ctx._source.{$counter}) +  params.{$counter};\n";
             }
             $bulkCommand->addAction(["update" => ["_id" => $pk]], [
                 'script' => [
