@@ -13,7 +13,7 @@ class CommandTest extends TestCase
     /** @var Command */
     private $command;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->command = $this->getConnection()->createCommand();

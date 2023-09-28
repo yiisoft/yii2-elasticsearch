@@ -10,7 +10,7 @@ use yiiunit\extensions\elasticsearch\data\ar\Customer;
 
 class ActiveDataProviderTest extends TestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

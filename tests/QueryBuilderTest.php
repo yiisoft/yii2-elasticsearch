@@ -15,7 +15,7 @@ class QueryBuilderTest extends TestCase
      */
     private $version;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $command = $this->getConnection()->createCommand();
