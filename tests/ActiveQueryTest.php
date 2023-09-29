@@ -9,7 +9,7 @@ use yiiunit\extensions\elasticsearch\data\ar\Item;
  */
 class ActiveQueryTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

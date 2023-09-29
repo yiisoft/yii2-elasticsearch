@@ -43,7 +43,7 @@ class ActiveRecordTest extends TestCase
         return OrderItem::className();
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -163,7 +163,7 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue($customer instanceof Customer);
         $this->assertEquals(2, $customer->_id);
     }
-  
+
     public function testSuggestion()
     {
         $result = Customer::find()->addSuggester('customer_name', [
@@ -175,7 +175,7 @@ class ActiveRecordTest extends TestCase
 
         $this->assertCount(3, $result['suggest']['customer_name'][0]['options']);
     }
-  
+
     public function testGetDb()
     {
         $this->mockApplication(['components' => ['elasticsearch' => Connection::className()]]);

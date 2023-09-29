@@ -14,7 +14,7 @@ class ConnectionTest extends TestCase
      */
     private $connection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->getConnection();
