@@ -5,6 +5,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 -----------------------
 
 - Bug #344: Disabled JSON pretty print for ElasticSearch bulk API (rhertogh)
+- Bug #350: Remove deprecated code, set $pagination->totalCount (lav45)
 
 
 2.1.4 May 22, 2023

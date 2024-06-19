@@ -138,4 +138,23 @@ class ActiveDataProviderTest extends TestCase
         $dataProvider->refresh();
         $this->assertEquals(1, $dataProvider->getTotalCount());
     }
+
+    public function testTotalCountAfterSearch()
+    {
+        $query = Customer::find();
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 2,
+            ],
+        ]);
+
+        $pagination = $provider->getPagination();
+        $this->assertEquals(2, $pagination->getPageCount());
+        $this->assertEquals(3, $pagination->getTotalCount());
+
+        $query->andWhere(['name' => 'user2']);
+        $this->assertEquals(1, $pagination->getPageCount());
+        $this->assertEquals(1, $pagination->getTotalCount());
+    }
 }
