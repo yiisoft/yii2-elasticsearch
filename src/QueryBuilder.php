@@ -109,6 +109,9 @@ class QueryBuilder extends BaseObject
         if (!empty($query->collapse)) {
             $parts['collapse'] = $query->collapse;
         }
+        if ($query->search_after) {
+            $parts['search_after'] = $query->search_after;
+        }
 
         $sort = $this->buildOrderBy($query->orderBy);
         if (!empty($sort)) {
