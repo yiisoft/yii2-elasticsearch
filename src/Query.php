@@ -236,6 +236,12 @@ class Query extends Component implements QueryInterface
      * @since 2.0.5
      */
     public $explain;
+    /**
+     * @var array Allows pagination of large datasets.
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html#search-after
+     * @since 2.1.5
+     */
+    public $search_after = [];
 
 
     /**
