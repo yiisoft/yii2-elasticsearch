@@ -1,7 +1,7 @@
 Yii Framework 2 Elasticsearch extension Change Log
 ==================================================
 
-2.1.5 under development
+2.1.5 February 13, 2025
 -----------------------
 
 - Bug #344: Disabled JSON pretty print for ElasticSearch bulk API (rhertogh)
