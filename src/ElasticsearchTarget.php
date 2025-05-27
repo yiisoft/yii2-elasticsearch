@@ -139,6 +139,7 @@ class ElasticsearchTarget extends Target
     public function prepareMessage($message)
     {
         list($text, $level, $category, $timestamp) = $message;
+        $timestamp = (int) round($timestamp);
 
         $result = [
             'category' => $category,

@@ -6,8 +6,6 @@ on:
       - 'CHANGELOG.md'
       - '.gitignore'
       - '.gitattributes'
-      - 'infection.json.dist'
-      - 'psalm.xml'
 
   push:
     paths-ignore:
@@ -16,8 +14,6 @@ on:
       - 'CHANGELOG.md'
       - '.gitignore'
       - '.gitattributes'
-      - 'infection.json.dist'
-      - 'psalm.xml'
 
 name: build
 
@@ -33,12 +29,10 @@ jobs:
     strategy:
       matrix:
         php:
-          - 7.3
-          - 7.4
-          - 8.0
           - 8.1
           - 8.2
           - 8.3
+          - 8.4
 
         es:
           - 8.1.3
@@ -61,7 +55,7 @@ jobs:
           docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" elasticsearch:${{ matrix.es }}
 
       - name: Checkout.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP with extensions.
         uses: shivammathur/setup-php@v2
