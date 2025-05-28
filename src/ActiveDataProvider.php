@@ -54,6 +54,17 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     }
 
     /**
+     * @inheritdoc
+     */
+    public function prepare($forcePrepare = false)
+    {
+        if ($forcePrepare) {
+            $this->setTotalCount(null);
+        }
+        parent::prepare($forcePrepare);
+    }
+
+    /**
      * @return array all aggregations results
      */
     public function getAggregations()
@@ -122,6 +133,9 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
 
         if (is_array(($results = $query->search($this->db)))) {
             $this->setQueryResults($results);
+            if ($pagination !== false) {
+                $pagination->totalCount = $this->getTotalCount();
+            }
             return $results['hits']['hits'];
         }
         $this->setQueryResults([]);
