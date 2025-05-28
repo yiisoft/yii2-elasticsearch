@@ -41,10 +41,5 @@
         "allow-plugins": {
             "yiisoft/yii2-composer": true
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "22.0.x-dev"
-        }
     }
 }
