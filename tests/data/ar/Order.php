@@ -27,12 +27,12 @@ class Order extends ActiveRecord
 
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['_id' => 'customer_id']);
+        return $this->hasOne(Customer::class, ['_id' => 'customer_id']);
     }
 
     public function getOrderItems()
     {
-        return $this->hasMany(OrderItem::className(), ['order_id' => '_id']);
+        return $this->hasMany(OrderItem::class, ['order_id' => '_id']);
     }
 
     /**
@@ -40,18 +40,18 @@ class Order extends ActiveRecord
      */
     public function getItemsByArrayValue()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'itemsArray'])->indexBy('_id');
+        return $this->hasMany(Item::class, ['_id' => 'itemsArray'])->indexBy('_id');
     }
 
     public function getItems()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems')->orderBy('_id');
     }
 
     public function getExpensiveItemsUsingViaWithCallable()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems', function (ActiveQuery $q) {
                 $q->where(['>=', 'subtotal', 10]);
             });
@@ -59,7 +59,7 @@ class Order extends ActiveRecord
 
     public function getCheapItemsUsingViaWithCallable()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems', function (ActiveQuery $q) {
                 $q->where(['<', 'subtotal', 10]);
             });
@@ -67,13 +67,13 @@ class Order extends ActiveRecord
 
     public function getItemsIndexed()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems')->indexBy('_id');
     }
 
     public function getItemsInOrder1()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems', function ($q) {
                 $q->orderBy(['subtotal' => SORT_ASC]);
             })->orderBy('name');
@@ -81,7 +81,7 @@ class Order extends ActiveRecord
 
     public function getItemsInOrder2()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems', function ($q) {
                 $q->orderBy(['subtotal' => SORT_DESC]);
             })->orderBy('name');
@@ -89,7 +89,7 @@ class Order extends ActiveRecord
 
     public function getBooks()
     {
-        return $this->hasMany(Item::className(), ['_id' => 'item_id'])
+        return $this->hasMany(Item::class, ['_id' => 'item_id'])
             ->via('orderItems')
             ->where(['category_id' => 1]);
     }

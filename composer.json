@@ -18,17 +18,23 @@
         }
     ],
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "yiisoft/yii2": "~2.0.14"
+        "yiisoft/yii2": "~2.0.54"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.6"
+        "yiisoft/yii2-coding-standards": "~3.0",
+        "yiisoft/yii2-debug": "^2.0",
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
-        "psr-4": { "yii\\elasticsearch\\": "src" }
+        "psr-4": {
+            "yii\\elasticsearch\\": "src"
+        }
     },
     "config": {
         "allow-plugins": {
@@ -43,7 +49,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -28,7 +29,7 @@ class Connection extends Component
     /**
      * @event Event an event that is triggered after a DB connection is established
      */
-    const EVENT_AFTER_OPEN = 'afterOpen';
+    public const EVENT_AFTER_OPEN = 'afterOpen';
 
     /**
      * @var boolean whether to autodetect available cluster nodes on [[open()]]
@@ -166,7 +167,7 @@ class Connection extends Component
             $this->populateNodes();
         }
         $this->selectActiveNode();
-        Yii::trace('Opening connection to Elasticsearch. Nodes in cluster: ' . count($this->nodes)
+        Yii::debug('Opening connection to Elasticsearch. Nodes in cluster: ' . count($this->nodes)
             . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
     }
@@ -230,7 +231,7 @@ class Connection extends Component
         if ($this->activeNode === null) {
             return;
         }
-        Yii::trace('Closing connection to Elasticsearch. Active node was: '
+        Yii::debug('Closing connection to Elasticsearch. Active node was: '
             . $this->nodes[$this->activeNode]['http']['publish_address'], __CLASS__);
         $this->activeNode = null;
         if ($this->_curl) {
@@ -506,7 +507,7 @@ class Connection extends Component
             $profile = false;
         }
 
-        Yii::trace("Sending request to Elasticsearch node: $method $url\n$requestBody", __METHOD__);
+        Yii::debug("Sending request to Elasticsearch node: $method $url\n$requestBody", __METHOD__);
         if ($profile !== false) {
             Yii::beginProfile($profile, __METHOD__);
         }
@@ -604,7 +605,7 @@ class Connection extends Component
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return $body;
         }
     }

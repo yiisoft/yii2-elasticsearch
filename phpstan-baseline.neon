@@ -1,0 +1,2965 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveQueryInterface\:\:\$modelClass\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Cannot call method getOrders\(\) on yii\\data\\Sort\|true\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\ActiveDataProvider has PHPDoc tag @property for property \$queryResults with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\ActiveDataProvider has PHPDoc tag @property\-read for property \$aggregations with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\ActiveDataProvider has PHPDoc tag @property\-read for property \$suggestions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:getAggregation\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:getAggregations\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:getQueryResults\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:getSuggestion\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:getSuggestions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:prepareKeys\(\) has parameter \$models with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:prepareKeys\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:prepareModels\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:refresh\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:setQueryResults\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveDataProvider\:\:setQueryResults\(\) has parameter \$results with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Parameter \#1 \$db of method yii\\elasticsearch\\Query\:\:search\(\) expects yii\\elasticsearch\\Connection\|null, array\|string\|yii\\db\\Connection\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Parameter \#1 \$value of method yii\\data\\BaseDataProvider\:\:setTotalCount\(\) expects int, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveDataProvider\:\:\$_queryResults \(array\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveDataProvider\:\:\$_queryResults type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/ActiveDataProvider.php
+
+		-
+			message: '#^Cannot call method createCommand\(\) on string\|yii\\elasticsearch\\Connection\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveFixture\:\:getData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveFixture\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveFixture\:\:load\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveFixture\:\:resetIndex\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^PHPDoc type string\|yii\\elasticsearch\\Connection of property yii\\elasticsearch\\ActiveFixture\:\:\$db is not covariant with PHPDoc type array\|string\|yii\\db\\Connection of overridden property yii\\test\\DbFixture\:\:\$db\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Parameter \#1 \$path of function dirname expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveFixture\:\:\$index \(string\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveFixture\:\:\$type \(string\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Property yii\\test\\BaseActiveFixture\:\:\$modelClass \(string\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Result of \|\| is always false\.$#'
+			identifier: booleanOr.alwaysFalse
+			count: 1
+			path: src/ActiveFixture.php
+
+		-
+			message: '#^Call to an undefined static method yii\\db\\ActiveRecordInterface\:\:index\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Call to an undefined static method yii\\db\\ActiveRecordInterface\:\:instantiate\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Call to an undefined static method yii\\db\\ActiveRecordInterface\:\:type\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Cannot call static method populateRecord\(\) on class\-string\|false\.$#'
+			identifier: staticMethod.nonObject
+			count: 3
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:__construct\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:all\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:column\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:createModels\(\) has parameter \$rows with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:one\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:one\(\) should return array\|yii\\elasticsearch\\ActiveRecord\|null but returns array\|true\.$#'
+			identifier: return.type
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:populate\(\) has parameter \$rows with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:populate\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:search\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:search\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\ActiveQuery\:\:all\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:all\(\)$#'
+			identifier: method.childParameterType
+			count: 2
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\ActiveQuery\:\:one\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\ActiveQueryInterface\:\:one\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\ActiveQuery\:\:one\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:one\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Parameter \#2 \$models of method yii\\elasticsearch\\ActiveQuery\:\:findWith\(\) expects array\<yii\\db\\ActiveRecord\>, array\<yii\\elasticsearch\\ActiveRecord\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveQuery\:\:\$modelClass \(class\-string\<yii\\db\\ActiveRecordInterface\>\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
+			message: '#^Cannot access property \$via on yii\\db\\ActiveQueryInterface\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property for property \$explanation with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property for property \$highlight with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:delete\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:deleteAll\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:filterCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:filterCondition\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:findAll\(\) should return array\<static\(yii\\elasticsearch\\ActiveRecord\)\> but returns array\<yii\\db\\ActiveRecordInterface\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:findOne\(\) should return static\(yii\\elasticsearch\\ActiveRecord\)\|null but returns array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:get\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:getDb\(\) should return yii\\elasticsearch\\Connection but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:getExplanation\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:getHighlight\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:insert\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:insert\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:instantiate\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:link\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:link\(\) has parameter \$extraColumns with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:mget\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:mget\(\) has parameter \$primaryKeys with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:mget\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:populateRecord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:populateRecord\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:primaryKeysByCondition\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:primaryKeysByCondition\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:setPrimaryKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:set_id\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:unlinkAll\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:update\(\) has parameter \$attributeNames with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:update\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:updateAll\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:updateAll\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:updateAllCounters\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:updateAllCounters\(\) has parameter \$counters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:updateInternal\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:updateInternal\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:validateViaRelationLink\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ActiveRecord\:\:validateViaRelationLink\(\) has parameter \$relation with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(ActiveQueryInterface\|ActiveQuery the relational query object\.\)\: Unexpected token "the", expected variable at offset 230 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^PHPDoc tag @throws with type yii\\db\\StaleObjectException\|yii\\elasticsearch\\Exception\|yii\\elasticsearch\\InvalidParamException is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 2
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Parameter \#3 \$code of class yii\\db\\StaleObjectException constructor expects string, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveRecord\:\:\$_explanation has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveRecord\:\:\$_highlight has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveRecord\:\:\$_id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveRecord\:\:\$_score has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ActiveRecord\:\:\$_version has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Unsafe call to private method yii\\elasticsearch\\ActiveRecord\:\:filterCondition\(\) through static\:\:\.$#'
+			identifier: staticClassAccess.privateMethod
+			count: 2
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
+			message: '#^Binary operation "\+" between int\|string and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\BatchQueryResult implements generic interface Iterator but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BatchQueryResult\:\:fetchData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BatchQueryResult\:\:key\(\) should return int but returns int\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BatchQueryResult\:\:reset\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_batch \(array\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_batch type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_dataReader has unknown class yii\\elasticsearch\\DataReader as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_dataReader is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_key \(int\|string\) does not accept int\|string\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_key \(int\|string\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BatchQueryResult\:\:\$_lastScrollId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/BatchQueryResult.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BulkCommand\:\:addAction\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/BulkCommand.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BulkCommand\:\:addAction\(\) has parameter \$line1 with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BulkCommand.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BulkCommand\:\:addAction\(\) has parameter \$line2 with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BulkCommand.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\BulkCommand\:\:addDeleteAction\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/BulkCommand.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BulkCommand\:\:\$actions type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BulkCommand.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\BulkCommand\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BulkCommand.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:addAlias\(\) has parameter \$aliasParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:aliasActions\(\) has parameter \$actions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:clearScroll\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:createIndex\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:createTemplate\(\) has parameter \$mappings with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:createTemplate\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:createTemplate\(\) has parameter \$pattern with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:createTemplate\(\) has parameter \$settings with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:delete\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:deleteByQuery\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:deleteTemplate\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:get\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:getAliasInfo\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:getIndexAliases\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:getIndexInfoByAlias\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:getIndexesByAlias\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:getTemplate\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:insert\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:insert\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:mget\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:scroll\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:search\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:setMapping\(\) has parameter \$mapping with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:setMapping\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:suggest\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:suggest\(\) has parameter \$suggester with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:update\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:updateAnalyzers\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:updateAnalyzers\(\) has parameter \$setting with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:updateSettings\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Command\:\:updateSettings\(\) has parameter \$setting with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Parameter \#3 \$body of method yii\\elasticsearch\\Connection\:\:post\(\) expects string\|null, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Parameter \#3 \$body of method yii\\elasticsearch\\Connection\:\:put\(\) expects string\|null, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Command\:\:\$index type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Command\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Command\:\:\$queryParts type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Command\:\:\$type type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Command.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array\|string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: src/Command.php
+
+		-
+			message: '#^Call to function is_array\(\) with string will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:close\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:createBulkCommand\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:createCommand\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:createUrl\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:createUrl\(\) has parameter \$path with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:createUrl\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:decodeErrorBody\(\) has parameter \$body with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:delete\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:delete\(\) has parameter \$url with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:get\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:get\(\) has parameter \$url with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:getClusterState\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:getNodeInfo\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:head\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:head\(\) has parameter \$url with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:initConnection\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:open\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:populateNodes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:post\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:post\(\) has parameter \$url with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:put\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:put\(\) has parameter \$url with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:resetCurlHandle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Connection\:\:selectActiveNode\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Parameter \#1 \$min \(0\) of function random_int expects lower number than parameter \#2 \$max \(int\<\-1, max\>\)\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Parameter \#2 \$url of method yii\\elasticsearch\\Connection\:\:httpRequest\(\) expects string, array given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Connection.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Connection\:\:\$_curl \(resource\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Connection\:\:\$activeNode \(string\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Connection\:\:\$auth type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Connection\:\:\$curlOptions type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Connection\:\:\$nodes type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between false and false will always evaluate to false\.$#'
+			identifier: notIdentical.alwaysFalse
+			count: 2
+			path: src/Connection.php
+
+		-
+			message: '#^Access to an undefined property yii\\console\\Response\|yii\\web\\Response\:\:\$format\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Call to an undefined method object\:\:delete\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Call to an undefined method object\:\:get\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Call to an undefined method object\:\:head\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Call to an undefined method object\:\:post\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Call to an undefined method object\:\:put\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Class yii\\elasticsearch\\DebugAction extends generic class yii\\base\\Action but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\DebugAction\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\DebugAction\:\:run\(\) has parameter \$logId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\DebugAction\:\:run\(\) has parameter \$tag with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Parameter \#2 \$key of static method yii\\helpers\\BaseArrayHelper\:\:multisort\(\) expects array\|Closure\|string, 3 given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Parameter \#3 \$length of function mb_substr expects int\|null, int\<0, max\>\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Call to an undefined method yii\\base\\View\:\:registerJs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Cannot access property \$messages on array\|string\|yii\\debug\\LogTarget\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Cannot call method filterMessages\(\) on array\|string\|yii\\debug\\LogTarget\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\DebugPanel\:\:calculateTimings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\DebugPanel\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Parameter \#1 \$view of static method yii\\web\\AssetBundle\:\:register\(\) expects yii\\web\\View, yii\\base\\View given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Parameter \#2 \$key of static method yii\\helpers\\BaseArrayHelper\:\:multisort\(\) expects array\|Closure\|string, 3 given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\DebugPanel\:\:\$_timings has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\DebugPanel\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Cannot access property \$dslVersion on array\|string\|yii\\elasticsearch\\Connection\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Cannot call method post\(\) on array\|string\|yii\\elasticsearch\\Connection\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Instanceof between mixed and Exception will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:collect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:collect\(\) has parameter \$messages with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:export\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:getContextMessage\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:getContextMessage\(\) should return array but returns array\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\ElasticsearchTarget\:\:prepareMessage\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ElasticsearchTarget\:\:\$_contextMessage \(string\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ElasticsearchTarget\:\:\$db type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\ElasticsearchTarget\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Return type \(array\) of method yii\\elasticsearch\\ElasticsearchTarget\:\:getContextMessage\(\) should be compatible with return type \(string\) of method yii\\log\\Target\:\:getContextMessage\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/ElasticsearchTarget.php
+
+		-
+			message: '#^Call to an undefined method object\:\:createCommand\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getQueryBuilder\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 5
+			path: src/Query.php
+
+		-
+			message: '#^Cannot access offset ''_id'' on array\|true\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Cannot access offset 0 on array\|string\|yii\\db\\ExpressionInterface\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:addAgg\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:addAggregate\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:addAggregation\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:addCollapse\(\) has parameter \$collapse with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:addOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:addSuggester\(\) has parameter \$definition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:all\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:andWhere\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:column\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:delete\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:delete\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:explain\(\) has parameter \$explain with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:fields\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:from\(\) has parameter \$index with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:from\(\) has parameter \$type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:highlight\(\) has parameter \$highlight with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:one\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:options\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:orWhere\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:populate\(\) has parameter \$rows with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:populate\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:postFilter\(\) has parameter \$filter with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:query\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:runtimeMappings\(\) has parameter \$mappings with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:scalar\(\) should return string but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:scriptFields\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:search\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:search\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:source\(\) has parameter \$source with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:stats\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\Query\:\:storedFields\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\Query\:\:all\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:all\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\Query\:\:exists\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:exists\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\Query\:\:one\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:one\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Parameter \#2 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\Query\:\:count\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:count\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$aggregations type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$collapse type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$fields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$filter type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$highlight type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$index type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$postFilter type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$query type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$runtimeMappings \(array\) does not accept array\<mixed, mixed\>\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$runtimeMappings type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$scriptFields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$search_after type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$source \(array\) does not accept array\|false\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$source type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$stats type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$storedFields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$suggest type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$type \(array\|string\) does not accept array\|string\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$type type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Query.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 3
+			path: src/Query.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between \*NEVER\* and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 3
+			path: src/Query.php
+
+		-
+			message: '#^Cannot cast int\<1, max\>\|yii\\db\\ExpressionInterface to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:__construct\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:build\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildBetweenCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildBetweenCondition\(\) has parameter \$operands with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildBetweenCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildBoolCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildBoolCondition\(\) has parameter \$operands with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildBoolCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildCompositeInCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildCompositeInCondition\(\) has parameter \$columns with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildCompositeInCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildCompositeInCondition\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildCondition\(\) has parameter \$condition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildCondition\(\) should return string but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildHalfBoundedRangeCondition\(\) has parameter \$operands with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildHalfBoundedRangeCondition\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildHashCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildHashCondition\(\) has parameter \$condition with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildInCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildInCondition\(\) has parameter \$operands with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildInCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildLikeCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildLikeCondition\(\) has parameter \$operands with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildLikeCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildMatchCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildMatchCondition\(\) has parameter \$operands with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildMatchCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildNotCondition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildNotCondition\(\) has parameter \$operands with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildNotCondition\(\) has parameter \$operator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildOrderBy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildOrderBy\(\) has parameter \$columns with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildQueryFromWhere\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\QueryBuilder\:\:buildQueryFromWhere\(\) has parameter \$condition with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$explain \(bool\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Property yii\\elasticsearch\\Query\:\:\$minScore \(float\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: src/QueryBuilder.php
+
+		-
+			message: '#^Cannot call method getPageCount\(\) on yii\\data\\Pagination\|false\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/ActiveDataProviderTest.php
+
+		-
+			message: '#^Parameter \#4 \$id of method yii\\elasticsearch\\Command\:\:insert\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/ActiveQueryTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$_id\.$#'
+			identifier: property.notFound
+			count: 5
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$address\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$customer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$customer_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$db\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$dirtyAttributes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$isNewRecord\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$items\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 11
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$subtotal\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$address\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$items\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$subtotal\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Access to an undefined property yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:\$orderItems\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:canGetProperty\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:canSetProperty\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:delete\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:equals\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getPrimaryKey\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:hasAttribute\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:hasProperty\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:link\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:refresh\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:save\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:setAttributes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:updateAttributes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined method yii\\db\\ActiveRecordInterface\:\:isRelationPopulated\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to an undefined static method object\:\:className\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''yii\\\\elasticsearch\\\\Connection'' and yii\\elasticsearch\\Connection will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with array will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 8
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access offset ''_id'' on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access offset ''_source'' on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access offset ''_source'' on yii\\db\\ActiveRecordInterface\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access offset ''fields'' on yii\\db\\ActiveRecordInterface\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 9
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$_id on null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$db on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$itemsArray on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$itemsArray on yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\|null\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$itemsByArrayValue on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: property.nonObject
+			count: 9
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$itemsByArrayValue on yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot access property \$orders on yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method getDoes\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method getOrders\(\) on yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method isRelationPopulated\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method link\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method refresh\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method unlink\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call method unlinkAll\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Cannot call static method className\(\) on array\|yii\\db\\ActiveRecordInterface\|null\.$#'
+			identifier: staticMethod.nonObject
+			count: 2
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Class yiiunit\\extensions\\redis\\ActiveRecordTest not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Instanceof between yiiunit\\extensions\\elasticsearch\\data\\ar\\Item and yiiunit\\extensions\\elasticsearch\\data\\ar\\Item will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 5
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\ActiveRecordTest\:\:illegalValuesForFindByCondition\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\ActiveRecordTest\:\:testValueEscapingInFindByCondition\(\) has parameter \$expectedResult with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\ActiveRecordTest\:\:testValueEscapingInFindByCondition\(\) has parameter \$filterWithInjection with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Non\-static access to static property yiiunit\\extensions\\elasticsearch\\data\\ar\\ActiveRecord\:\:\$db\.$#'
+			identifier: staticProperty.nonStaticAccess
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Parameter \#1 \$expected of method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) expects class\-string\<object\>, string given\.$#'
+			identifier: argument.type
+			count: 18
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method yii\\elasticsearch\\Query\:\:storedFields\(\) expects array, string given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\ActiveRecordTest\:\:\$afterSaveInsert has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\ActiveRecordTest\:\:\$afterSaveNewRecord has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/ActiveRecordTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\CommandTest\:\:getAliasInfo_singleAliasIsSet_returnsInfoForAlias\(\) has parameter \$aliasParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/CommandTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\CommandTest\:\:getAliasInfo_singleAliasIsSet_returnsInfoForAlias\(\) has parameter \$expectedResult with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/CommandTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\CommandTest\:\:getAliasInfo_singleAliasIsSet_returnsInfoForAlias\(\) has parameter \$mapping with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/CommandTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\CommandTest\:\:provideDataForGetAliasInfo\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/CommandTest.php
+
+		-
+			message: '#^Parameter \#1 \$input of function array_keys expects array, array\|ArrayAccess given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/CommandTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) with ''name'' and array\{http_address\: string\} will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: tests/ElasticsearchConnectionTest.php
+
+		-
+			message: '#^Expression "\$connection\-\>autodetectCluster" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/ElasticsearchConnectionTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\|ArrayAccess, array\|bool given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/ElasticsearchTargetTest.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\ElasticsearchTargetTest\:\:\$index has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/ElasticsearchTargetTest.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\ElasticsearchTargetTest\:\:\$logger has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/ElasticsearchTargetTest.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\ElasticsearchTargetTest\:\:\$type has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/ElasticsearchTargetTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\QueryBuilderTest\:\:prepareDbData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/QueryBuilderTest.php
+
+		-
+			message: '#^Parameter \#4 \$id of method yii\\elasticsearch\\Command\:\:insert\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 4
+			path: tests/QueryBuilderTest.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\QueryBuilderTest\:\:\$version is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: tests/QueryBuilderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNull\(\) with string will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 3
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Cannot access offset ''_source'' on array\|bool\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 6
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Cannot access offset ''fields'' on array\|bool\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#1 \$condition of method yii\\elasticsearch\\Query\:\:andWhere\(\) expects array, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#1 \$condition of method yii\\elasticsearch\\Query\:\:orWhere\(\) expects array, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#1 \$condition of method yii\\elasticsearch\\Query\:\:where\(\) expects array\|string\|yii\\db\\ExpressionInterface, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method yii\\elasticsearch\\Query\:\:storedFields\(\) expects array, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method yii\\elasticsearch\\Query\:\:storedFields\(\) expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\|ArrayAccess, array\|bool given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayNotHasKey\(\) expects array\|ArrayAccess, array\|bool given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Parameter \#4 \$id of method yii\\elasticsearch\\Command\:\:insert\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 12
+			path: tests/QueryTest.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:invokeMethod\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:invokeMethod\(\) has parameter \$method with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:invokeMethod\(\) has parameter \$object with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:mockApplication\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:mockApplication\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:mockWebApplication\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:mockWebApplication\(\) has parameter \$appClass with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\TestCase\:\:mockWebApplication\(\) has parameter \$config with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\TestCase\:\:\$params has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Static property yii\\BaseYii\<yii\\web\\IdentityInterface\>\:\:\$app \(yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\data\\ar\\ActiveRecord\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/data/ar/ActiveRecord.php
+
+		-
+			message: '#^Access to an undefined property yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:\$species\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Access to offset ''_source'' on an unknown class yiiunit\\extensions\\elasticsearch\\data\\ar\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Call to method setMapping\(\) on an unknown class yiiunit\\extensions\\elasticsearch\\data\\ar\\Command\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:getDoes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:instantiate\(\) has invalid return type yiiunit\\data\\ar\\elasticsearch\\Animal\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:instantiate\(\) should return yiiunit\\data\\ar\\elasticsearch\\Animal but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:setUpMapping\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Parameter \$command of method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:setUpMapping\(\) has invalid type yiiunit\\extensions\\elasticsearch\\data\\ar\\Command\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Parameter \$row of method yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:instantiate\(\) has invalid type yiiunit\\extensions\\elasticsearch\\data\\ar\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\data\\ar\\Animal\:\:\$does has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/data/ar/Animal.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Cat\:\:populateRecord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Cat.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Cat\:\:populateRecord\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/data/ar/Cat.php
+
+		-
+			message: '#^Method yii\\db\\ActiveQueryInterface\:\:with\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\:\:afterSave\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\:\:afterSave\(\) has parameter \$changedAttributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\:\:getExpensiveOrders\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\:\:getOrders\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\:\:getOrdersWithItems\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Customer\:\:setUpMapping\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$statusIsBoolean$#'
+			identifier: parameter.notFound
+			count: 1
+			path: tests/data/ar/Customer.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\CustomerQuery\:\:active\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/CustomerQuery.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Dog\:\:populateRecord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Dog.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Dog\:\:populateRecord\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/data/ar/Dog.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Item\:\:setUpMapping\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Item.php
+
+		-
+			message: '#^Class yiiunit\\extensions\\elasticsearch\\data\\ar\\Order has PHPDoc tag @property for property \$itemsArray with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getBooks\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getCheapItemsUsingViaWithCallable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getCustomer\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getExpensiveItemsUsingViaWithCallable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getItems\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getItemsByArrayValue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getItemsInOrder1\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getItemsInOrder2\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getItemsIndexed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:getOrderItems\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:setUpMapping\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/Order.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\OrderItem\:\:getItem\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/OrderItem.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\OrderItem\:\:getOrder\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/OrderItem.php
+
+		-
+			message: '#^Method yiiunit\\extensions\\elasticsearch\\data\\ar\\OrderItem\:\:setUpMapping\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/data/ar/OrderItem.php
+
+		-
+			message: '#^Property yiiunit\\extensions\\elasticsearch\\data\\ar\\OrderItem\:\:\$total has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/data/ar/OrderItem.php
+
+		-
+			message: '#^Parameter \#2 \$subject of function preg_match expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/data/config.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:initIndex\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:initIndex\(\) has parameter \$class with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:initIndex\(\) has parameter \$db with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:insert\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:insert\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:insert\(\) has parameter \$modelClass with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:insertMany\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:insertMany\(\) has parameter \$modelClass with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:insertMany\(\) has parameter \$rows with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:refreshIndex\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:refreshIndex\(\) has parameter \$class with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php
+
+		-
+			message: '#^Method yii\\elasticsearch\\tests\\helpers\\Record\:\:refreshIndex\(\) has parameter \$db with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/helpers/Record.php

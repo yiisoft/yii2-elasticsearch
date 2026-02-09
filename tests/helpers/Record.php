@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @author Aleksandar Panic
  **/
 
 namespace yii\elasticsearch\tests\helpers;
-
 
 use yii\elasticsearch\ActiveRecord;
 
@@ -18,7 +18,6 @@ class Record
 
         return $model;
     }
-
 
     public static function insertMany($modelClass, $rows)
     {

@@ -26,6 +26,8 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+.phpunit.result.cache
+coverage.xml
 
 # local tests files
 /tests/data/config.local.php

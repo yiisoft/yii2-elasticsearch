@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -84,7 +85,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
+        return Yii::createObject(ActiveQuery::class, [get_called_class()]);
     }
 
     /**
@@ -417,7 +418,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function instantiate($row)
     {
-        return new static;
+        return new static();
     }
 
     /**
@@ -666,11 +667,11 @@ class ActiveRecord extends BaseActiveRecord
         }
 
         $bulkCommand = static::getDb()->createBulkCommand([
-            "index" => static::index(),
-            "type" => static::type(),
+            'index' => static::index(),
+            'type' => static::type(),
         ]);
         foreach ($primaryKeys as $pk) {
-            $bulkCommand->addAction(["update" => ["_id" => $pk]], ["doc" => $attributes]);
+            $bulkCommand->addAction(['update' => ['_id' => $pk]], ['doc' => $attributes]);
         }
         $response = $bulkCommand->execute();
 
@@ -714,15 +715,15 @@ class ActiveRecord extends BaseActiveRecord
         }
 
         $bulkCommand = static::getDb()->createBulkCommand([
-            "index" => static::index(),
-            "type" => static::type(),
+            'index' => static::index(),
+            'type' => static::type(),
         ]);
         foreach ($primaryKeys as $pk) {
             $script = '';
             foreach ($counters as $counter => $value) {
                 $script .= "ctx._source.{$counter} += params.{$counter};\n";
             }
-            $bulkCommand->addAction(["update" => ["_id" => $pk]], [
+            $bulkCommand->addAction(['update' => ['_id' => $pk]], [
                 'script' => [
                     'inline' => $script,
                     'params' => $counters,
@@ -842,8 +843,8 @@ class ActiveRecord extends BaseActiveRecord
         }
 
         $bulkCommand = static::getDb()->createBulkCommand([
-            "index" => static::index(),
-            "type" => static::type(),
+            'index' => static::index(),
+            'type' => static::type(),
         ]);
         foreach ($primaryKeys as $pk) {
             $bulkCommand->addDeleteAction($pk);
@@ -857,7 +858,7 @@ class ActiveRecord extends BaseActiveRecord
                 if (isset($item['delete']['found']) && $item['delete']['found']) {
                     # ES5 uses "found"
                     $n++;
-                } elseif (isset($item['delete']['result']) && $item['delete']['result'] == "deleted") {
+                } elseif (isset($item['delete']['result']) && $item['delete']['result'] == 'deleted') {
                     # ES6 uses "result"
                     $n++;
                 }
@@ -921,7 +922,6 @@ class ActiveRecord extends BaseActiveRecord
         $link = null;
 
         if ($p1 && $p2 && $atLeastOneExists) {
-
             if ($this->getIsNewRecord()) {
                 $foreign = $this;
                 $link = array_flip($relation->link);

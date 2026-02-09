@@ -46,7 +46,7 @@ class ActiveDataProviderTest extends TestCase
 
     // Tests :
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $query = new Query();
         $query->from(Customer::index(), 'customer');
@@ -56,7 +56,7 @@ class ActiveDataProviderTest extends TestCase
             'db' => $this->getConnection(),
         ]);
         $models = $provider->getModels();
-        $this->assertEquals(3, count($models));
+        $this->assertCount(3, $models);
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -66,10 +66,10 @@ class ActiveDataProviderTest extends TestCase
             ]
         ]);
         $models = $provider->getModels();
-        $this->assertEquals(1, count($models));
+        $this->assertCount(1, $models);
     }
 
-    public function testGetAggregations()
+    public function testGetAggregations(): void
     {
         $provider = new ActiveDataProvider([
             'query' => Customer::find()->addAggregate('agg_status', [
@@ -79,11 +79,11 @@ class ActiveDataProviderTest extends TestCase
             ]),
         ]);
         $models = $provider->getModels();
-        $this->assertEquals(3, count($models));
+        $this->assertCount(3, $models);
 
         $aggregations = $provider->getAggregations();
         $buckets = $aggregations['agg_status']['buckets'];
-        $this->assertEquals(2, count($buckets));
+        $this->assertCount(2, $buckets);
         $status_1 = $buckets[array_search(1, array_column($buckets, 'key'))];
         $status_2 = $buckets[array_search(2, array_column($buckets, 'key'))];
 
@@ -91,15 +91,15 @@ class ActiveDataProviderTest extends TestCase
         $this->assertEquals(1, $status_2['doc_count']);
     }
 
-    public function testActiveQuery()
+    public function testActiveQuery(): void
     {
         $provider = new ActiveDataProvider([
             'query' => Customer::find(),
         ]);
         $models = $provider->getModels();
-        $this->assertEquals(3, count($models));
-        $this->assertTrue($models[0] instanceof Customer);
-        $this->assertTrue($models[1] instanceof Customer);
+        $this->assertCount(3, $models);
+        $this->assertInstanceOf(Customer::class, $models[0]);
+        $this->assertInstanceOf(Customer::class, $models[1]);
 
         $provider = new ActiveDataProvider([
             'query' => Customer::find(),
@@ -108,10 +108,10 @@ class ActiveDataProviderTest extends TestCase
             ]
         ]);
         $models = $provider->getModels();
-        $this->assertEquals(1, count($models));
+        $this->assertCount(1, $models);
     }
 
-    public function testNonexistentIndex()
+    public function testNonexistentIndex(): void
     {
         $query = new Query();
         $query->from('nonexistent', 'nonexistent');
@@ -126,7 +126,7 @@ class ActiveDataProviderTest extends TestCase
         $models = $provider->getModels();
     }
 
-    public function testRefresh()
+    public function testRefresh(): void
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Customer::find(),
@@ -139,7 +139,7 @@ class ActiveDataProviderTest extends TestCase
         $this->assertEquals(1, $dataProvider->getTotalCount());
     }
 
-    public function testTotalCountAfterSearch()
+    public function testTotalCountAfterSearch(): void
     {
         $query = Customer::find();
         $provider = new ActiveDataProvider([
@@ -150,11 +150,15 @@ class ActiveDataProviderTest extends TestCase
         ]);
 
         $pagination = $provider->getPagination();
+        $this->assertEquals(0, $pagination->getPageCount());
+        $this->assertCount(2, $provider->getModels());
         $this->assertEquals(2, $pagination->getPageCount());
-        $this->assertEquals(3, $pagination->getTotalCount());
+        $this->assertEquals(3, $provider->getTotalCount());
 
         $query->andWhere(['name' => 'user2']);
+        $provider->prepare(true);
+        $this->assertCount(1, $provider->getModels());
         $this->assertEquals(1, $pagination->getPageCount());
-        $this->assertEquals(1, $pagination->getTotalCount());
+        $this->assertEquals(1, $provider->getTotalCount());
     }
 }

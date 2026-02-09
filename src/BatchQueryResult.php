@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -98,7 +99,7 @@ class BatchQueryResult extends BaseObject implements \Iterator
      */
     public function reset()
     {
-        if(isset($this->_lastScrollId)) {
+        if (isset($this->_lastScrollId)) {
             $this->query->createCommand($this->db)->clearScroll(['scroll_id' => $this->_lastScrollId]);
         }
 
@@ -155,7 +156,7 @@ class BatchQueryResult extends BaseObject implements \Iterator
         if (null === $this->_lastScrollId) {
             //first query - do search
             $options = ['scroll' => $this->scrollWindow];
-            if(!$this->query->orderBy) {
+            if (!$this->query->orderBy) {
                 $query = clone $this->query;
                 $query->orderBy('_doc');
                 $cmd = $this->query->createCommand($this->db);

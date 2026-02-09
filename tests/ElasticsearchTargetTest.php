@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
@@ -16,7 +17,7 @@ class ElasticsearchTargetTest extends TestCase
     public $index = 'yiilogtest';
     public $type = 'log';
 
-    public function testExport()
+    public function testExport(): void
     {
         $logger = $this->logger;
 
@@ -52,7 +53,7 @@ class ElasticsearchTargetTest extends TestCase
             'logger' => $this->logger,
             'targets' => [
                 [
-                    'class' => ElasticsearchTarget::className(),
+                    'class' => ElasticsearchTarget::class,
                     'db' => $this->getConnection(),
                     'index' => $this->index,
                     'type' => $this->type,
@@ -68,6 +69,4 @@ class ElasticsearchTargetTest extends TestCase
 
         parent::tearDown();
     }
-
-
 }

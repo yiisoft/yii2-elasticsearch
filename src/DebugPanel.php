@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -74,7 +75,7 @@ EOD;
     {
         //Register YiiAsset in order to inject csrf token in ajax requests
         YiiAsset::register(\Yii::$app->view);
-        
+
         $timings = $this->calculateTimings();
         ArrayHelper::multisort($timings, 3, SORT_DESC);
         $rows = [];
@@ -83,7 +84,7 @@ EOD;
             $duration = sprintf('%.1f ms', $timing[3] * 1000);
             $message = $timing[1];
             $traces = $timing[4];
-            if (($pos = mb_strpos($message, "#")) !== false) {
+            if (($pos = mb_strpos($message, '#')) !== false) {
                 $url = mb_substr($message, 0, $pos);
                 $body = mb_substr($message, $pos + 1);
             } else {

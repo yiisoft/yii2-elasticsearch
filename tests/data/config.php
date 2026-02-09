@@ -11,11 +11,17 @@
  * $config['elasticsearch']['nodes']['http_address'] = '192.168.1.2:9200';
  */
 
+$esHost = getenv('ES_HOST');
+
+if (false === $esHost) {
+    $esHost = 'inet[/127.0.0.1:9200]';
+}
+
 $config = [
     'elasticsearch' => [
         'autodetectCluster' => false,
         'nodes' => [
-            ['http_address' => 'inet[/127.0.0.1:9200]'],
+            ['http_address' => $esHost],
         ],
     ],
 ];

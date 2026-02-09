@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -68,7 +69,7 @@ class ElasticsearchTarget extends Target
     public function init()
     {
         parent::init();
-        $this->db = Instance::ensure($this->db, Connection::className());
+        $this->db = Instance::ensure($this->db, Connection::class);
     }
 
     /**
@@ -139,6 +140,7 @@ class ElasticsearchTarget extends Target
     public function prepareMessage($message)
     {
         list($text, $level, $category, $timestamp) = $message;
+        $timestamp = (int) round($timestamp);
 
         $result = [
             'category' => $category,
