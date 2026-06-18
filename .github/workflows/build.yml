@@ -18,6 +18,8 @@ on:
 
 name: build
 
+permissions:
+  contents: read
 jobs:
   tests:
     name: PHP ${{ matrix.php }} / ES ${{ matrix.es }}
@@ -59,10 +61,12 @@ jobs:
           docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" elasticsearch:${{ matrix.es }}
 
       - name: Checkout.
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        with:
+          persist-credentials: false
 
       - name: Install PHP with extensions.
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.extensions }}
@@ -78,7 +82,7 @@ jobs:
         run: ES_VERSION=${{ matrix.es }} vendor/bin/phpunit --coverage-clover=coverage.xml --colors=always
 
       - name: Upload coverage to Codecov.
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@04b047e8bb82a0c002c8312c1c880fbc6a999d45
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
