@@ -70,7 +70,7 @@ jobs:
           docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" "elasticsearch:${ES_VERSION}"
 
       - name: Checkout.
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
