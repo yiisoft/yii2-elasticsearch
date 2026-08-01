@@ -169,7 +169,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
     /**
      * Converts found rows into model instances
      * @param array $rows
-     * @return array|ActiveRecord[]
+     * @return array
      * @since 2.0.4
      */
     private function createModels($rows)
