@@ -337,6 +337,12 @@ parameters:
 			path: src/ActiveRecord.php
 
 		-
+			message: '#^Cannot call method get\(\) on yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/ActiveRecord.php
+
+		-
 			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property for property \$explanation with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1123,12 +1129,6 @@ parameters:
 			path: src/Connection.php
 
 		-
-			message: '#^Parameter \#1 \$min \(0\) of function random_int expects lower number than parameter \#2 \$max \(int\<\-1, max\>\)\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Connection.php
-
-		-
 			message: '#^Parameter \#2 \$url of method yii\\elasticsearch\\Connection\:\:httpRequest\(\) expects string, array given\.$#'
 			identifier: argument.type
 			count: 5
@@ -1213,8 +1213,14 @@ parameters:
 			path: src/DebugAction.php
 
 		-
-			message: '#^Class yii\\elasticsearch\\DebugAction extends generic class yii\\base\\Action but does not specify its types\: T$#'
-			identifier: missingType.generics
+			message: '#^Cannot access property \$response on yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/DebugAction.php
+
+		-
+			message: '#^Cannot call method get\(\) on yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: src/DebugAction.php
 
@@ -1258,6 +1264,12 @@ parameters:
 			message: '#^Cannot access property \$messages on array\|string\|yii\\debug\\LogTarget\.$#'
 			identifier: property.nonObject
 			count: 1
+			path: src/DebugPanel.php
+
+		-
+			message: '#^Cannot access property \$view on yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\|null\.$#'
+			identifier: property.nonObject
+			count: 2
 			path: src/DebugPanel.php
 
 		-
@@ -1414,6 +1426,12 @@ parameters:
 			message: '#^Cannot access offset 0 on array\|string\|yii\\db\\ExpressionInterface\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
+			path: src/Query.php
+
+		-
+			message: '#^Cannot call method get\(\) on yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\|null\.$#'
+			identifier: method.nonObject
+			count: 1
 			path: src/Query.php
 
 		-
@@ -2001,7 +2019,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property object\:\:\$_id\.$#'
 			identifier: property.notFound
-			count: 5
+			count: 7
 			path: tests/ActiveRecordTest.php
 
 		-
@@ -2013,7 +2031,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property object\:\:\$customer\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: tests/ActiveRecordTest.php
 
 		-
@@ -2043,13 +2061,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property object\:\:\$isNewRecord\.$#'
 			identifier: property.notFound
-			count: 6
+			count: 11
 			path: tests/ActiveRecordTest.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$is_active\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 3
 			path: tests/ActiveRecordTest.php
 
 		-
@@ -2061,7 +2079,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property object\:\:\$name\.$#'
 			identifier: property.notFound
-			count: 11
+			count: 12
 			path: tests/ActiveRecordTest.php
 
 		-
@@ -2272,12 +2290,6 @@ parameters:
 			message: '#^Cannot access offset ''fields'' on yii\\db\\ActiveRecordInterface\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 9
-			path: tests/ActiveRecordTest.php
-
-		-
-			message: '#^Cannot access property \$_id on null\.$#'
-			identifier: property.nonObject
-			count: 1
 			path: tests/ActiveRecordTest.php
 
 		-
@@ -2625,12 +2637,6 @@ parameters:
 		-
 			message: '#^Property yiiunit\\extensions\\elasticsearch\\TestCase\:\:\$params has no type specified\.$#'
 			identifier: missingType.property
-			count: 1
-			path: tests/TestCase.php
-
-		-
-			message: '#^Static property yii\\BaseYii\<yii\\web\\IdentityInterface\>\:\:\$app \(yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\) does not accept null\.$#'
-			identifier: assign.propertyType
 			count: 1
 			path: tests/TestCase.php
 
