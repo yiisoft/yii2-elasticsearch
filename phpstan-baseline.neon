@@ -259,6 +259,12 @@ parameters:
 			path: src/ActiveQuery.php
 
 		-
+			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:createModels\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ActiveQuery.php
+
+		-
 			message: '#^Method yii\\elasticsearch\\ActiveQuery\:\:init\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -316,12 +322,6 @@ parameters:
 			message: '#^Parameter \#1 \$db \(yii\\elasticsearch\\Connection\) of method yii\\elasticsearch\\ActiveQuery\:\:one\(\) should be compatible with parameter \$db \(yii\\db\\Connection\|null\) of method yii\\db\\QueryInterface\:\:one\(\)$#'
 			identifier: method.childParameterType
 			count: 1
-			path: src/ActiveQuery.php
-
-		-
-			message: '#^Parameter \#2 \$models of method yii\\elasticsearch\\ActiveQuery\:\:findWith\(\) expects array\<yii\\db\\ActiveRecord\>, array\<yii\\elasticsearch\\ActiveRecord\> given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/ActiveQuery.php
 
 		-
@@ -1768,12 +1768,6 @@ parameters:
 			message: '#^Property yii\\elasticsearch\\Query\:\:\$type type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: src/Query.php
-
-		-
-			message: '#^Result of \|\| is always true\.$#'
-			identifier: booleanOr.alwaysTrue
-			count: 3
 			path: src/Query.php
 
 		-
