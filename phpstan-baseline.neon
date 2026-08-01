@@ -1771,12 +1771,6 @@ parameters:
 			path: src/Query.php
 
 		-
-			message: '#^Result of \|\| is always true\.$#'
-			identifier: booleanOr.alwaysTrue
-			count: 3
-			path: src/Query.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between \*NEVER\* and null will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 3
