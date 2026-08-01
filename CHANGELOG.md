@@ -7,7 +7,7 @@ Yii Framework 2 Elasticsearch extension Change Log
 - Enh #358: Applying Yii2 coding standards (@s1lver)
 - Enh #358: Raise min version to PHP 7.4 (@s1lver)
 - Bug #355: `ActiveDataProvider` pagination issue where `totalCount` returned 0 after updating from 2.1.5 to 2.1.6, causing incorrect `X-Pagination-Total-Count` header serialization (@lav45)
-- Bug #TBD: Fix `@property` annotations in `Command` (mspirkov)
+- Bug #367: Add missing `@property` annotations in `Command` (mspirkov)
 
 
 2.1.5 February 13, 2025
