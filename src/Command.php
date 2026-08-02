@@ -19,6 +19,11 @@ use yii\helpers\Json;
  * Check the [Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
  * for details on these commands.
  *
+ * @property-read array $aliasInfo
+ * @property-read mixed $indexRecoveryStats
+ * @property-read mixed $indexStats
+ * @property-read mixed $mapping
+ *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
