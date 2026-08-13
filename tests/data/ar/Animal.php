@@ -16,7 +16,6 @@ namespace yiiunit\extensions\elasticsearch\data\ar;
  */
 class Animal extends ActiveRecord
 {
-
     public $does;
 
     public static function index()
@@ -41,8 +40,8 @@ class Animal extends ActiveRecord
     public static function setUpMapping($command)
     {
         $command->setMapping(static::index(), static::type(), [
-            "properties" => [
-                "species" => ["type" => "keyword"]
+            'properties' => [
+                'species' => ['type' => 'keyword']
             ]
         ]);
     }
@@ -66,7 +65,6 @@ class Animal extends ActiveRecord
     public static function instantiate($row)
     {
         $class = $row['_source']['species'];
-        return new $class;
+        return new $class();
     }
-
 }

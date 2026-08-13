@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -17,6 +18,11 @@ use yii\helpers\Json;
  *
  * Check the [Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
  * for details on these commands.
+ *
+ * @property-read array $aliasInfo
+ * @property-read mixed $indexRecoveryStats
+ * @property-read mixed $indexStats
+ * @property-read mixed $mapping
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -118,7 +124,7 @@ class Command extends Component
         if (is_array($suggester)) {
             $suggester = Json::encode($suggester);
         }
-        $body = '{"suggest":'.$suggester.',"size":0}';
+        $body = '{"suggest":' . $suggester . ',"size":0}';
         $url = [
             $this->index !== null ? $this->index : '_all',
             '_search'
@@ -283,9 +289,9 @@ class Command extends Component
         $body = [
             'doc' => empty($data) ? new \stdClass() : $data,
         ];
-        if (isset($options["detect_noop"])) {
-            $body["detect_noop"] = $options["detect_noop"];
-            unset($options["detect_noop"]);
+        if (isset($options['detect_noop'])) {
+            $body['detect_noop'] = $options['detect_noop'];
+            unset($options['detect_noop']);
         }
 
         if ($this->db->dslVersion >= 7) {
@@ -603,7 +609,7 @@ class Command extends Component
             $body = (object) [];
         }
 
-       return $this->db->post(['_search', 'scroll'], $options, Json::encode($body));
+        return $this->db->post(['_search', 'scroll'], $options, Json::encode($body));
     }
 
     /**
@@ -623,7 +629,7 @@ class Command extends Component
             $body = (object) [];
         }
 
-       return $this->db->delete(['_search', 'scroll'], $options, Json::encode($body));
+        return $this->db->delete(['_search', 'scroll'], $options, Json::encode($body));
     }
 
     /**
@@ -739,7 +745,7 @@ class Command extends Component
      */
 //    public function getFieldMapping($index, $type = '_all')
 //    {
-//		// TODO implement
+//    // TODO implement
 //        return $this->db->put([$index, $type, '_mapping']);
 //    }
 
@@ -749,11 +755,11 @@ class Command extends Component
      * @return mixed
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html
      */
-//	public function analyze($options, $index = null)
-//	{
-//		// TODO implement
-////		return $this->db->put([$index]);
-//	}
+//  public function analyze($options, $index = null)
+//  {
+//      // TODO implement
+////    return $this->db->put([$index]);
+//  }
 
     /**
      * @param $name
@@ -776,7 +782,6 @@ class Command extends Component
         ]);
 
         return $this->db->put(['_template', $name], [], $body);
-
     }
 
     /**
@@ -789,7 +794,6 @@ class Command extends Component
     public function deleteTemplate($name)
     {
         return $this->db->delete(['_template', $name]);
-
     }
 
     /**

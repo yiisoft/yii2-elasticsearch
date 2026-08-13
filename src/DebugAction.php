@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -46,7 +47,7 @@ class DebugAction extends Action
             throw new HttpException(404, 'Log message not found.');
         }
         $message = $timings[$logId][1];
-        if (($pos = mb_strpos($message, "#")) !== false) {
+        if (($pos = mb_strpos($message, '#')) !== false) {
             $url = mb_substr($message, 0, $pos);
             $body = mb_substr($message, $pos + 1);
         } else {
@@ -62,11 +63,21 @@ class DebugAction extends Action
         $db = \Yii::$app->get($this->db);
         $time = microtime(true);
         switch ($method) {
-            case 'GET': $result = $db->get($url, $options, $body, true); break;
-            case 'POST': $result = $db->post($url, $options, $body, true); break;
-            case 'PUT': $result = $db->put($url, $options, $body, true); break;
-            case 'DELETE': $result = $db->delete($url, $options, $body, true); break;
-            case 'HEAD': $result = $db->head($url, $options, $body); break;
+            case 'GET':
+                $result = $db->get($url, $options, $body, true);
+                break;
+            case 'POST':
+                $result = $db->post($url, $options, $body, true);
+                break;
+            case 'PUT':
+                $result = $db->put($url, $options, $body, true);
+                break;
+            case 'DELETE':
+                $result = $db->delete($url, $options, $body, true);
+                break;
+            case 'HEAD':
+                $result = $db->head($url, $options, $body);
+                break;
             default:
                 throw new NotSupportedException("Request method '$method' is not supported by Elasticsearch.");
         }

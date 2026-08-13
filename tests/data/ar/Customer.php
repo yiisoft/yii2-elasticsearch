@@ -17,8 +17,8 @@ use yiiunit\extensions\elasticsearch\ActiveRecordTest;
  */
 class Customer extends ActiveRecord
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 2;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 2;
 
     public function attributes()
     {
@@ -27,19 +27,19 @@ class Customer extends ActiveRecord
 
     public function getOrders()
     {
-        return $this->hasMany(Order::className(), ['customer_id' => '_id'])->orderBy('created_at');
+        return $this->hasMany(Order::class, ['customer_id' => '_id'])->orderBy('created_at');
     }
 
     public function getExpensiveOrders()
     {
-        return $this->hasMany(Order::className(), ['customer_id' => '_id'])
+        return $this->hasMany(Order::class, ['customer_id' => '_id'])
             ->where([ 'gte', 'total', 50 ])
             ->orderBy('_id');
     }
 
     public function getOrdersWithItems()
     {
-        return $this->hasMany(Order::className(), ['customer_id' => '_id'])->with('orderItems');
+        return $this->hasMany(Order::class, ['customer_id' => '_id'])->with('orderItems');
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -57,15 +57,14 @@ class Customer extends ActiveRecord
     public static function setUpMapping($command)
     {
         $command->setMapping(static::index(), static::type(), [
-            "properties" => [
-                "name" => ["type" => "keyword",  "store" => true],
-                "email" => ["type" => "keyword", "store" => true],
-                "address" => ["type" => "text"],
-                "status" => ["type" => "integer", "store" => true],
-                "is_active" => ["type" => "boolean", "store" => true],
+            'properties' => [
+                'name' => ['type' => 'keyword',  'store' => true],
+                'email' => ['type' => 'keyword', 'store' => true],
+                'address' => ['type' => 'text'],
+                'status' => ['type' => 'integer', 'store' => true],
+                'is_active' => ['type' => 'boolean', 'store' => true],
             ]
         ]);
-
     }
 
     /**

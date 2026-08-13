@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -82,7 +83,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
     /**
      * @event Event an event that is triggered when the query is initialized via [[init()]].
      */
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
 
     /**
@@ -168,7 +169,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
     /**
      * Converts found rows into model instances
      * @param array $rows
-     * @return array|ActiveRecord[]
+     * @return array
      * @since 2.0.4
      */
     private function createModels($rows)

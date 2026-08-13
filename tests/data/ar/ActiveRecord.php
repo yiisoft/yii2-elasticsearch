@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -24,5 +25,4 @@ class ActiveRecord extends \yii\elasticsearch\ActiveRecord
     {
         return self::$db;
     }
-
 }

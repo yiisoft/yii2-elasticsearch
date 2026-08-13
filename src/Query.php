@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -672,7 +673,7 @@ class Query extends Component implements QueryInterface
     public function batch($scrollWindow = '1m', $db = null)
     {
         return Yii::createObject([
-            'class' => BatchQueryResult::className(),
+            'class' => BatchQueryResult::class,
             'query' => $this,
             'scrollWindow' => $scrollWindow,
             'db' => $db,
@@ -705,7 +706,7 @@ class Query extends Component implements QueryInterface
     public function each($scrollWindow = '1m', $db = null)
     {
         return Yii::createObject([
-            'class' => BatchQueryResult::className(),
+            'class' => BatchQueryResult::class,
             'query' => $this,
             'scrollWindow' => $scrollWindow,
             'db' => $db,
@@ -889,7 +890,7 @@ class Query extends Component implements QueryInterface
     {
         if ($this->where === null) {
             $this->where = $condition;
-        } else if (isset($this->where[0]) && $this->where[0] === 'and') {
+        } elseif (isset($this->where[0]) && $this->where[0] === 'and') {
             $this->where[] = $condition;
         } else {
             $this->where = ['and', $this->where, $condition];
@@ -904,7 +905,7 @@ class Query extends Component implements QueryInterface
     {
         if ($this->where === null) {
             $this->where = $condition;
-        } else if (isset($this->where[0]) && $this->where[0] === 'or') {
+        } elseif (isset($this->where[0]) && $this->where[0] === 'or') {
             $this->where[] = $condition;
         } else {
             $this->where = ['or', $this->where, $condition];
