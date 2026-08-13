@@ -45,9 +45,9 @@ class QueryTest extends TestCase
         $command->refreshIndex('query-test');
     }
 
-    public function testFields()
+    public function testFields(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $query->storedFields(['name', 'status']);
@@ -80,9 +80,9 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('_id', $result);
     }
 
-    public function testOne()
+    public function testOne(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $result = $query->one($this->getConnection());
@@ -104,9 +104,9 @@ class QueryTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testAll()
+    public function testAll(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $results = $query->limit(100)->all($this->getConnection());
@@ -118,7 +118,7 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('name', $result['_source']);
         $this->assertArrayHasKey('_id', $result);
 
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $results = $query->where(['name' => 'user1'])->all($this->getConnection());
@@ -132,7 +132,7 @@ class QueryTest extends TestCase
         $this->assertEquals(1, $result['_id']);
 
         // indexBy
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $results = $query->limit(100)->indexBy('name')->all($this->getConnection());
@@ -154,9 +154,9 @@ class QueryTest extends TestCase
         ], array_keys($results));
     }
 
-    public function testScalar()
+    public function testScalar(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $result = $query->where(['name' => 'user1'])->scalar('name', $this->getConnection());
@@ -167,9 +167,9 @@ class QueryTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testColumn()
+    public function testColumn(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user');
 
         $result = $query->orderBy(['name' => SORT_ASC])->limit(4)->column('name', $this->getConnection());
@@ -178,11 +178,11 @@ class QueryTest extends TestCase
         $this->assertEquals([null, null, null, null], $result);
         $result = $query->where(['name' => 'user15'])->scalar('name', $this->getConnection());
         $this->assertNull($result);
-
     }
 
-    public function testAndWhere() {
-        $query = new Query;
+    public function testAndWhere(): void
+    {
+        $query = new Query();
         $query->where(1)
             ->andWhere(2)
             ->andWhere(3);
@@ -191,8 +191,9 @@ class QueryTest extends TestCase
         $this->assertEquals($expected, $query->where);
     }
 
-    public function testOrWhere() {
-        $query = new Query;
+    public function testOrWhere(): void
+    {
+        $query = new Query();
         $query->where(1)
             ->orWhere(2)
             ->orWhere(3);
@@ -201,10 +202,10 @@ class QueryTest extends TestCase
         $this->assertEquals($expected, $query->where);
     }
 
-    public function testFilterWhere()
+    public function testFilterWhere(): void
     {
         // should work with hash format
-        $query = new Query;
+        $query = new Query();
         $query->filterWhere([
             '_id' => 0,
             'title' => '   ',
@@ -219,7 +220,7 @@ class QueryTest extends TestCase
         $this->assertEquals(['_id' => 0], $query->where);
 
         // should work with operator format
-        $query = new Query;
+        $query = new Query();
         $condition = ['like', 'name', 'Alex'];
         $query->filterWhere($condition);
         $this->assertEquals($condition, $query->where);
@@ -252,7 +253,7 @@ class QueryTest extends TestCase
         $this->assertEquals($condition, $query->where);
     }
 
-    public function testFilterWhereRecursively()
+    public function testFilterWhereRecursively(): void
     {
         $query = new Query();
         $query->filterWhere([
@@ -269,9 +270,9 @@ class QueryTest extends TestCase
 
     // TODO test complex where() every edge of QueryBuilder
 
-    public function testOrder()
+    public function testOrder(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->orderBy('team');
         $this->assertEquals(['team' => SORT_ASC], $query->orderBy);
 
@@ -288,19 +289,18 @@ class QueryTest extends TestCase
         $this->assertEquals(['team' => SORT_ASC, 'company' => SORT_DESC, 'age' => SORT_ASC], $query->orderBy);
     }
 
-    public function testLimitOffset()
+    public function testLimitOffset(): void
     {
-        $query = new Query;
+        $query = new Query();
         $query->limit(10)->offset(5);
         $this->assertEquals(10, $query->limit);
         $this->assertEquals(5, $query->offset);
     }
 
-
     /**
      * @since 2.0.4
      */
-    public function testBatch()
+    public function testBatch(): void
     {
         $names = [
             'user1',
@@ -333,7 +333,7 @@ class QueryTest extends TestCase
         ];
 
         //test each
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
@@ -351,7 +351,7 @@ class QueryTest extends TestCase
         $this->assertEquals($emails, $result_values);
 
         //test batch
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user')->limit(3)->orderBy(['name' => SORT_ASC])->indexBy('name')->options(['preference' => '_local']);
         //NOTE: preference -> _local has no influence on query result, everything's fine as long as query doesn't fail
 
@@ -367,7 +367,7 @@ class QueryTest extends TestCase
         }
 
         //test scan (no ordering)
-        $query = new Query;
+        $query = new Query();
         $query->from('query-test', 'user')->limit(3);
 
         $results = [];
@@ -384,7 +384,7 @@ class QueryTest extends TestCase
      * @group postfilter
      * @since 2.0.5
      */
-    public function testPostFilter()
+    public function testPostFilter(): void
     {
         $postFilter = [
             'term' => ['status' => 2]
@@ -402,7 +402,7 @@ class QueryTest extends TestCase
      * @group explain
      * @since 2.0.5
      */
-    public function testExplain()
+    public function testExplain(): void
     {
         $query = new Query();
         $query->from('query-test', 'user');
@@ -416,7 +416,7 @@ class QueryTest extends TestCase
      * @group explain
      * @since 2.0.5
      */
-    public function testNoExplain()
+    public function testNoExplain(): void
     {
         $query = new Query();
         $query->from('query-test', 'user');
@@ -424,7 +424,7 @@ class QueryTest extends TestCase
         $this->assertFalse(array_key_exists('_explanation', $result['hits']['hits'][0]));
     }
 
-    public function testQueryWithWhere()
+    public function testQueryWithWhere(): void
     {
         // make sure that both `query()` and `where()` work at the same time
         $query = new Query();
@@ -437,10 +437,10 @@ class QueryTest extends TestCase
         $this->assertEquals(1, $total);
     }
 
-    public function testSuggest()
+    public function testSuggest(): void
     {
         $cmd = $this->getConnection()->createCommand();
-        $cmd->index = "query-test";
+        $cmd->index = 'query-test';
 
         $result = $cmd->suggest(['customer_name' => [
             'text' => 'user',
@@ -452,11 +452,11 @@ class QueryTest extends TestCase
         $this->assertCount(5, $result['customer_name'][0]['options']);
     }
 
-    public function testRuntimeMappings()
+    public function testRuntimeMappings(): void
     {
         // Check that Elasticsearch is version 7.11.0 or later before running this test
         $elasticsearchInfo = $this->getConnection()->get('/');
-        if(!version_compare($elasticsearchInfo['version']['number'], '7.11.0', '>=')) {
+        if (!version_compare($elasticsearchInfo['version']['number'], '7.11.0', '>=')) {
             $this->expectNotToPerformAssertions();
             return;
         }

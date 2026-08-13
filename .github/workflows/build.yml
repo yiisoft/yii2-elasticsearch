@@ -1,21 +1,29 @@
 on:
-  pull_request:
+  pull_request: &ignore-paths
     paths-ignore:
       - 'docs/**'
+      - '.github/CONTRIBUTING.md'
+      - '.github/FUNDING.yml'
+      - '.github/SECURITY.md'
       - 'README.md'
       - 'CHANGELOG.md'
+      - 'LICENSE.md'
       - '.gitignore'
       - '.gitattributes'
+      - '.editorconfig'
+      - 'docker-compose.yml'
+      - 'Makefile'
 
-  push:
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
-      - '.gitignore'
-      - '.gitattributes'
+  push: *ignore-paths
 
 name: build
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   tests:
@@ -27,38 +35,45 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
+
       matrix:
         php:
-          - 8.1
-          - 8.2
           - 8.3
           - 8.4
+          - 8.5
 
         es:
-          - 8.1.3
+          - 8.15.3
           - 7.14.0
           - 7.7.0
           - 6.8.9
           - 5.6.16
 
     steps:
-      - name: Service elastisearch 8.1.3.
-        if: matrix.es == '8.1.3'
+      - name: Service elastisearch 8.15.3.
+        if: matrix.es == '8.15.3'
+        env:
+          ES_VERSION: ${{ matrix.es }}
         run: |
           docker network create somenetwork
-          docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" -e "indices.id_field_data.enabled=true" -e "xpack.security.enabled=false" elasticsearch:${{ matrix.es }}
+          docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" -e "discovery.type=single-node" -e "indices.id_field_data.enabled=true" -e "xpack.security.enabled=false" "elasticsearch:${ES_VERSION}"
 
-      - name: Service elastisearch < 8.1.3.
-        if: matrix.es != '8.1.3'
+      - name: Service elastisearch < 8.15.3.
+        if: matrix.es != '8.15.3'
+        env:
+          ES_VERSION: ${{ matrix.es }}
         run: |
           docker network create somenetwork
-          docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" elasticsearch:${{ matrix.es }}
+          docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -e "http.publish_host=127.0.0.1" -e "transport.host=127.0.0.1" "elasticsearch:${ES_VERSION}"
 
       - name: Checkout.
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install PHP with extensions.
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.extensions }}
@@ -68,19 +83,15 @@ jobs:
         run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader
 
       - name: Wait for Elasticsearch server to start.
-        run: wget --retry-connrefused --waitretry=3 --timeout=30 -t 10 -O /dev/null http://127.0.0.1:9200
-
-      - name: Run tests with phpunit.
-        if: matrix.php != '8.1'
-        run: ES_VERSION=${{ matrix.es }} vendor/bin/phpunit --colors=always
+        run: wget --retry-connrefused --waitretry=3 --timeout=30 -t 20 -O /dev/null http://127.0.0.1:9200
 
       - name: Run tests with phpunit and generate coverage.
-        if: matrix.php == '8.1'
-        run: ES_VERSION=${{ matrix.es }} vendor/bin/phpunit --coverage-clover=coverage.xml --colors=always
+        env:
+          ES_VERSION: ${{ matrix.es }}
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml --colors=always
 
       - name: Upload coverage to Codecov.
-        if: matrix.php == '8.1'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
+          files: ./coverage.xml

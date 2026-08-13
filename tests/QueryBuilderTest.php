@@ -36,9 +36,9 @@ class QueryBuilderTest extends TestCase
         $command = $this->getConnection()->createCommand();
         $command->setMapping('builder-test', 'article', [
             'properties' => [
-                'title' => ["type" => "keyword"],
-                'created_at' => ["type" => "keyword"],
-                'weight' => ["type" => "integer"],
+                'title' => ['type' => 'keyword'],
+                'created_at' => ['type' => 'keyword'],
+                'weight' => ['type' => 'integer'],
             ]
         ]);
         $command->insert('builder-test', 'article', ['title' => 'I love yii!', 'weight' => 1, 'created_at' => '2010-01-10'], 1);
@@ -49,7 +49,7 @@ class QueryBuilderTest extends TestCase
         $command->refreshIndex('builder-test');
     }
 
-    public function testQueryBuilderRespectsQuery()
+    public function testQueryBuilderRespectsQuery(): void
     {
         $queryParts = ['field' => ['title' => 'yii']];
         $queryBuilder = new QueryBuilder($this->getConnection());
@@ -65,7 +65,7 @@ class QueryBuilderTest extends TestCase
     /**
      * @group postfilter
      */
-    public function testQueryBuilderPostFilterQuery()
+    public function testQueryBuilderPostFilterQuery(): void
     {
         $postFilter = [
             'bool' => [
@@ -81,7 +81,7 @@ class QueryBuilderTest extends TestCase
         $this->assertSame($postFilter, $build['queryParts']['post_filter']);
     }
 
-    public function testYiiCanBeFoundByQuery()
+    public function testYiiCanBeFoundByQuery(): void
     {
         $queryParts = ['term' => ['title' => 'yii']];
         $query = new Query();
@@ -92,7 +92,7 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(2, $total);
     }
 
-    public function testMinScore()
+    public function testMinScore(): void
     {
         $queryParts = [
             'function_score' => [
@@ -129,14 +129,14 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(0, $total);
     }
 
-    public function testMltSearch()
+    public function testMltSearch(): void
     {
         $queryParts = [
-            "more_like_this" => [
-                "fields" => ["title"],
-                "like" => "Mention YII now",
-                "min_term_freq" => 1,
-                "min_doc_freq" => 1,
+            'more_like_this' => [
+                'fields' => ['title'],
+                'like' => 'Mention YII now',
+                'min_term_freq' => 1,
+                'min_doc_freq' => 1,
             ]
         ];
         $query = new Query();
@@ -147,7 +147,7 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(3, $total);
     }
 
-    public function testHalfBoundedRange()
+    public function testHalfBoundedRange(): void
     {
         // >= 2010-01-15, 3 results
         $result = (new Query())
@@ -214,14 +214,14 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(2, $total);
     }
 
-    public function testNotCondition()
+    public function testNotCondition(): void
     {
         $titles = [
             'yii',
             'test'
         ];
 
-        $query = (new Query)
+        $query = (new Query())
             ->from('builder-test', 'article')
             ->where(['not in', 'title', $titles]);
 
@@ -230,7 +230,7 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(2, $total);
     }
 
-    public function testInCondition()
+    public function testInCondition(): void
     {
         $titles = [
             'yii',
@@ -238,7 +238,7 @@ class QueryBuilderTest extends TestCase
             'nonexistent',
         ];
 
-        $query =  (new Query)
+        $query =  (new Query())
             ->from('builder-test', 'article')
             ->where(['in', 'title', $titles]);
 
@@ -247,7 +247,7 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(3, $total);
     }
 
-    public function testBuildNotCondition()
+    public function testBuildNotCondition(): void
     {
         $db = $this->getConnection();
         $qb = new QueryBuilder($db);
@@ -258,7 +258,7 @@ class QueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'must_not' => [
-                    'bool' => [ 'must' => [ ['term'=>['title'=>'xyz']] ] ],
+                    'bool' => [ 'must' => [ ['term' => ['title' => 'xyz']] ] ],
                 ],
             ]
         ];
@@ -266,7 +266,7 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testBuildInCondition()
+    public function testBuildInCondition(): void
     {
         $db = $this->getConnection();
         $qb = new QueryBuilder($db);
@@ -281,7 +281,7 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testBuildMatchCondition()
+    public function testBuildMatchCondition(): void
     {
         $result = (new Query())
             ->from('builder-test', 'article')

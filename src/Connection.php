@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -28,7 +29,7 @@ class Connection extends Component
     /**
      * @event Event an event that is triggered after a DB connection is established
      */
-    const EVENT_AFTER_OPEN = 'afterOpen';
+    public const EVENT_AFTER_OPEN = 'afterOpen';
 
     /**
      * @var boolean whether to autodetect available cluster nodes on [[open()]]
@@ -108,10 +109,10 @@ class Connection extends Component
     public $dslVersion = 5;
 
     /**
-     * @var resource the curl instance returned by [curl_init()](https://php.net/manual/en/function.curl-init.php).
+     * @var \CurlHandle|null the curl instance returned by
+     * [curl_init()](https://php.net/manual/en/function.curl-init.php), or `null` when the connection is closed.
      */
     private $_curl;
-
 
     public function init()
     {
@@ -207,8 +208,10 @@ class Connection extends Component
         if (!empty($nodes)) {
             $this->nodes = array_values($nodes);
         } else {
-            curl_close($this->_curl);
-            throw new Exception('Cluster autodetection did not find any active node. Make sure a GET /_nodes reguest on the hosts defined in the config returns the "http_address" field for each node.');
+            curl_close($this->getCurlHandle());
+            throw new Exception(
+                'Cluster autodetection did not find any active node. Make sure a GET /_nodes reguest on the hosts defined in the config returns the "http_address" field for each node.',
+            );
         }
     }
 
@@ -414,7 +417,7 @@ class Connection extends Component
      * Performs HTTP request
      *
      * @param string $method method name
-     * @param string $url URL
+     * @param string|string[] $url URL string, or a `[protocol, host, path]` triple as returned by [[createUrl()]]
      * @param string $requestBody request body
      * @param bool $raw if response body contains JSON and should be decoded
      * @return mixed if request failed
@@ -511,20 +514,31 @@ class Connection extends Component
             Yii::beginProfile($profile, __METHOD__);
         }
 
-        $this->resetCurlHandle();
-        curl_setopt($this->_curl, CURLOPT_URL, $url);
-        curl_setopt_array($this->_curl, $options);
-        if (curl_exec($this->_curl) === false) {
-            throw new Exception('Elasticsearch request failed: ' . curl_errno($this->_curl) . ' - ' . curl_error($this->_curl), [
-                'requestMethod' => $method,
-                'requestUrl' => $url,
-                'requestBody' => $requestBody,
-                'responseHeaders' => $headers,
-                'responseBody' => $this->decodeErrorBody($body),
-            ]);
+        if ($url === '') {
+            throw new InvalidConfigException('Elasticsearch request URL cannot be empty.');
         }
 
-        $responseCode = curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
+        $this->resetCurlHandle();
+
+        $curl = $this->getCurlHandle();
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt_array($curl, $options);
+
+        if (curl_exec($curl) === false) {
+            throw new Exception(
+                'Elasticsearch request failed: ' . curl_errno($curl) . ' - ' . curl_error($curl),
+                [
+                    'requestMethod' => $method,
+                    'requestUrl' => $url,
+                    'requestBody' => $requestBody,
+                    'responseHeaders' => $headers,
+                    'responseBody' => $this->decodeErrorBody($body),
+                ],
+            );
+        }
+
+        $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         if ($profile !== false) {
             Yii::endProfile($profile, __METHOD__);
@@ -575,6 +589,23 @@ class Connection extends Component
         }
     }
 
+    /**
+     * Returns the curl handle backing the currently open connection.
+     *
+     * @return \CurlHandle curl handle of the active connection.
+     * @throws Exception if the connection is not open.
+     */
+    private function getCurlHandle()
+    {
+        if ($this->_curl === null) {
+            throw new Exception(
+                'Elasticsearch connection is not open.',
+            );
+        }
+
+        return $this->_curl;
+    }
+
     private function resetCurlHandle()
     {
         // these functions do not get reset by curl automatically
@@ -585,9 +616,13 @@ class Connection extends Component
             CURLOPT_PROGRESSFUNCTION => null,
             CURLOPT_POSTFIELDS => null,
         ];
-        curl_setopt_array($this->_curl, $unsetValues);
+
+        $curl = $this->getCurlHandle();
+
+        curl_setopt_array($curl, $unsetValues);
+
         if (function_exists('curl_reset')) { // since PHP 5.5.0
-            curl_reset($this->_curl);
+            curl_reset($curl);
         }
     }
 
@@ -604,7 +639,7 @@ class Connection extends Component
                 $decoded['error'] = preg_replace('/\b\w+?Exception\[/', "<span style=\"color: red;\">\\0</span>\n               ", $decoded['error']);
             }
             return $decoded;
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return $body;
         }
     }

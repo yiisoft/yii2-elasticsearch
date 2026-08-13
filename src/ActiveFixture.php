@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -103,7 +104,7 @@ class ActiveFixture extends BaseActiveFixture
 
             try {
                 $response = $this->db->createCommand()->insert($this->index, $this->type, $row, $id, $options);
-            } catch(\yii\db\Exception $e) {
+            } catch (\yii\db\Exception $e) {
                 throw new \yii\base\Exception("Failed to insert fixture data \"$alias\": " . $e->getMessage() . "\n" . print_r($e->errorInfo, true), $e->getCode(), $e);
             }
             if ($id === null) {

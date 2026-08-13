@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -56,7 +57,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     /**
      * @inheritdoc
      */
-    public function prepare($forcePrepare = false)
+    public function prepare($forcePrepare = false): void
     {
         if ($forcePrepare) {
             $this->setTotalCount(null);
@@ -118,7 +119,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     protected function prepareModels()
     {
         if (!$this->query instanceof Query) {
-            throw new InvalidConfigException('The "query" property must be an instance "' . Query::className() . '" or its subclasses.');
+            throw new InvalidConfigException('The "query" property must be an instance "' . Query::class . '" or its subclasses.');
         }
 
         $query = clone $this->query;
@@ -148,7 +149,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     protected function prepareTotalCount()
     {
         if (!$this->query instanceof Query) {
-            throw new InvalidConfigException('The "query" property must be an instance "' . Query::className() . '" or its subclasses.');
+            throw new InvalidConfigException('The "query" property must be an instance "' . Query::class . '" or its subclasses.');
         }
 
         $results = $this->getQueryResults();

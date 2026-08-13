@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -164,7 +165,8 @@ class QueryBuilder extends BaseObject
         return $orders;
     }
 
-    public function buildQueryFromWhere($condition) {
+    public function buildQueryFromWhere($condition)
+    {
         $where = $this->buildCondition($condition);
         if ($where) {
             $query = [
@@ -229,7 +231,6 @@ class QueryBuilder extends BaseObject
                 throw new InvalidArgumentException('Found unknown operator in query: ' . $operator);
             }
         } else { // hash format: 'column1' => 'value1', 'column2' => 'value2', ...
-
             return $this->buildHashCondition($condition);
         }
     }
@@ -287,7 +288,7 @@ class QueryBuilder extends BaseObject
         $parts = [];
         if ($operator === 'and') {
             $clause = 'must';
-        } else if ($operator === 'or') {
+        } elseif ($operator === 'or') {
             $clause = 'should';
         } else {
             throw new InvalidArgumentException("Operator should be 'or' or 'and'");
@@ -324,7 +325,7 @@ class QueryBuilder extends BaseObject
         }
         $filter = ['range' => [$column => ['gte' => $value1, 'lte' => $value2]]];
         if ($operator === 'not between') {
-            $filter = ['bool' => ['must_not'=>$filter]];
+            $filter = ['bool' => ['must_not' => $filter]];
         }
 
         return $filter;
@@ -370,7 +371,7 @@ class QueryBuilder extends BaseObject
                         'bool' => [
                             'should' => [
                                 $filter,
-                                'bool' => ['must_not' => ['exists' => ['field'=>$column]]],
+                                'bool' => ['must_not' => ['exists' => ['field' => $column]]],
                             ],
                         ],
                     ];
@@ -392,7 +393,7 @@ class QueryBuilder extends BaseObject
                         'bool' => [
                             'should' => [
                                 $filter,
-                                'bool' => ['must_not' => ['exists' => ['field'=>$column]]],
+                                'bool' => ['must_not' => ['exists' => ['field' => $column]]],
                             ],
                         ],
                     ];
