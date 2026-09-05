@@ -14,6 +14,9 @@ use yiiunit\extensions\elasticsearch\ActiveRecordTest;
  * @property string $address
  * @property integer $status
  * @property bool $is_active
+ * @property-read Order[] $orders
+ * @property-read Order[] $expensiveOrders
+ * @property-read Order[] $ordersWithItems
  */
 class Customer extends ActiveRecord
 {
