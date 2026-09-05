@@ -343,13 +343,13 @@ parameters:
 			path: src/ActiveRecord.php
 
 		-
-			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property for property \$explanation with no value type specified in iterable type array\.$#'
+			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property\-read for property \$explanation with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/ActiveRecord.php
 
 		-
-			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property for property \$highlight with no value type specified in iterable type array\.$#'
+			message: '#^Class yii\\elasticsearch\\ActiveRecord has PHPDoc tag @property\-read for property \$highlight with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/ActiveRecord.php
@@ -1131,6 +1131,12 @@ parameters:
 		-
 			message: '#^Method yii\\elasticsearch\\Connection\:\:selectActiveNode\(\) has no return type specified\.$#'
 			identifier: missingType.return
+			count: 1
+			path: src/Connection.php
+
+		-
+			message: '#^Parameter \#1 \$handle of function curl_getinfo expects resource, resource given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Connection.php
 
@@ -2150,12 +2156,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property yii\\db\\ActiveRecordInterface\:\:\$total\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/ActiveRecordTest.php
-
-		-
-			message: '#^Access to an undefined property yiiunit\\extensions\\elasticsearch\\data\\ar\\Order\:\:\$orderItems\.$#'
 			identifier: property.notFound
 			count: 1
 			path: tests/ActiveRecordTest.php
