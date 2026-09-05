@@ -20,6 +20,8 @@ use yii\helpers\Json;
  * @property-read string $driverName Name of the DB driver.
  * @property-read bool $isActive Whether the DB connection is established.
  * @property-read QueryBuilder $queryBuilder
+ * @property-read mixed $nodeInfo
+ * @property-read mixed $clusterState
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0

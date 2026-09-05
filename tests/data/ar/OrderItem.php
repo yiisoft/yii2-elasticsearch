@@ -11,6 +11,8 @@ use yii\elasticsearch\Command;
  * @property integer $item_id
  * @property integer $quantity
  * @property string $subtotal
+ * @property-read Order $order
+ * @property-read Item $item
  */
 class OrderItem extends ActiveRecord
 {

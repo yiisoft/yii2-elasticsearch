@@ -49,12 +49,12 @@ use yii\helpers\StringHelper;
  * For Elasticsearch 7 and later (as configured in [[Connection]], [[type()]] is ignored.
  *
  * @property mixed $_id The primary key of the record. Can only be written to for new records, otherwise read-only.
- * @property array|null $highlight A list of arrays with highlighted excerpts indexed by field names.
- * This property is read-only.
- * @property float $score Returns the score of this record when it was retrieved via a [[find()]] query.
- * This property is read-only.
- * @property array|null $explanation An explanation for each hit on how its score was computed.
- * This property is read-only.
+ * @property-read array|null $highlight A list of arrays with highlighted excerpts indexed by field names.
+ * @property-read float $score Returns the score of this record when it was retrieved via a [[find()]] query.
+ * @property-read array|null $explanation An explanation for each hit on how its score was computed.
+ * @property mixed $primaryKey The primary key value. An array (attribute name => attribute value) is returned if the primary key
+ * is composite or `$asArray` is true. A string is returned otherwise (`null` will be returned if
+ * the key value is `null`).
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
