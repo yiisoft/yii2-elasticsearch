@@ -8,7 +8,6 @@
 
 namespace yii\elasticsearch;
 
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\test\BaseActiveFixture;
 
@@ -49,7 +48,7 @@ class ActiveFixture extends BaseActiveFixture
      */
     public $type;
     /**
-     * @var string|boolean the file path or path alias of the data file that contains the fixture data
+     * @var string|bool the file path or path alias of the data file that contains the fixture data
      * to be returned by [[getData()]]. If this is not set, it will default to `FixturePath/data/Index/Type.php`,
      * where `FixturePath` stands for the directory containing this fixture class, `Index` stands for the elasticsearch [[index]] name
      * and `Type` stands for the [[type]] associated with this fixture.

@@ -52,7 +52,7 @@ class BatchQueryResult extends BaseObject implements \Iterator
      */
     public $query;
     /**
-     * @var boolean whether to return a single row during each iteration.
+     * @var bool whether to return a single row during each iteration.
      * If false, a whole batch of rows will be returned in each iteration.
      */
     public $each = false;
@@ -69,7 +69,7 @@ class BatchQueryResult extends BaseObject implements \Iterator
      */
     private $_value;
     /**
-     * @var string|integer the key for the current iteration
+     * @var string|int the key for the current iteration
      */
     private $_key;
     /**

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license https://www.yiiframework.com/license/
+ */
+
 namespace yiiunit\extensions\elasticsearch;
 
 use yii\di\Container;
@@ -92,7 +98,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param  boolean    $reset whether to clean up the test database
+     * @param  bool    $reset whether to clean up the test database
      * @return Connection
      */
     public function getConnection($reset = true)

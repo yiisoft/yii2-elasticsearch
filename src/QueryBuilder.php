@@ -11,7 +11,6 @@ namespace yii\elasticsearch;
 use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
 use yii\base\NotSupportedException;
-use yii\helpers\Json;
 
 /**
  * QueryBuilder builds an Elasticsearch query based on the specification given as a [[Query]] object.
