@@ -8,7 +8,6 @@
 
 namespace yii\elasticsearch;
 
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\di\Instance;
 use yii\helpers\ArrayHelper;
@@ -43,16 +42,16 @@ class ElasticsearchTarget extends Target
      */
     public $options = [];
     /**
-     * @var boolean If true, context will be logged as a separate message after all other messages.
+     * @var bool If true, context will be logged as a separate message after all other messages.
      */
     public $logContext = true;
     /**
-     * @var boolean If true, context will be included in every message.
+     * @var bool If true, context will be included in every message.
      * This is convenient if you log application errors and analyze them with tools like Kibana.
      */
     public $includeContext = false;
     /**
-     * @var boolean If true, context message will cached once it's been created. Makes sense to use with [[includeContext]].
+     * @var bool If true, context message will cached once it's been created. Makes sense to use with [[includeContext]].
      */
     public $cacheContext = false;
 

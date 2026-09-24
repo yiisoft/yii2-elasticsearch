@@ -743,11 +743,11 @@ class Command extends Component
      * @return mixed
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-field-mapping.html
      */
-//    public function getFieldMapping($index, $type = '_all')
-//    {
-//    // TODO implement
-//        return $this->db->put([$index, $type, '_mapping']);
-//    }
+    //    public function getFieldMapping($index, $type = '_all')
+    //    {
+    //    // TODO implement
+    //        return $this->db->put([$index, $type, '_mapping']);
+    //    }
 
     /**
      * @param $options
@@ -755,11 +755,11 @@ class Command extends Component
      * @return mixed
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html
      */
-//  public function analyze($options, $index = null)
-//  {
-//      // TODO implement
-////    return $this->db->put([$index]);
-//  }
+    //  public function analyze($options, $index = null)
+    //  {
+    //      // TODO implement
+    ////    return $this->db->put([$index]);
+    //  }
 
     /**
      * @param $name

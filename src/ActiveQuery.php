@@ -253,19 +253,19 @@ class ActiveQuery extends Query implements ActiveQueryInterface
         }
         if ($this->asArray) {
             // TODO implement with()
-//            /* @var $modelClass ActiveRecord */
-//            $modelClass = $this->modelClass;
-//            $model = $result['_source'];
-//            $pk = $modelClass::primaryKey()[0];
-//            if ($pk === '_id') {
-//                $model['_id'] = $result['_id'];
-//            }
-//            $model['_score'] = $result['_score'];
-//            if (!empty($this->with)) {
-//                $models = [$model];
-//                $this->findWith($this->with, $models);
-//                $model = $models[0];
-//            }
+            //            /* @var $modelClass ActiveRecord */
+            //            $modelClass = $this->modelClass;
+            //            $model = $result['_source'];
+            //            $pk = $modelClass::primaryKey()[0];
+            //            if ($pk === '_id') {
+            //                $model['_id'] = $result['_id'];
+            //            }
+            //            $model['_score'] = $result['_score'];
+            //            if (!empty($this->with)) {
+            //                $models = [$model];
+            //                $this->findWith($this->with, $models);
+            //                $model = $models[0];
+            //            }
             return $result;
         } else {
             /* @var $class ActiveRecord */

@@ -34,7 +34,7 @@ class Connection extends Component
     public const EVENT_AFTER_OPEN = 'afterOpen';
 
     /**
-     * @var boolean whether to autodetect available cluster nodes on [[open()]]
+     * @var bool whether to autodetect available cluster nodes on [[open()]]
      */
     public $autodetectCluster = true;
     /**
@@ -104,7 +104,7 @@ class Connection extends Component
      */
     public $curlOptions = [];
     /**
-     * @var integer version of the domain-specific language to use with the server.
+     * @var int version of the domain-specific language to use with the server.
      * This must be set to the major version of the Elasticsearch server in use, e.g. `5` for Elasticsearch 5.x.x,
      * `6` for Elasticsearch 6.x.x, and `7` for Elasticsearch 7.x.x.
      */
