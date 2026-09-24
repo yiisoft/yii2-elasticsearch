@@ -123,7 +123,7 @@ $('#elastic-link-$i').on('click', function () {
     return false;
 });
 JS
-, View::POS_READY);
+                , View::POS_READY);
             $runLink = Html::a('run query', '#', ['id' => "elastic-link-$i"]) . '<br/>';
             $rows[] = <<<HTML
 <tr>
